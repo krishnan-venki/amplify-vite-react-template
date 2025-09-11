@@ -9,4 +9,8 @@ export const auth = defineAuth({
         `Use this code to confirm your Companionship: ${createCode()}`,
     },
   },
+  userAttributes: {
+    givenName: { required: true },
+    familyName: { required: true },
+  },
 });
