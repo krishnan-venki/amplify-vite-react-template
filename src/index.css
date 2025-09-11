@@ -20,6 +20,50 @@ body {
   width: 100%;
 }
 
+/* --- Amplify Authenticator styling to match app --- */
+[data-amplify-authenticator] {
+  max-width: 480px;
+  margin: 48px auto;
+  border: 1px solid var(--border-sage);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(16, 24, 40, 0.12);
+  background: #fff;
+}
+
+[data-amplify-authenticator] .amplify-flex,
+[data-amplify-authenticator] .amplify-card,
+[data-amplify-authenticator] .amplify-view {
+  /* prevent overly stretched inner containers */
+  max-width: 100%;
+}
+
+/* Primary buttons in Auth to use Sagaa orange */
+[data-amplify-authenticator] .amplify-button--primary {
+  background: var(--amazon-orange) !important;
+  color: #111 !important;
+  border: none !important;
+  border-radius: 14px !important;
+  box-shadow: 0 6px 16px rgba(255, 153, 0, 0.25) !important;
+}
+[data-amplify-authenticator] .amplify-button--primary:hover {
+  background: var(--amazon-orange-hover) !important;
+}
+
+/* Inputs: radius + focus ring similar to chat input */
+[data-amplify-authenticator] input,
+[data-amplify-authenticator] .amplify-input,
+[data-amplify-authenticator] textarea {
+  border-radius: 14px !important;
+  border-color: var(--border-sage) !important;
+}
+[data-amplify-authenticator] input:focus,
+[data-amplify-authenticator] .amplify-input:focus,
+[data-amplify-authenticator] textarea:focus {
+  outline: none !important;
+  border-color: rgba(11, 87, 208, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(11, 87, 208, 0.15) !important;
+}
+
 main {
   display: flex;
   flex-direction: column;
