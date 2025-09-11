@@ -1,23 +1,36 @@
-import { FormEvent, useState} from "react"
+import { FormEvent, useEffect, useRef, useState } from "react"
 import "./App.css";
 import { fetchAuthSession } from 'aws-amplify/auth'; 
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import sagaaIconUrl from './assets/sagaa_favicon.svg';
 
 
 function App() {
   const { user, signOut } = useAuthenticator();
-  const [response, setResponse] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [conversation, setConversation] = useState<Array<{ role: 'user' | 'sagaa'; text: string }>>([]);
+  const responseBoxRef = useRef<HTMLDivElement>(null);
+
+  // Keep the view scrolled to the latest message
+  useEffect(() => {
+    const el = responseBoxRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [conversation, loading]);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       setLoading(true);
-      setError(null);
-      setResponse(null);
+  setError(null);
 
-      const formData = new FormData(event.currentTarget);
-      const message = formData.get("Prompt") as string;
+  const formData = new FormData(event.currentTarget);
+  const messageRaw = formData.get("Prompt") as string;
+  const message = (messageRaw ?? "").trim();
+  if (!message) { setLoading(false); return; }
+  // Append the user's question to the conversation immediately
+  setConversation(prev => [...prev, { role: 'user', text: message }]);
+      // Clear the input after capturing the message
+      event.currentTarget.reset();
       
       try 
       {
@@ -50,7 +63,9 @@ function App() {
               .replace(/[ \t]+\n/g, "\n")      // trim trailing spaces per line
               .replace(/\n{3,}/g, "\n\n")      // collapse 3+ newlines to a single blank line
               .trim();
-          setResponse(normalize(text));
+          const normalized = normalize(text);
+          // Append Sagaa's response after receiving it
+          setConversation(prev => [...prev, { role: 'sagaa', text: normalized }]);
       } catch (err: any) {
           setError(err.message || "Something went wrong");
       } finally 
@@ -61,68 +76,91 @@ function App() {
 
   return (
     <div className="app-shell">
-      {/* Full-width header */}
-      <header className="header">
-        <div className="header-inner">
-          <div className="brand">
+      <div className="layout">
+        {/* Side Panel (moved from top) */}
+        <aside className="side-panel">
+          <div className="side-inner">
+            <div className="brand">
               <h1 className="title">Sagaa</h1>
               <p className="subtitle">The personal AI companion</p>
-          </div>
-          <div className="user-actions">
+            </div>
+            <div className="user-actions below-brand">
               {user?.username && <span className="username">{user.username}</span>}
               <button className="link-btn" onClick={signOut}>log out</button>
-          </div>
-        </div>
-      </header>
-
-      {/* Nav box below the header */}
-      <div className="nav-box">
-        <nav className="nav">
-            <a href="#" aria-current="page">home</a>
-            <span className="divider">/</span>
-            <a href="#about">about</a>
-            <span className="divider">/</span>
-            <a href="#contact">contact</a>
-        </nav>
-      </div>
-
-      {/* Content split wrapped in a bottom panel card */}
-      <div className="bottom-panel">
-      <main className="content">
-          <section className="panel left-panel">
-            <form onSubmit={onSubmit} className="prompt-form" aria-busy={loading}
-              aria-describedby="prompt-help">
-              
-              <div className="prompt-row">
-                <label htmlFor="Prompt" className="sr-only">Ask Sagaa</label>
-                <input
-                  type="text"
-                  className="prompt-input"
-                  id="Prompt"
-                  name="Prompt"
-                  placeholder="Sagaa is ready for your query...."
-                  autoComplete="off"
-                />
-                <button type="submit" className="submit-btn" disabled={loading}>
-                  <span className="arrow">→</span>
-                </button>
-              </div>
-              <p id="prompt-help" className="muted" aria-live="polite">Press Enter to send.</p>
-              {error && <p className="error-text">{error}</p>}
-            </form>
-          </section>
-
-          <section className="panel right-panel">
-            <div className="response-box" role="status" aria-live="polite">
-              {loading && <p className="muted">Sagaa is getting you the response...</p>}
-              {!loading && !response && !error && (
-                <p className="muted">Your response will appear here.</p>
-              )}
-              {response && <div className="response-text">{response}</div>}
             </div>
-          </section>
-  </main>
-  </div>
+          </div>
+        </aside>
+
+        {/* Main column */}
+        <div className="main-column">
+          {/* Panel 3: Response or centered input when empty */}
+          <main className="response-panel">
+            {conversation.length === 0 && !loading && !error ? (
+              <section className="response-card">
+                <div className="center-input">
+                  <form onSubmit={onSubmit} className="prompt-form" aria-busy={loading}>
+                    <div className="input-row">
+                      <label htmlFor="Prompt" className="sr-only">Ask Sagaa</label>
+                      <input
+                        type="text"
+                        className="prompt-input"
+                        id="Prompt"
+                        name="Prompt"
+                        placeholder="Type your question..."
+                        autoComplete="off"
+                      />
+                      <button type="submit" className="submit-btn" disabled={loading}>
+                        <span className="arrow">→</span>
+                      </button>
+                    </div>
+                    {error && <p className="error-text">{error}</p>}
+                  </form>
+                </div>
+              </section>
+            ) : (
+              <section className="response-card">
+                <div className="response-box" role="status" aria-live="polite" ref={responseBoxRef}>
+                  {conversation.map((m, i) => (
+                    m.role === 'user' ? (
+                      <p className="question-text" key={i}><strong>User</strong>: {m.text}</p>
+                    ) : (
+                      <p className="response-text message-with-icon" key={i}>
+                        <img src={sagaaIconUrl} alt="Sagaa" className="message-icon" />
+                        {m.text}
+                      </p>
+                    )
+                  ))}
+                  {loading && <p className="muted">Sagaa is getting you the response...</p>}
+                  {error && !loading && <p className="error-text">{error}</p>}
+                </div>
+              </section>
+            )}
+          </main>
+
+          {/* Panel 4: Fixed bottom input dock (only after first message or when loading/error) */}
+          {(conversation.length > 0 || loading || !!error) && (
+            <div className="input-dock" role="group" aria-label="Ask Sagaa">
+              <form onSubmit={onSubmit} className="prompt-form" aria-busy={loading}>
+                <div className="input-row">
+                  <label htmlFor="Prompt" className="sr-only">Ask Sagaa</label>
+                  <input
+                    type="text"
+                    className="prompt-input"
+                    id="Prompt"
+                    name="Prompt"
+                    placeholder="Type your question..."
+                    autoComplete="off"
+                  />
+                  <button type="submit" className="submit-btn" disabled={loading}>
+                    <span className="arrow">→</span>
+                  </button>
+                </div>
+                {error && <p className="error-text">{error}</p>}
+              </form>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
