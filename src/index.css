@@ -1,12 +1,23 @@
+:root {
+  /* Soft sage/grey palette similar to the reference */
+  --bg-1: #e9eeea;      /* light sage */
+  --bg-2: #edf2ef;      /* lighter sage */
+  --bg-3: #ffffff;      /* white */
+  --header-1: #e6eeea;  /* header gradient top */
+  --header-2: #eef3f0;  /* header gradient bottom */
+  --panel: #eef3f0;     /* panel background */
+  --text-muted: #6f7b78;/* muted grey-green */
+  --border-sage: rgba(54, 83, 73, 0.12);
+  /* Accent */
+  --amazon-orange: #ff9900;
+  --amazon-orange-hover: #e68a00;
+}
 body {
   margin: 0;
-  background: linear-gradient(180deg, rgb(117, 81, 194), rgb(255, 255, 255));
-  display: flex;
+  background: radial-gradient(1200px 600px at 50% -200px, var(--bg-1), var(--bg-2) 60%, var(--bg-3) 100%);
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  height: 100vh;
-  width: 100vw;
-  justify-content: center;
-  align-items: center;
+  min-height: 100vh;
+  width: 100%;
 }
 
 main {
@@ -62,4 +73,17 @@ li:hover {
 a {
   font-weight: 800;
   text-decoration: none;
+}
+
+/* Utility: screen-reader only label */
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap; /* added line */
+  border: 0;
 }
