@@ -6,7 +6,10 @@ import '@aws-amplify/ui-react/styles.css';
 import { Authenticator, ThemeProvider, createTheme } from '@aws-amplify/ui-react';
 import { Amplify } from "aws-amplify";
 import outputs from "../amplify_outputs.json";
-import sagaa48 from './assets/sagaa_48x48.png';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import Home from './pages/Home';
+import Chat from './pages/Chat';
+import Login from './pages/Login';
 
 Amplify.configure(outputs);
 
@@ -26,95 +29,25 @@ const themeOverrides = {
 
 const sagaaTheme = createTheme(themeOverrides);
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      { index: true, element: <Navigate to="home" replace /> },
+      { path: 'home', element: <Home /> },
+      { path: 'chat', element: <Chat /> },
+      { path: 'login', element: <Login /> },
+    ],
+  },
+]);
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-  <ThemeProvider theme={sagaaTheme}>
-      <Authenticator
-      signUpAttributes={["given_name", "family_name"]}
-      components={{
-        Header: () => (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px' }}>
-            <img src={sagaa48} alt="" aria-hidden="true" width={28} height={28} />
-            <strong style={{ fontSize: 18 }}>Sagaa</strong>
-          </div>
-        ),
-        Footer: () => (
-          <div style={{ fontSize: 12, color: '#6b7280', textAlign: 'center', padding: '12px 8px' }}>
-            By continuing, you agree to our <a href="#" target="_blank" rel="noreferrer">Terms</a> and <a href="#" target="_blank" rel="noreferrer">Privacy</a>.
-          </div>
-        ),
-        SignIn: {
-          Header: () => (
-            <div style={{ padding: '8px 12px' }}>
-              <h2 style={{ margin: 0 }}>Welcome back</h2>
-              <p style={{ margin: '4px 0 0', color: '#6b7280' }}>Sign in to continue to Sagaa</p>
-            </div>
-          ),
-          Footer: () => (
-            <div style={{ padding: '8px 12px', fontSize: 12, color: '#6b7280' }}>
-              Trouble signing in? <a href="#" onClick={(e) => e.preventDefault()}>Contact support</a>
-            </div>
-          )
-        },
-        SignUp: {
-          Header: () => (
-            <div style={{ padding: '8px 12px' }}>
-              <h2 style={{ margin: 0 }}>Create your account</h2>
-              <p style={{ margin: '4px 0 0', color: '#6b7280' }}>Join Sagaa to get started</p>
-            </div>
-          ),
-          Footer: () => (
-            <div style={{ padding: '8px 12px', fontSize: 12, color: '#6b7280' }}>
-              Already have an account? Switch to <strong>Sign in</strong> above.
-            </div>
-          )
-        },
-      }}
-      formFields={{
-        signIn: {
-          username: {
-            label: 'Email',
-            placeholder: 'you@example.com',
-            autocomplete: 'username'
-          }
-        },
-        signUp: {
-          given_name: {
-            label: 'First name',
-            placeholder: 'Ada',
-            order: 1,
-            isRequired: true,
-            autocomplete: 'given-name'
-          },
-          family_name: {
-            label: 'Last name',
-            placeholder: 'Lovelace',
-            order: 2,
-            isRequired: true,
-            autocomplete: 'family-name'
-          },
-          email: {
-            label: 'Email',
-            placeholder: 'you@example.com',
-            order: 3,
-            autocomplete: 'email'
-          },
-          password: {
-            label: 'Password',
-            placeholder: 'At least 8 characters',
-            order: 4,
-            autocomplete: 'new-password'
-          },
-          confirm_password: {
-            label: 'Confirm password',
-            order: 5,
-            autocomplete: 'new-password'
-          }
-        }
-      }}
-      >
-      <App />
-      </Authenticator>
+    <ThemeProvider theme={sagaaTheme}>
+      <Authenticator.Provider>
+        <RouterProvider router={router} />
+      </Authenticator.Provider>
     </ThemeProvider>
   </React.StrictMode>
 );

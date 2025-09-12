@@ -15,7 +15,7 @@
 body {
   margin: 0;
   background: radial-gradient(1200px 600px at 50% -200px, var(--bg-1), var(--bg-2) 60%, var(--bg-3) 100%);
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Noto Sans", "Noto Sans JP", "Noto Sans KR", "Noto Sans SC", "Noto Sans TC", "Noto Sans Devanagari", "Noto Sans Arabic", "Noto Sans Hebrew", "Noto Sans Thai", system-ui, "Segoe UI", Helvetica, Arial, "Noto Color Emoji", sans-serif;
   min-height: 100vh;
   width: 100%;
 }
@@ -23,7 +23,7 @@ body {
 /* --- Amplify Authenticator styling to match app --- */
 [data-amplify-authenticator] {
   max-width: 480px;
-  margin: 48px auto;
+  margin: 24px auto; /* tighter vertical margin */
   border: 1px solid var(--border-sage);
   border-radius: 16px;
   box-shadow: 0 12px 30px rgba(16, 24, 40, 0.12);
@@ -35,6 +35,57 @@ body {
 [data-amplify-authenticator] .amplify-view {
   /* prevent overly stretched inner containers */
   max-width: 100%;
+}
+
+/* Compact: reduce default gaps/paddings inside Authenticator */
+[data-amplify-authenticator] .amplify-flex {
+  gap: 8px !important;
+}
+[data-amplify-authenticator] .amplify-card {
+  padding: 16px !important;
+}
+[data-amplify-authenticator] .amplify-heading,
+[data-amplify-authenticator] h1,
+[data-amplify-authenticator] h2,
+[data-amplify-authenticator] h3 {
+  margin: 4px 0 !important;
+}
+[data-amplify-authenticator] .amplify-field,
+[data-amplify-authenticator] .amplify-field-group {
+  margin-bottom: 8px !important;
+}
+[data-amplify-authenticator] .amplify-label {
+  margin-bottom: 4px !important;
+  font-size: 0.9rem !important;
+}
+[data-amplify-authenticator] .amplify-field__description,
+[data-amplify-authenticator] .amplify-text {
+  margin: 4px 0 !important;
+}
+
+/* Inputs and buttons: slightly smaller height/padding */
+[data-amplify-authenticator] input,
+[data-amplify-authenticator] .amplify-input,
+[data-amplify-authenticator] textarea,
+[data-amplify-authenticator] select {
+  height: 36px !important;
+  padding: 6px 10px !important;
+}
+[data-amplify-authenticator] .amplify-button {
+  min-height: 36px !important;
+  padding: 0 12px !important;
+  border-radius: 12px !important;
+}
+[data-amplify-authenticator] .amplify-tabs {
+  margin-bottom: 8px !important;
+}
+[data-amplify-authenticator] .amplify-alert {
+  margin: 8px 0 !important;
+  padding: 8px 10px !important;
+}
+[data-amplify-authenticator] .amplify-form__footer,
+[data-amplify-authenticator] .amplify-footer {
+  margin-top: 8px !important;
 }
 
 /* Primary buttons in Auth to use Sagaa orange */
