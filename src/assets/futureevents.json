@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "Type": "Suggestion",
+    "title": "Sports - Cricket Match - India Vs Australia",
+    "date": "2025-09-26T10:00:00",
+    "location": "Willow.TV",
+    "description": "1st test match of the series Border - Gavaskar Trophy.",
+    "details": "Live coverage from 10 AM to 6 PM IST.",
+    "bookable": false
+  },
+  {
+    "id": 2,
+    "Type": "Suggestion",
+    "title": "Movie Night",
+    "date": "2025-09-27T19:30:00",
+    "location": "Cinemark - Bellevue",
+    "description": "Screening 'True Partior'.",
+    "details": "True patriot is a 2025 Malayalam action thriller film directed by John Mahendran, starring Mammootty and Mohanlal in the lead role.",
+    "bookable": true
+  },
+  {
+    "id": 3,
+    "Type": "Reminder",
+    "title": "Eye Checkup",
+    "date": "2025-09-21T19:30:00",
+    "location": "Issaquah Eye Clinic",
+    "description": "Yearly checkup and new glasses fitting.",
+    "details": "It has been a year since you had your last eye checkup. Please visit the clinic for a comprehensive eye examination and to update your prescription for glasses.",
+    "bookable": true
+  },
+  {
+    "id": 4,
+    "Type": "Reminder",
+    "title": "Full Moon Day",
+    "date": "2025-09-21T00:00:00",
+    "description": "Full moon day - Purnima",
+    "details": "Full moon day is coming up. Reminder for the food restrictions and fasting.",
+    "bookable": false
+  }
+]
