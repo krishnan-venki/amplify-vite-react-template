@@ -1,0 +1,335 @@
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap');
+
+.sagaaHomepage {
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: white;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+.sagaaHomepage * {
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Only apply transparent backgrounds to pricing section elements to fix black panels */
+.sagaaHomepage #pricing ul,
+.sagaaHomepage #pricing li,
+.sagaaHomepage #pricing li span {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Specifically target checkmarks and text in Essential and Family plans */
+.sagaaHomepage #pricing li span[style*="color: #22c55e"] {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+.sagaaHomepage html {
+  scroll-behavior: smooth;
+}
+
+.heroGradient {
+  background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+}
+
+.ecosystemGradient {
+  background: linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.growthAnimation {
+  animation: growPulse 4s ease-in-out infinite;
+}
+
+@keyframes growPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+.connectionLine {
+  position: relative;
+  overflow: hidden;
+}
+
+.connectionLine::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #007AFF, transparent);
+  animation: connectionFlow 3s ease-in-out infinite;
+}
+
+@keyframes connectionFlow {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.communityDots {
+  position: relative;
+}
+
+.communityDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: absolute;
+  animation: communityPulse 2s ease-in-out infinite;
+}
+
+.communityDot:nth-child(1) { background: #007AFF; top: 20%; left: 15%; animation-delay: 0s; }
+.communityDot:nth-child(2) { background: #34C759; top: 60%; left: 25%; animation-delay: 0.5s; }
+.communityDot:nth-child(3) { background: #FF3B30; top: 40%; left: 70%; animation-delay: 1s; }
+.communityDot:nth-child(4) { background: #FF9500; top: 80%; left: 60%; animation-delay: 1.5s; }
+.communityDot:nth-child(5) { background: #8E44AD; top: 10%; left: 80%; animation-delay: 2s; }
+
+@keyframes communityPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.5); opacity: 1; }
+}
+
+.sectionPadding { 
+  padding: 120px 0; 
+}
+
+.textSubtle { 
+  color: #6e6e73; 
+}
+
+.textSecondary { 
+  color: #1d1d1f; 
+}
+
+.cardHover {
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.cardHover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.fadeInUp {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.fadeInUp.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stickyNav {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+}
+
+.sectionDivider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #e5e5e7 50%, transparent 100%);
+}
+
+.ecosystemVisual {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+}
+
+.ecosystemCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #007AFF, #00D2FF);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.ecosystemRing {
+  position: absolute;
+  border: 2px solid rgba(0, 122, 255, 0.2);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ecosystemNode {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  animation: orbitRotate 20s linear infinite;
+}
+
+@keyframes orbitRotate {
+  from { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+}
+
+.node1 { background: #34C759; animation-delay: 0s; }
+.node2 { background: #FF3B30; animation-delay: -4s; }
+.node3 { background: #8E44AD; animation-delay: -8s; }
+.node4 { background: #FF9500; animation-delay: -12s; }
+.node5 { background: #FFD60A; animation-delay: -16s; }
+
+/* Enhanced Ambient Access Animations */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) scale(1);
+    opacity: 0.4;
+  }
+  50% { 
+    transform: translateY(-20px) scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes slideIn {
+  0% { 
+    width: 0%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% { 
+    width: 40px;
+    opacity: 0.6;
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes flow {
+  0% { 
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% { 
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes breathe {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(0, 212, 170, 0.5);
+  }
+  50% { 
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(0, 212, 170, 0.8);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-8px);
+  }
+  60% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes audioWave {
+  0%, 100% { 
+    height: 4px;
+    opacity: 0.6;
+  }
+  50% { 
+    height: 12px;
+    opacity: 1;
+  }
+}
+
+/* 3D Transform Effects */
+@keyframes rotate3D {
+  0% { transform: rotateY(0deg) rotateX(0deg); }
+  25% { transform: rotateY(5deg) rotateX(2deg); }
+  50% { transform: rotateY(0deg) rotateX(0deg); }
+  75% { transform: rotateY(-5deg) rotateX(-2deg); }
+  100% { transform: rotateY(0deg) rotateX(0deg); }
+}
+
+/* Gradient Animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Device Connection Animation */
+@keyframes devicePulse {
+  0%, 100% { 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 0 0 0 rgba(59, 130, 246, 0.4);
+  }
+  50% { 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+}
+
+/* Enhanced transitions */
+.enhanced-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.enhanced-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.device-frame {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.device-frame:hover {
+  animation: rotate3D 6s ease-in-out infinite;
+}

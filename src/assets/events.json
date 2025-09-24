@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "title": "Health Checkup Camp",
+    "date": "2025-09-17T10:00:00",
+    "location": "Swedish Health Center - Sammamish",
+    "description": "Yearly Checkup"
+  },
+  {
+    "id": 2,
+    "title": "Indian festival - Navaratri",
+    "date": "2025-09-19T18:00:00",
+    "location": "Home",
+    "description": "Arrange Gholu and other decorations."
+  },
+  {
+    "id": 3,
+    "title": "Guests Arrival - Navaratri",
+    "date": "2025-09-20T15:00:00",
+    "location": "Home",
+    "description": "Prepare Dinner for Navaratri guests."
+  },
+  {
+    "id": 4,
+    "title": "Movie Night",
+    "date": "2025-09-21T19:30:00",
+    "location": "Cinemark - Bellevue",
+    "description": "Screening 'Madharaasi'."
+  }
+]
