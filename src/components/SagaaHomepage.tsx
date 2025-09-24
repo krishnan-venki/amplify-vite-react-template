@@ -1,11 +1,16 @@
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './SagaaHomepage.module.css';
 import { useNavigate } from 'react-router-dom';
 import sagaaLogo from '../assets/sagaa_48x48.png';
 import morningInteraction from '../assets/Morning_Interaction.jpg';
 import driveInteraction from '../assets/Drive_Interaction.jpg';
-import diinerInteraction from '../assets/Diiner_Interaction.jpg';
 import eveningInteraction from '../assets/Evening_Interactions.jpg';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+
 
 const SagaaHomepage: React.FC = () => {
   const fadeInElementsRef = useRef<HTMLDivElement[]>([]);
@@ -841,39 +846,6 @@ const SagaaHomepage: React.FC = () => {
         }}></div>
         
         {/* Floating connection dots */}
-        <div style={{
-          position: 'absolute',
-          top: '10%',
-          left: '10%',
-          width: '4px',
-          height: '4px',
-          borderRadius: '50%',
-          background: '#3b82f6',
-          animation: 'float 6s ease-in-out infinite',
-          opacity: 0.4
-        }}></div>
-        <div style={{
-          position: 'absolute',
-          top: '20%',
-          right: '15%',
-          width: '3px',
-          height: '3px',
-          borderRadius: '50%',
-          background: '#10b981',
-          animation: 'float 8s ease-in-out infinite reverse',
-          opacity: 0.3
-        }}></div>
-        <div style={{
-          position: 'absolute',
-          bottom: '30%',
-          left: '20%',
-          width: '5px',
-          height: '5px',
-          borderRadius: '50%',
-          background: '#06b6d4',
-          animation: 'float 7s ease-in-out infinite',
-          opacity: 0.2
-        }}></div>
         
         <div style={{
           maxWidth: '1280px',
@@ -913,9 +885,6 @@ const SagaaHomepage: React.FC = () => {
             }}>
               Sagaa follows your life seamlessly across voice assistants, mobile, car, and desktop - providing contextual intelligence whenever and wherever you need it.
             </p>
-            
-            {/* Live connection indicator */}
-            {/* Live connection indicator removed as requested */}
           </div>
 
           <div ref={addToRefs} className={styles.fadeInUp} style={{
@@ -923,1057 +892,794 @@ const SagaaHomepage: React.FC = () => {
             flexDirection: 'column',
             gap: '80px'
           }}>
-            {/* Morning at Home - Enhanced with device frame */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: isDesktop ? '1fr 2fr' : '1fr',
-              gap: '48px',
-              alignItems: 'stretch',
-              position: 'relative'
-            }}>
-              {/* Connection line */}
-              <div style={{
-                position: 'absolute',
-                top: '50%',
-                left: isDesktop ? '45%' : '50%',
-                width: isDesktop ? '10%' : '0',
-                height: '2px',
-                background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)',
-                opacity: 0.3,
-                zIndex: 0,
-                animation: 'flow 3s ease-in-out infinite'
-              }}></div>
-              
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                position: 'relative',
-                zIndex: 1
-              }}>
-                {/* Smart speaker device frame */}
-                <div style={{
-                  position: 'relative',
-                  backgroundColor: '#1a1a1a',
-                  borderRadius: '24px',
-                  padding: '20px',
-                  marginBottom: '20px'
-                }}>
-                  <div style={{
-                    position: 'absolute',
-                    top: '8px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '40px',
-                    height: '4px',
-                    backgroundColor: '#333',
-                    borderRadius: '2px'
-                  }}></div>
-                  
-                  <img 
-                    src={morningInteraction} 
-                    alt="Morning interaction scene" 
-                    style={{
-                      width: '100%',
-                      height: '300px',
-                      borderRadius: '16px',
-                      objectFit: 'cover',
-                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-                      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                      filter: 'brightness(1.1) contrast(1.1) saturate(1.1)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.05) rotateY(5deg)';
-                      e.currentTarget.style.boxShadow = '0 16px 64px rgba(0, 0, 0, 0.25)';
-                      e.currentTarget.style.filter = 'brightness(1.2) contrast(1.15) saturate(1.2)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1) rotateY(0deg)';
-                      e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.2)';
-                      e.currentTarget.style.filter = 'brightness(1.1) contrast(1.1) saturate(1.1)';
-                    }}
-                  />
-                  
-                  {/* LED indicator */}
-                  <div style={{
-                    position: 'absolute',
-                    bottom: '15px',
-                    right: '15px',
-                    width: '12px',
-                    height: '12px',
-                    borderRadius: '50%',
-                    background: '#00d4aa',
-                    boxShadow: '0 0 20px rgba(0, 212, 170, 0.5)',
-                    animation: 'breathe 2s ease-in-out infinite'
-                  }}></div>
-                </div>
-                
-                {/* Voice command indicator */}
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  padding: '12px 20px',
-                  backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                  borderRadius: '25px',
-                  border: '1px solid rgba(59, 130, 246, 0.2)'
-                }}>
-                  <div style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    background: '#3b82f6',
-                    animation: 'pulse 1s ease-in-out infinite'
-                  }}></div>
-                  <p style={{
-                    fontSize: '14px',
-                    color: '#3b82f6',
-                    margin: '0',
-                    fontWeight: '500'
-                  }}>"Hey Alexa, ask Sagaa about my day"</p>
-                </div>
-              </div>
-              
-              <div style={{
-                position: 'relative',
-                zIndex: 1
-              }}>
-                {/* Enhanced response card */}
-                <div style={{
-                  backgroundColor: 'white',
-                  borderRadius: '20px',
-                  padding: '32px',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)',
-                  border: '1px solid rgba(255, 255, 255, 0.8)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)';
-                }}
-                >
-                  {/* Accent line */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '0',
-                    left: '0',
-                    right: '0',
-                    height: '4px',
-                    background: 'linear-gradient(90deg, #3b82f6, #06b6d4, #10b981)'
-                  }}></div>
-                  
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    marginBottom: '16px'
-                  }}>
+            {/* Swiper */}
+            <div ref={addToRefs} className={styles.fadeInUp}>
+              <Swiper
+                spaceBetween={40}
+                slidesPerView={1}
+                pagination={{ clickable: true }}
+                modules={[Pagination]}
+                style={{ paddingBottom: '0px', marginBottom: '0px' }}
+              >
+                <SwiperSlide>
+                   {/* Morning at Home - Enhanced with device frame */}
                     <div style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontSize: '16px',
-                      fontWeight: 'bold'
-                    }}>S</div>
-                    <div style={{
-                      fontSize: '14px',
-                      color: '#2563eb',
-                      fontWeight: '600'
-                    }}>Sagaa responds:</div>
-                  </div>
-                  
-                  <div style={{
-                    color: '#1d1d1f',
-                    lineHeight: '1.7',
-                    fontSize: '16px',
-                    fontWeight: '400'
-                  }}>"Good morning! Your presentation fund goal hit 80% yesterday. You have a fitness consultation at 6 PM, and your grocery budget has $40 slack - perfect for tonight's dinner party ingredients. Your car insurance renewal notice arrived; I found 3 better options saving $200/year."</div>
-                  
-                  {/* Status indicators */}
-                  <div style={{
-                    display: 'flex',
-                    gap: '16px',
-                    marginTop: '20px',
-                    flexWrap: 'wrap'
-                  }}>
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '6px 12px',
-                      backgroundColor: '#f0f9ff',
-                      borderRadius: '12px',
-                      fontSize: '12px',
-                      color: '#0369a1'
+                      display: 'grid',
+                      gridTemplateColumns: isDesktop ? '1fr 2fr' : '1fr',
+                      gap: '48px',
+                      alignItems: 'stretch',
+                      position: 'relative'
                     }}>
-                      <span>💰</span>
-                      <span>Finance</span>
-                    </div>
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '6px 12px',
-                      backgroundColor: '#f0fdf4',
-                      borderRadius: '12px',
-                      fontSize: '12px',
-                      color: '#166534'
-                    }}>
-                      <span>🏃</span>
-                      <span>Health</span>
-                    </div>
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '6px 12px',
-                      backgroundColor: '#fef7f0',
-                      borderRadius: '12px',
-                      fontSize: '12px',
-                      color: '#9a3412'
-                    }}>
-                      <span>🛡️</span>
-                      <span>Insurance</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Commute in Car - Enhanced with automotive interface */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: isDesktop ? '2fr 1fr' : '1fr',
-              gap: '48px',
-              alignItems: 'center',
-              padding: '40px 0',
-              position: 'relative'
-            }}>
-              {/* Connection line */}
-              <div style={{
-                position: 'absolute',
-                top: '50%',
-                right: isDesktop ? '45%' : '50%',
-                width: isDesktop ? '10%' : '0',
-                height: '2px',
-                background: 'linear-gradient(90deg, transparent, #10b981, transparent)',
-                opacity: 0.3,
-                zIndex: 0,
-                animation: 'flow 3s ease-in-out infinite 1s'
-              }}></div>
-              
-              <div style={{
-                position: 'relative',
-                zIndex: 1
-              }}>
-                {/* Enhanced proactive insight card */}
-                <div style={{
-                  backgroundColor: 'white',
-                  borderRadius: '20px',
-                  padding: '32px',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)',
-                  border: '1px solid rgba(255, 255, 255, 0.8)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)';
-                }}
-                >
-                  {/* Accent line */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '0',
-                    left: '0',
-                    right: '0',
-                    height: '4px',
-                    background: 'linear-gradient(90deg, #10b981, #06b6d4, #8b5cf6)'
-                  }}></div>
-                  
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    marginBottom: '16px'
-                  }}>
-                    <div style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #10b981, #06b6d4)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontSize: '16px'
-                    }}>🚗</div>
-                    <div>
+                      {/* Connection line */}
                       <div style={{
-                        fontSize: '14px',
-                        color: '#16a34a',
-                        fontWeight: '600'
-                      }}>Proactive insight during commute:</div>
-                      <div style={{
-                        fontSize: '12px',
-                        color: '#6b7280',
-                        marginTop: '2px'
-                      }}>Context-aware assistance</div>
-                    </div>
-                  </div>
-                  
-                  <div style={{
-                    color: '#1d1d1f',
-                    lineHeight: '1.7',
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    marginBottom: '20px'
-                  }}>"I see traffic is heavy on your usual route. While we wait, I analyzed your insurance options from this morning. Progressive offers the best rate with identical coverage. Should I start the application process for review later?"</div>
-                  
-                  {/* Quick action buttons */}
-                  <div style={{
-                    display: 'flex',
-                    gap: '12px',
-                    flexWrap: 'wrap'
-                  }}>
-                    <button style={{
-                      padding: '8px 16px',
-                      backgroundColor: '#10b981',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '12px',
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#059669';
-                      e.currentTarget.style.transform = 'scale(1.05)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#10b981';
-                      e.currentTarget.style.transform = 'scale(1)';
-                    }}
-                    >Yes, proceed</button>
-                    <button style={{
-                      padding: '8px 16px',
-                      backgroundColor: '#f3f4f6',
-                      color: '#374151',
-                      border: 'none',
-                      borderRadius: '12px',
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#e5e7eb';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#f3f4f6';
-                    }}
-                    >Remind me later</button>
-                  </div>
-                </div>
-              </div>
-              
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100%',
-                position: 'relative',
-                zIndex: 1
-              }}>
-                {/* Car dashboard mockup */}
-                <div style={{
-                  position: 'relative',
-                  backgroundColor: '#1f2937',
-                  borderRadius: '24px',
-                  padding: '20px',
-                  marginBottom: '20px'
-                }}>
-                  {/* Dashboard header */}
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: '12px',
-                    padding: '0 8px'
-                  }}>
-                    <div style={{
-                      fontSize: '12px',
-                      color: '#9ca3af'
-                    }}>CarPlay</div>
-                    <div style={{
-                      display: 'flex',
-                      gap: '4px'
-                    }}>
-                      <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#10b981' }}></div>
-                      <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#f59e0b' }}></div>
-                      <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#ef4444' }}></div>
-                    </div>
-                  </div>
-                  
-                  <div style={{
-                    position: 'relative',
-                    width: '400px',
-                    height: '250px',
-                    overflow: 'hidden',
-                    borderRadius: '16px',
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.05) rotateX(10deg)';
-                    e.currentTarget.style.boxShadow = '0 16px 64px rgba(0, 0, 0, 0.4)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1) rotateX(0deg)';
-                    e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3)';
-                  }}
-                  >
-                    <img 
-                      src={driveInteraction} 
-                      alt="Drive Interaction" 
-                      style={{ 
-                        width: '100%', 
-                        height: '100%', 
-                        objectFit: 'cover',
-                        filter: 'brightness(1.1) contrast(1.1)'
-                      }}
-                    />
-                    
-                    {/* Voice activity indicator */}
-                    <div style={{
-                      position: 'absolute',
-                      bottom: '12px',
-                      left: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      padding: '8px 12px',
-                      backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                      borderRadius: '20px',
-                      backdropFilter: 'blur(8px)'
-                    }}>
-                      <div style={{
-                        width: '8px',
-                        height: '8px',
-                        borderRadius: '50%',
-                        background: '#10b981',
-                        animation: 'pulse 1.5s ease-in-out infinite'
+                        position: 'absolute',
+                        top: '50%',
+                        left: isDesktop ? '45%' : '50%',
+                        width: isDesktop ? '10%' : '0',
+                        height: '2px',
+                        background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)',
+                        opacity: 0.3,
+                        zIndex: 0,
+                        animation: 'flow 3s ease-in-out infinite'
                       }}></div>
-                      <span style={{
-                        fontSize: '12px',
-                        color: 'white',
-                        fontWeight: '500'
-                      }}>Listening</span>
+                      
+                      <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
+                        position: 'relative',
+                        zIndex: 1
+                      }}>
+                        {/* Smart speaker device frame */}
+                        <div style={{
+                          position: 'relative',
+                          backgroundColor: '#1a1a1a',
+                          borderRadius: '24px',
+                          padding: '20px',
+                          marginBottom: '20px'
+                        }}>
+                          <div style={{
+                            position: 'absolute',
+                            top: '8px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            width: '40px',
+                            height: '4px',
+                            backgroundColor: '#333',
+                            borderRadius: '2px'
+                          }}></div>
+                          
+                          <img 
+                            src={morningInteraction} 
+                            alt="Morning interaction scene" 
+                            style={{
+                              width: '100%',
+                              height: '300px',
+                              borderRadius: '16px',
+                              objectFit: 'cover',
+                              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+                              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                              filter: 'brightness(1.1) contrast(1.1) saturate(1.1)'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.transform = 'scale(1.05) rotateY(5deg)';
+                              e.currentTarget.style.boxShadow = '0 16px 64px rgba(0, 0, 0, 0.25)';
+                              e.currentTarget.style.filter = 'brightness(1.2) contrast(1.15) saturate(1.2)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.transform = 'scale(1) rotateY(0deg)';
+                              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.2)';
+                              e.currentTarget.style.filter = 'brightness(1.1) contrast(1.1) saturate(1.1)';
+                            }}
+                          />
+                          
+                          {/* LED indicator */}
+                          <div style={{
+                            position: 'absolute',
+                            bottom: '15px',
+                            right: '15px',
+                            width: '12px',
+                            height: '12px',
+                            borderRadius: '50%',
+                            background: '#00d4aa',
+                            boxShadow: '0 0 20px rgba(0, 212, 170, 0.5)',
+                            animation: 'breathe 2s ease-in-out infinite'
+                          }}></div>
+                        </div>
+                        
+                        {/* Voice command indicator */}
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '8px',
+                          padding: '12px 20px',
+                          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                          borderRadius: '25px',
+                          border: '1px solid rgba(59, 130, 246, 0.2)'
+                        }}>
+                          <div style={{
+                            width: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
+                            background: '#3b82f6',
+                            animation: 'pulse 1s ease-in-out infinite'
+                          }}></div>
+                          <p style={{
+                            fontSize: '14px',
+                            color: '#3b82f6',
+                            margin: '0',
+                            fontWeight: '500'
+                          }}>"Hey Alexa, ask Sagaa about my day"</p>
+                        </div>
+                      </div>
+                      
+                      <div style={{
+                        position: 'relative',
+                        zIndex: 1
+                      }}>
+                        {/* Enhanced response card */}
+                        <div style={{
+                          backgroundColor: 'white',
+                          borderRadius: '20px',
+                          padding: '32px',
+                          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)',
+                          border: '1px solid rgba(255, 255, 255, 0.8)',
+                          position: 'relative',
+                          overflow: 'hidden',
+                          transition: 'all 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateY(-4px)';
+                          e.currentTarget.style.boxShadow = '0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)';
+                        }}
+                        >
+                          {/* Accent line */}
+                          <div style={{
+                            position: 'absolute',
+                            top: '0',
+                            left: '0',
+                            right: '0',
+                            height: '4px',
+                            background: 'linear-gradient(90deg, #3b82f6, #06b6d4, #10b981)'
+                          }}></div>
+                          
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            marginBottom: '16px'
+                          }}>
+                            <div style={{
+                              width: '32px',
+                              height: '32px',
+                              borderRadius: '50%',
+                              background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: 'white',
+                              fontSize: '16px',
+                              fontWeight: 'bold'
+                            }}>S</div>
+                            <div style={{
+                              fontSize: '14px',
+                              color: '#2563eb',
+                              fontWeight: '600'
+                            }}>Sagaa responds:</div>
+                          </div>
+                          
+                          <div style={{
+                            color: '#1d1d1f',
+                            lineHeight: '1.7',
+                            fontSize: '16px',
+                            fontWeight: '400'
+                          }}>"Good morning! Your presentation fund goal hit 80% yesterday. You have a fitness consultation at 6 PM, and your grocery budget has $40 slack - perfect for tonight's dinner party ingredients. Your car insurance renewal notice arrived; I found 3 better options saving $200/year."</div>
+                          
+                          {/* Status indicators */}
+                          <div style={{
+                            display: 'flex',
+                            gap: '16px',
+                            marginTop: '20px',
+                            flexWrap: 'wrap'
+                          }}>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              padding: '6px 12px',
+                              backgroundColor: '#f0f9ff',
+                              borderRadius: '12px',
+                              fontSize: '12px',
+                              color: '#0369a1'
+                            }}>
+                              <span>💰</span>
+                              <span>Finance</span>
+                            </div>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              padding: '6px 12px',
+                              backgroundColor: '#f0fdf4',
+                              borderRadius: '12px',
+                              fontSize: '12px',
+                              color: '#166534'
+                            }}>
+                              <span>🏃</span>
+                              <span>Health</span>
+                            </div>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              padding: '6px 12px',
+                              backgroundColor: '#fef7f0',
+                              borderRadius: '12px',
+                              fontSize: '12px',
+                              color: '#9a3412'
+                            }}>
+                              <span>🛡️</span>
+                              <span>Insurance</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '12px 20px',
-                  backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                  borderRadius: '25px',
-                  border: '1px solid rgba(16, 185, 129, 0.2)'
-                }}>
-                  <span style={{ fontSize: '16px' }}>🎙️</span>
-                  <p style={{
-                    fontSize: '14px',
-                    color: '#059669',
-                    margin: '0',
-                    fontWeight: '500'
-                  }}>Hands-free proactive insights</p>
-                </div>
-              </div>
-            </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                      {/* Commute in Car - Enhanced with automotive interface */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: isDesktop ? '2fr 1fr' : '1fr',
+                        gap: '48px',
+                        alignItems: 'center',
+                        padding: '40px 0',
+                        position: 'relative'
+                      }}>
+                        {/* Connection line */}
+                        <div style={{
+                          position: 'absolute',
+                          top: '50%',
+                          right: isDesktop ? '45%' : '50%',
+                          width: isDesktop ? '10%' : '0',
+                          height: '2px',
+                          background: 'linear-gradient(90deg, transparent, #10b981, transparent)',
+                          opacity: 0.3,
+                          zIndex: 0,
+                          animation: 'flow 3s ease-in-out infinite 1s'
+                        }}></div>
+                        
+                        <div style={{
+                          position: 'relative',
+                          zIndex: 1
+                        }}>
+                          {/* Enhanced proactive insight card */}
+                          <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '20px',
+                            padding: '32px',
+                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)',
+                            border: '1px solid rgba(255, 255, 255, 0.8)',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            transition: 'all 0.3s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'translateY(-4px)';
+                            e.currentTarget.style.boxShadow = '0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)';
+                          }}
+                          >
+                            {/* Accent line */}
+                            <div style={{
+                              position: 'absolute',
+                              top: '0',
+                              left: '0',
+                              right: '0',
+                              height: '4px',
+                              background: 'linear-gradient(90deg, #10b981, #06b6d4, #8b5cf6)'
+                            }}></div>
+                            
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '12px',
+                              marginBottom: '16px'
+                            }}>
+                              <div style={{
+                                width: '32px',
+                                height: '32px',
+                                borderRadius: '50%',
+                                background: 'linear-gradient(135deg, #10b981, #06b6d4)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: 'white',
+                                fontSize: '16px'
+                              }}>🚗</div>
+                              <div>
+                                <div style={{
+                                  fontSize: '14px',
+                                  color: '#16a34a',
+                                  fontWeight: '600'
+                                }}>Proactive insight during commute:</div>
+                                <div style={{
+                                  fontSize: '12px',
+                                  color: '#6b7280',
+                                  marginTop: '2px'
+                                }}>Context-aware assistance</div>
+                              </div>
+                            </div>
+                            
+                            <div style={{
+                              color: '#1d1d1f',
+                              lineHeight: '1.7',
+                              fontSize: '16px',
+                              fontWeight: '400',
+                              marginBottom: '20px'
+                            }}>"I see traffic is heavy on your usual route. While we wait, I analyzed your insurance options from this morning. Progressive offers the best rate with identical coverage. Should I start the application process for review later?"</div>
+                            
+                            {/* Quick action buttons */}
+                            <div style={{
+                              display: 'flex',
+                              gap: '12px',
+                              flexWrap: 'wrap'
+                            }}>
+                              <button style={{
+                                padding: '8px 16px',
+                                backgroundColor: '#10b981',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '12px',
+                                fontSize: '12px',
+                                fontWeight: '500',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease'
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = '#059669';
+                                e.currentTarget.style.transform = 'scale(1.05)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = '#10b981';
+                                e.currentTarget.style.transform = 'scale(1)';
+                              }}
+                              >Yes, proceed</button>
+                              <button style={{
+                                padding: '8px 16px',
+                                backgroundColor: '#f3f4f6',
+                                color: '#374151',
+                                border: 'none',
+                                borderRadius: '12px',
+                                fontSize: '12px',
+                                fontWeight: '500',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease'
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = '#e5e7eb';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = '#f3f4f6';
+                              }}
+                              >Remind me later</button>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          height: '100%',
+                          position: 'relative',
+                          zIndex: 1
+                        }}>
+                          {/* Car dashboard mockup */}
+                          <div style={{
+                            position: 'relative',
+                            backgroundColor: '#1f2937',
+                            borderRadius: '24px',
+                            padding: '20px',
+                            marginBottom: '20px'
+                          }}>
+                            {/* Dashboard header */}
+                            <div style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              marginBottom: '12px',
+                              padding: '0 8px'
+                            }}>
+                              <div style={{
+                                fontSize: '12px',
+                                color: '#9ca3af'
+                              }}>CarPlay</div>
+                              <div style={{
+                                display: 'flex',
+                                gap: '4px'
+                              }}>
+                                <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#10b981' }}></div>
+                                <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#f59e0b' }}></div>
+                                <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#ef4444' }}></div>
+                              </div>
+                            </div>
+                            
+                            <div style={{
+                              position: 'relative',
+                              width: '400px',
+                              height: '250px',
+                              overflow: 'hidden',
+                              borderRadius: '16px',
+                              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.transform = 'scale(1.05) rotateX(10deg)';
+                              e.currentTarget.style.boxShadow = '0 16px 64px rgba(0, 0, 0, 0.4)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.transform = 'scale(1) rotateX(0deg)';
+                              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3)';
+                            }}
+                            >
+                              <img 
+                                src={driveInteraction} 
+                                alt="Drive Interaction" 
+                                style={{ 
+                                  width: '100%', 
+                                  height: '100%', 
+                                  objectFit: 'cover',
+                                  filter: 'brightness(1.1) contrast(1.1)'
+                                }}
+                              />
+                              
+                              {/* Voice activity indicator */}
+                              <div style={{
+                                position: 'absolute',
+                                bottom: '12px',
+                                left: '12px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                padding: '8px 12px',
+                                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                                borderRadius: '20px',
+                                backdropFilter: 'blur(8px)'
+                              }}>
+                                <div style={{
+                                  width: '8px',
+                                  height: '8px',
+                                  borderRadius: '50%',
+                                  background: '#10b981',
+                                  animation: 'pulse 1.5s ease-in-out infinite'
+                                }}></div>
+                                <span style={{
+                                  fontSize: '12px',
+                                  color: 'white',
+                                  fontWeight: '500'
+                                }}>Listening</span>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            padding: '12px 20px',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderRadius: '25px',
+                            border: '1px solid rgba(16, 185, 129, 0.2)'
+                          }}>
+                            <span style={{ fontSize: '16px' }}>🎙️</span>
+                            <p style={{
+                              fontSize: '14px',
+                              color: '#059669',
+                              margin: '0',
+                              fontWeight: '500'
+                            }}>Hands-free proactive insights</p>
+                          </div>
+                        </div>
+                      </div>
 
-            {/* Work at Desktop - Enhanced with desktop interface */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: isDesktop ? '1fr 2fr' : '1fr',
-              gap: '48px',
-              alignItems: 'center',
-              padding: '40px 0',
-              position: 'relative'
-            }}>
-              {/* Connection line */}
-              <div style={{
-                position: 'absolute',
-                top: '50%',
-                left: isDesktop ? '45%' : '50%',
-                width: isDesktop ? '10%' : '0',
-                height: '2px',
-                background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)',
-                opacity: 0.3,
-                zIndex: 0,
-                animation: 'flow 3s ease-in-out infinite 2s'
-              }}></div>
-              
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100%',
-                position: 'relative',
-                zIndex: 1
-              }}>
-                {/* Desktop mockup */}
-                <div style={{
-                  position: 'relative',
-                  backgroundColor: '#f8fafc',
-                  borderRadius: '24px',
-                  padding: '20px',
-                  marginBottom: '20px',
-                  border: '2px solid #e2e8f0'
-                }}>
-                  {/* Monitor bezel */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '8px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '60px',
-                    height: '6px',
-                    backgroundColor: '#cbd5e1',
-                    borderRadius: '3px'
-                  }}></div>
-                  
-                  <div style={{
-                    position: 'relative',
-                    width: '400px',
-                    height: '250px',
-                    overflow: 'hidden',
-                    borderRadius: '12px',
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
-                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.05) perspective(1000px) rotateY(-10deg)';
-                    e.currentTarget.style.boxShadow = '0 16px 64px rgba(0, 0, 0, 0.25)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1) perspective(1000px) rotateY(0deg)';
-                    e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.15)';
-                  }}
-                  >
-                    <img 
-                      src={eveningInteraction} 
-                      alt="Desktop Evening Interaction" 
-                      style={{ 
-                        width: '100%', 
-                        height: '100%', 
-                        objectFit: 'cover',
-                        filter: 'brightness(1.1) contrast(1.1)'
-                      }}
-                    />
-                    
-                    {/* Notification badge */}
-                    <div style={{
-                      position: 'absolute',
-                      top: '12px',
-                      right: '12px',
-                      padding: '4px 8px',
-                      backgroundColor: '#8b5cf6',
-                      color: 'white',
-                      borderRadius: '12px',
-                      fontSize: '10px',
-                      fontWeight: '600',
-                      animation: 'bounce 2s ease-in-out infinite'
-                    }}>New Insight</div>
-                  </div>
-                  
-                  {/* Desktop stand */}
-                  <div style={{
-                    position: 'absolute',
-                    bottom: '-10px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '80px',
-                    height: '20px',
-                    backgroundColor: '#cbd5e1',
-                    borderRadius: '0 0 12px 12px'
-                  }}></div>
-                </div>
-                
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '12px 20px',
-                  backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                  borderRadius: '25px',
-                  border: '1px solid rgba(139, 92, 246, 0.2)'
-                }}>
-                  <span style={{ fontSize: '16px' }}>💻</span>
-                  <p style={{
-                    fontSize: '14px',
-                    color: '#7c3aed',
-                    margin: '0',
-                    fontWeight: '500'
-                  }}>Deep planning during evening</p>
-                </div>
-              </div>
-              
-              <div style={{
-                position: 'relative',
-                zIndex: 1
-              }}>
-                {/* Enhanced homework help card */}
-                <div style={{
-                  backgroundColor: 'white',
-                  borderRadius: '20px',
-                  padding: '32px',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)',
-                  border: '1px solid rgba(255, 255, 255, 0.8)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)';
-                }}
-                >
-                  {/* Accent line */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '0',
-                    left: '0',
-                    right: '0',
-                    height: '4px',
-                    background: 'linear-gradient(90deg, #8b5cf6, #ec4899, #f59e0b)'
-                  }}></div>
-                  
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    marginBottom: '16px'
-                  }}>
-                    <div style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontSize: '16px'
-                    }}>🎓</div>
-                    <div>
+                </SwiperSlide>
+                <SwiperSlide>
+                            {/* Work at Desktop - Enhanced with desktop interface */}
                       <div style={{
-                        fontSize: '14px',
-                        color: '#9333ea',
-                        fontWeight: '600'
-                      }}>During homework help:</div>
-                      <div style={{
-                        fontSize: '12px',
-                        color: '#6b7280',
-                        marginTop: '2px'
-                      }}>Educational pathway planning</div>
-                    </div>
-                  </div>
-                  
-                  <div style={{
-                    color: '#1d1d1f',
-                    lineHeight: '1.7',
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    marginBottom: '20px'
-                  }}>"I see Emma is researching University of Michigan pre-med programs. Based on community insights from 847 successful pre-med students, I can create a comprehensive plan covering course selection, MCAT prep timeline, volunteer opportunities, and estimated costs. The average preparation starts sophomore year of high school. Should I generate Emma's personalized roadmap?"</div>
-                  
-                  {/* Statistics */}
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-                    gap: '16px',
-                    marginBottom: '20px'
-                  }}>
-                    <div style={{
-                      textAlign: 'center',
-                      padding: '12px',
-                      backgroundColor: '#faf5ff',
-                      borderRadius: '12px'
-                    }}>
-                      <div style={{
-                        fontSize: '20px',
-                        fontWeight: '600',
-                        color: '#8b5cf6'
-                      }}>847</div>
-                      <div style={{
-                        fontSize: '11px',
-                        color: '#6b7280'
-                      }}>Success stories</div>
-                    </div>
-                    <div style={{
-                      textAlign: 'center',
-                      padding: '12px',
-                      backgroundColor: '#fdf2f8',
-                      borderRadius: '12px'
-                    }}>
-                      <div style={{
-                        fontSize: '20px',
-                        fontWeight: '600',
-                        color: '#ec4899'
-                      }}>94%</div>
-                      <div style={{
-                        fontSize: '11px',
-                        color: '#6b7280'
-                      }}>Acceptance rate</div>
-                    </div>
-                    <div style={{
-                      textAlign: 'center',
-                      padding: '12px',
-                      backgroundColor: '#fffbeb',
-                      borderRadius: '12px'
-                    }}>
-                      <div style={{
-                        fontSize: '20px',
-                        fontWeight: '600',
-                        color: '#f59e0b'
-                      }}>$180k</div>
-                      <div style={{
-                        fontSize: '11px',
-                        color: '#6b7280'
-                      }}>Avg. cost saved</div>
-                    </div>
-                  </div>
-                  
-                  {/* Action button */}
-                  <button style={{
-                    width: '100%',
-                    padding: '12px 24px',
-                    backgroundColor: '#8b5cf6',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '12px',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#7c3aed';
-                    e.currentTarget.style.transform = 'scale(1.02)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#8b5cf6';
-                    e.currentTarget.style.transform = 'scale(1)';
-                  }}
-                  >Generate Emma's Roadmap</button>
-                </div>
-              </div>
-            </div>
-
-            {/* Evening Mobile - Enhanced with mobile interface */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: isDesktop ? '2fr 1fr' : '1fr',
-              gap: '48px',
-              alignItems: 'center',
-              padding: '40px 0',
-              position: 'relative'
-            }}>
-              {/* Connection line */}
-              <div style={{
-                position: 'absolute',
-                top: '50%',
-                right: isDesktop ? '45%' : '50%',
-                width: isDesktop ? '10%' : '0',
-                height: '2px',
-                background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)',
-                opacity: 0.3,
-                zIndex: 0,
-                animation: 'flow 3s ease-in-out infinite 2.5s'
-              }}></div>
-              
-              <div style={{
-                position: 'relative',
-                zIndex: 1
-              }}>
-                {/* Enhanced cooking assistance card */}
-                <div style={{
-                  backgroundColor: 'white',
-                  borderRadius: '20px',
-                  padding: '32px',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)',
-                  border: '1px solid rgba(255, 255, 255, 0.8)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)';
-                }}
-                >
-                  {/* Accent line */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '0',
-                    left: '0',
-                    right: '0',
-                    height: '4px',
-                    background: 'linear-gradient(90deg, #f59e0b, #ef4444, #ec4899)'
-                  }}></div>
-                  
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    marginBottom: '16px'
-                  }}>
-                    <div style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #f59e0b, #ef4444)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontSize: '16px'
-                    }}>👨‍🍳</div>
-                    <div>
-                      <div style={{
-                        fontSize: '14px',
-                        color: '#ea580c',
-                        fontWeight: '600'
-                      }}>Voice message while cooking:</div>
-                      <div style={{
-                        fontSize: '12px',
-                        color: '#6b7280',
-                        marginTop: '2px'
-                      }}>Hands-free meal optimization</div>
-                    </div>
-                  </div>
-                  
-                  <div style={{
-                    color: '#1d1d1f',
-                    lineHeight: '1.7',
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    marginBottom: '20px'
-                  }}>"That pasta recipe fits perfectly with your meal prep goals. Based on your grocery spending patterns, this dinner will save $25 compared to ordering out. Should I add similar recipes to your weekly meal plan?"</div>
-                  
-                  {/* Savings breakdown */}
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-                    gap: '12px',
-                    marginBottom: '20px',
-                    padding: '16px',
-                    backgroundColor: '#fef7f0',
-                    borderRadius: '12px'
-                  }}>
-                    <div style={{ textAlign: 'center' }}>
-                      <div style={{
-                        fontSize: '18px',
-                        fontWeight: '600',
-                        color: '#ea580c'
-                      }}>$25</div>
-                      <div style={{
-                        fontSize: '11px',
-                        color: '#6b7280'
-                      }}>Saved today</div>
-                    </div>
-                    <div style={{ textAlign: 'center' }}>
-                      <div style={{
-                        fontSize: '18px',
-                        fontWeight: '600',
-                        color: '#16a34a'
-                      }}>$340</div>
-                      <div style={{
-                        fontSize: '11px',
-                        color: '#6b7280'
-                      }}>Monthly goal</div>
-                    </div>
-                    <div style={{ textAlign: 'center' }}>
-                      <div style={{
-                        fontSize: '18px',
-                        fontWeight: '600',
-                        color: '#3b82f6'
-                      }}>4.2★</div>
-                      <div style={{
-                        fontSize: '11px',
-                        color: '#6b7280'
-                      }}>Recipe rating</div>
-                    </div>
-                  </div>
-                  
-                  {/* Quick actions */}
-                  <div style={{
-                    display: 'flex',
-                    gap: '12px',
-                    flexWrap: 'wrap'
-                  }}>
-                    <button style={{
-                      flex: 1,
-                      padding: '10px 16px',
-                      backgroundColor: '#f59e0b',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '12px',
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#d97706';
-                      e.currentTarget.style.transform = 'scale(1.02)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#f59e0b';
-                      e.currentTarget.style.transform = 'scale(1)';
-                    }}
-                    >Add to meal plan</button>
-                    <button style={{
-                      flex: 1,
-                      padding: '10px 16px',
-                      backgroundColor: '#f3f4f6',
-                      color: '#374151',
-                      border: 'none',
-                      borderRadius: '12px',
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#e5e7eb';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#f3f4f6';
-                    }}
-                    >Show similar recipes</button>
-                  </div>
-                </div>
-              </div>
-              
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100%',
-                position: 'relative',
-                zIndex: 1
-              }}>
-                {/* Mobile phone mockup */}
-                <div style={{
-                  position: 'relative',
-                  backgroundColor: '#1f2937',
-                  borderRadius: '28px',
-                  padding: '8px',
-                  marginBottom: '20px',
-                  boxShadow: '0 12px 40px rgba(0, 0, 0, 0.2)'
-                }}>
-                  {/* Phone notch */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '12px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '120px',
-                    height: '20px',
-                    backgroundColor: '#1f2937',
-                    borderRadius: '10px',
-                    zIndex: 2
-                  }}></div>
-                  
-                  <div style={{
-                    position: 'relative',
-                    width: '280px',
-                    height: '500px',
-                    overflow: 'hidden',
-                    borderRadius: '24px',
-                    background: 'linear-gradient(135deg, #1f2937 0%, #374151 100%)',
-                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.05) rotateZ(-2deg)';
-                    if (e.currentTarget.parentElement) {
-                      e.currentTarget.parentElement.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.3)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1) rotateZ(0deg)';
-                    if (e.currentTarget.parentElement) {
-                      e.currentTarget.parentElement.style.boxShadow = '0 12px 40px rgba(0, 0, 0, 0.2)';
-                    }
-                  }}
-                  >
-                    <img 
-                      src={diinerInteraction} 
-                      alt="Dinner Interaction" 
-                      style={{ 
-                        width: '100%', 
-                        height: '100%', 
-                        objectFit: 'cover',
-                        filter: 'brightness(1.1) contrast(1.1)'
-                      }}
-                    />
-                    
-                    {/* Voice recording indicator */}
-                      {/* Recording indicator removed as requested */}
-                  </div>
-                </div>
-                
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '12px 20px',
-                  backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                  borderRadius: '25px',
-                  border: '1px solid rgba(245, 158, 11, 0.2)'
-                }}>
-                  <span style={{ fontSize: '16px' }}>🎙️</span>
-                  <p style={{
-                    fontSize: '14px',
-                    color: '#d97706',
-                    margin: '0',
-                    fontWeight: '500'
-                  }}>Hands-free while multitasking</p>
-                </div>
-              </div>
+                        display: 'grid',
+                        gridTemplateColumns: isDesktop ? '1fr 2fr' : '1fr',
+                        gap: '48px',
+                        alignItems: 'center',
+                        padding: '40px 0',
+                        position: 'relative'
+                      }}>
+                        {/* Connection line */}
+                        <div style={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: isDesktop ? '45%' : '50%',
+                          width: isDesktop ? '10%' : '0',
+                          height: '2px',
+                          background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)',
+                          opacity: 0.3,
+                          zIndex: 0,
+                          animation: 'flow 3s ease-in-out infinite 2s'
+                        }}></div>
+                        
+                        <div style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          height: '100%',
+                          position: 'relative',
+                          zIndex: 1
+                        }}>
+                          {/* Desktop mockup */}
+                          <div style={{
+                            position: 'relative',
+                            backgroundColor: '#f8fafc',
+                            borderRadius: '24px',
+                            padding: '20px',
+                            marginBottom: '20px',
+                            border: '2px solid #e2e8f0'
+                          }}>
+                            {/* Monitor bezel */}
+                            <div style={{
+                              position: 'absolute',
+                              top: '8px',
+                              left: '50%',
+                              transform: 'translateX(-50%)',
+                              width: '60px',
+                              height: '6px',
+                              backgroundColor: '#cbd5e1',
+                              borderRadius: '3px'
+                            }}></div>
+                            
+                            <div style={{
+                              position: 'relative',
+                              width: '400px',
+                              height: '250px',
+                              overflow: 'hidden',
+                              borderRadius: '12px',
+                              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
+                              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.transform = 'scale(1.05) perspective(1000px) rotateY(-10deg)';
+                              e.currentTarget.style.boxShadow = '0 16px 64px rgba(0, 0, 0, 0.25)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.transform = 'scale(1) perspective(1000px) rotateY(0deg)';
+                              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.15)';
+                            }}
+                            >
+                              <img 
+                                src={eveningInteraction} 
+                                alt="Desktop Evening Interaction" 
+                                style={{ 
+                                  width: '100%', 
+                                  height: '100%', 
+                                  objectFit: 'cover',
+                                  filter: 'brightness(1.1) contrast(1.1)'
+                                }}
+                              />
+                              
+                              {/* Notification badge */}
+                              <div style={{
+                                position: 'absolute',
+                                top: '12px',
+                                right: '12px',
+                                padding: '4px 8px',
+                                backgroundColor: '#8b5cf6',
+                                color: 'white',
+                                borderRadius: '12px',
+                                fontSize: '10px',
+                                fontWeight: '600',
+                                animation: 'bounce 2s ease-in-out infinite'
+                              }}>New Insight</div>
+                            </div>
+                            
+                            {/* Desktop stand */}
+                            <div style={{
+                              position: 'absolute',
+                              bottom: '-10px',
+                              left: '50%',
+                              transform: 'translateX(-50%)',
+                              width: '80px',
+                              height: '20px',
+                              backgroundColor: '#cbd5e1',
+                              borderRadius: '0 0 12px 12px'
+                            }}></div>
+                          </div>
+                          
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            padding: '12px 20px',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            borderRadius: '25px',
+                            border: '1px solid rgba(139, 92, 246, 0.2)'
+                          }}>
+                            <span style={{ fontSize: '16px' }}>💻</span>
+                            <p style={{
+                              fontSize: '14px',
+                              color: '#7c3aed',
+                              margin: '0',
+                              fontWeight: '500'
+                            }}>Deep planning during evening</p>
+                          </div>
+                        </div>
+                        
+                        <div style={{
+                          position: 'relative',
+                          zIndex: 1
+                        }}>
+                          {/* Enhanced homework help card */}
+                          <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '20px',
+                            padding: '32px',
+                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)',
+                            border: '1px solid rgba(255, 255, 255, 0.8)',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            transition: 'all 0.3s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'translateY(-4px)';
+                            e.currentTarget.style.boxShadow = '0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)';
+                          }}
+                          >
+                            {/* Accent line */}
+                            <div style={{
+                              position: 'absolute',
+                              top: '0',
+                              left: '0',
+                              right: '0',
+                              height: '4px',
+                              background: 'linear-gradient(90deg, #8b5cf6, #ec4899, #f59e0b)'
+                            }}></div>
+                            
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '12px',
+                              marginBottom: '16px'
+                            }}>
+                              <div style={{
+                                width: '32px',
+                                height: '32px',
+                                borderRadius: '50%',
+                                background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: 'white',
+                                fontSize: '16px'
+                              }}>🎓</div>
+                              <div>
+                                <div style={{
+                                  fontSize: '14px',
+                                  color: '#9333ea',
+                                  fontWeight: '600'
+                                }}>During homework help:</div>
+                                <div style={{
+                                  fontSize: '12px',
+                                  color: '#6b7280',
+                                  marginTop: '2px'
+                                }}>Educational pathway planning</div>
+                              </div>
+                            </div>
+                            
+                            <div style={{
+                              color: '#1d1d1f',
+                              lineHeight: '1.7',
+                              fontSize: '16px',
+                              fontWeight: '400',
+                              marginBottom: '20px'
+                            }}>"I see Emma is researching University of Michigan pre-med programs. Based on community insights from 847 successful pre-med students, I can create a comprehensive plan covering course selection, MCAT prep timeline, volunteer opportunities, and estimated costs. The average preparation starts sophomore year of high school. Should I generate Emma's personalized roadmap?"</div>
+                            
+                            {/* Statistics */}
+                            <div style={{
+                              display: 'grid',
+                              gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+                              gap: '16px',
+                              marginBottom: '20px'
+                            }}>
+                              <div style={{
+                                textAlign: 'center',
+                                padding: '12px',
+                                backgroundColor: '#faf5ff',
+                                borderRadius: '12px'
+                              }}>
+                                <div style={{
+                                  fontSize: '20px',
+                                  fontWeight: '600',
+                                  color: '#8b5cf6'
+                                }}>847</div>
+                                <div style={{
+                                  fontSize: '11px',
+                                  color: '#6b7280'
+                                }}>Success stories</div>
+                              </div>
+                              <div style={{
+                                textAlign: 'center',
+                                padding: '12px',
+                                backgroundColor: '#fdf2f8',
+                                borderRadius: '12px'
+                              }}>
+                                <div style={{
+                                  fontSize: '20px',
+                                  fontWeight: '600',
+                                  color: '#ec4899'
+                                }}>94%</div>
+                                <div style={{
+                                  fontSize: '11px',
+                                  color: '#6b7280'
+                                }}>Acceptance rate</div>
+                              </div>
+                              <div style={{
+                                textAlign: 'center',
+                                padding: '12px',
+                                backgroundColor: '#fffbeb',
+                                borderRadius: '12px'
+                              }}>
+                                <div style={{
+                                  fontSize: '20px',
+                                  fontWeight: '600',
+                                  color: '#f59e0b'
+                                }}>$180k</div>
+                                <div style={{
+                                  fontSize: '11px',
+                                  color: '#6b7280'
+                                }}>Avg. cost saved</div>
+                              </div>
+                            </div>
+                            
+                            {/* Action button */}
+                            <button style={{
+                              width: '100%',
+                              padding: '12px 24px',
+                              backgroundColor: '#8b5cf6',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '12px',
+                              fontSize: '14px',
+                              fontWeight: '500',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s ease'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = '#7c3aed';
+                              e.currentTarget.style.transform = 'scale(1.02)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = '#8b5cf6';
+                              e.currentTarget.style.transform = 'scale(1)';
+                            }}
+                            >Generate Emma's Roadmap</button>
+                          </div>
+                        </div>
+                      </div>
+                </SwiperSlide>
+              </Swiper>
             </div>
           </div>
         </div>

@@ -1,3 +1,30 @@
+
+
+:global(.swiper-pagination-bullet) {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: #e5e7eb !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  opacity: 1 !important;
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), background 0.3s;
+  margin: 0 8px !important;
+}
+
+:global(.swiper-pagination-bullet-active) {
+  background: linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%) !important;
+  transform: scale(1.25);
+  box-shadow: 0 4px 16px rgba(52,199,89,0.15);
+}
+
+:global(.swiper-pagination) {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0 !important;
+  margin-top: 32px !important;
+}
+/* Swiper pagination dots closer to interaction */
 @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap');
 
 .sagaaHomepage {
