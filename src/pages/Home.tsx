@@ -6,7 +6,10 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useState, useEffect } from 'react';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import InsightsShowcase from '../components/InsightsShowcase';
+<<<<<<< HEAD
 import SagaaHomepage from '../components/SagaaHomepage';
+=======
+>>>>>>> ce9ff7eba2b330eb780c71a0e5f0dc45b6cd48e9
 
 
 
@@ -37,7 +40,25 @@ export default function Home() {
   }, [user]);
 
   if (!user) {
+<<<<<<< HEAD
     return <SagaaHomepage />;
+=======
+    return (
+      <main className="response-panel">
+        <section className="response-card">
+          <div className="coming-soon">
+            <div className="cs-badge">Under Construction</div>
+            <h1 className="cs-title">Something exciting is on the way</h1>
+            <p className="cs-subtitle">We're polishing this page. It will be online soon.</p>
+            <div className="cs-progress" aria-label="Page readiness">
+              <div className="bar"><span className="fill" /></div>
+              <span className="hint">Preparing components…</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    );
+>>>>>>> ce9ff7eba2b330eb780c71a0e5f0dc45b6cd48e9
   }
 
   return (
