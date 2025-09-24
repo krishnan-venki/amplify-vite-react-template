@@ -6,10 +6,7 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useState, useEffect } from 'react';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import InsightsShowcase from '../components/InsightsShowcase';
-<<<<<<< HEAD
 import SagaaHomepage from '../components/SagaaHomepage';
-=======
->>>>>>> ce9ff7eba2b330eb780c71a0e5f0dc45b6cd48e9
 
 
 
