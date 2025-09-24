@@ -37,9 +37,9 @@ export default function Home() {
   }, [user]);
 
   if (!user) {
-<<<<<<< HEAD
+
     return <SagaaHomepage />;
-=======
+
     return (
       <main className="response-panel">
         <section className="response-card">
@@ -55,7 +55,7 @@ export default function Home() {
         </section>
       </main>
     );
->>>>>>> ce9ff7eba2b330eb780c71a0e5f0dc45b6cd48e9
+
   }
 
   return (
