@@ -392,23 +392,23 @@ const SagaaHomepage: React.FC = () => {
                   <p style={{ color: '#6e6e73' }}>Health, finance, home, education, and services all in one intelligent ecosystem</p>
                 </div>
               </div>
-              {/* Always learning */}
+              {/* Connected Intelligence */}
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
                 <div style={{
                   width: '48px',
                   height: '48px',
-                  backgroundColor: '#faf5ff',
+                  backgroundColor: '#dcfce7',
                   borderRadius: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
-                  animationDelay: '2s'
+                  animationDelay: '1s'
                 }} className={styles.growthAnimation}>
                   <span style={{ 
-                    color: '#9333ea',
+                    color: '#16a34a',
                     fontSize: '32px'
-                  }}>🧠</span>
+                  }}>🔗</span>
                 </div>
                 <div>
                   <h3 style={{
@@ -416,8 +416,8 @@ const SagaaHomepage: React.FC = () => {
                     fontWeight: '500',
                     color: '#1d1d1f',
                     marginBottom: '8px'
-                  }}>Always learning</h3>
-                  <p style={{ color: '#6e6e73' }}>Gets smarter with every interaction. Evolves into a trusted partner in managing your interconnected life goals.</p>
+                  }}>Connected Intelligence</h3>
+                  <p style={{ color: '#6e6e73' }}>Sees relationships between your health, wealth, goals, and daily decisions that you might miss.</p>
                 </div>
               </div>
                {/* Autonomous Actions */}
@@ -512,23 +512,23 @@ const SagaaHomepage: React.FC = () => {
 
             {/* Right side points */}
             <div ref={addToRefs} className={styles.fadeInUp} style={{ flex: '1 1 320px', display: 'flex', flexDirection: 'column', gap: '48px', justifyContent: 'center' }}>
-              {/* Connected Intelligence */}
+              {/* Always learning */}
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
                 <div style={{
                   width: '48px',
                   height: '48px',
-                  backgroundColor: '#dcfce7',
+                  backgroundColor: '#faf5ff',
                   borderRadius: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
-                  animationDelay: '1s'
+                  animationDelay: '2s'
                 }} className={styles.growthAnimation}>
                   <span style={{ 
-                    color: '#16a34a',
+                    color: '#9333ea',
                     fontSize: '32px'
-                  }}>🔗</span>
+                  }}>🧠</span>
                 </div>
                 <div>
                   <h3 style={{
@@ -536,10 +536,11 @@ const SagaaHomepage: React.FC = () => {
                     fontWeight: '500',
                     color: '#1d1d1f',
                     marginBottom: '8px'
-                  }}>Connected Intelligence</h3>
-                  <p style={{ color: '#6e6e73' }}>Sees relationships between your health, wealth, goals, and daily decisions that you might miss.</p>
+                  }}>Always learning</h3>
+                  <p style={{ color: '#6e6e73' }}>Gets smarter with every interaction. Evolves into a trusted partner in managing your interconnected life goals.</p>
                 </div>
               </div>
+              
               {/* Proactive Partner */}
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
                 <div style={{
