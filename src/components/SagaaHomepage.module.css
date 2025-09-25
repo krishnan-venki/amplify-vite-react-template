@@ -1,3 +1,24 @@
+.heroImageGlow {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heroImageGlow::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(52,199,89,0.18) 0%, rgba(0,122,255,0.12) 60%, transparent 100%);
+  filter: blur(32px);
+  z-index: 0;
+  pointer-events: none;
+}
 
 
 :global(.swiper-pagination-bullet) {

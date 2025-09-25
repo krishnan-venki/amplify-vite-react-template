@@ -1,3 +1,4 @@
+import heroImage from '../assets/Hero_Image.png';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -148,42 +149,25 @@ const SagaaHomepage: React.FC = () => {
               </p>
             </div>
             
-            <div ref={addToRefs} className={styles.fadeInUp}>
-              <div className={styles.ecosystemVisual}>
-                {/* Center - You */}
-                <div className={styles.ecosystemCenter}>
-                  <span style={{
-                    color: 'white',
-                    fontSize: '24px',
-                    fontWeight: 'bold'
-                  }}>👤</span>
-                </div>
-                
-                {/* Orbiting elements */}
-                <div className={`${styles.ecosystemRing}`} style={{width: '200px', height: '200px'}}></div>
-                <div className={`${styles.ecosystemRing}`} style={{width: '240px', height: '240px'}}></div>
-                
-                {/* Life domains */}
-                <div className={`${styles.ecosystemNode} ${styles.node1}`} style={{top: '20%', left: '70%'}}>
-                  <span style={{ fontSize: '16px' }}>💰</span>
-                </div>
-                <div className={`${styles.ecosystemNode} ${styles.node2}`} style={{top: '70%', left: '80%'}}>
-                  <span style={{ fontSize: '16px' }}>❤️</span>
-                </div>
-                <div className={`${styles.ecosystemNode} ${styles.node3}`} style={{top: '80%', left: '20%'}}>
-                  <span style={{ fontSize: '16px' }}>🏠</span>
-                </div>
-                <div className={`${styles.ecosystemNode} ${styles.node4}`} style={{top: '30%', left: '10%'}}>
-                  <span style={{ fontSize: '16px' }}>🎓</span>
-                </div>
-                <div className={`${styles.ecosystemNode} ${styles.node5}`} style={{top: '5%', left: '40%'}}>
-                  <span style={{ fontSize: '16px' }}>👥</span>
-                </div>
-              </div>
-              
-              <div style={{ textAlign: 'center', marginTop: '32px' }}>
-                <p style={{ color: '#6e6e73', fontSize: '14px' }}>Your life goals, intelligently connected</p>
-              </div>
+            <div ref={addToRefs} className={`${styles.fadeInUp} ${styles.heroImageGlow}`}>
+              <img 
+                src={heroImage} 
+                alt="Sagaa Hero" 
+                style={{
+                  maxWidth: '100%',
+                  width: '760px',
+                  height: 'auto',
+                  borderRadius: '0',
+                  boxShadow: 'none',
+                  background: 'none',
+                  margin: 0,
+                  padding: 0,
+                  objectFit: 'contain',
+                  display: 'block',
+                  position: 'relative',
+                  zIndex: 1
+                }}
+              />
             </div>
           </div>
         </div>
