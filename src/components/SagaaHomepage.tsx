@@ -144,7 +144,7 @@ const SagaaHomepage: React.FC = () => {
                 margin: '0 auto 48px auto',
                 lineHeight: '1.6'
               }}>
-                The ecosystem that intelligently connects your goals and simplifies life decisions across health, family, career, education, home, assets, and finance; automatically guided by real insights from a community of Sagaa users.
+                The ecosystem that intelligently connects your goals and simplifies life decisions across health, family, career, education, home, assets, and finance - informed by real insights from the Sagaa user community.
               </p>
             </div>
             
