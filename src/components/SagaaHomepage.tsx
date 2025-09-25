@@ -75,6 +75,122 @@ const SagaaHomepage: React.FC = () => {
     }
   };
 
+  const newHeroSection = () => {
+    return (
+      <section id="ecosystem" style={{
+        padding: '60px 0',
+        background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
+        color: 'white'
+      }}>
+        <div style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '0 24px'
+        }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+            gap: '80px',
+            alignItems: 'center'
+          }}>
+            <div ref={addToRefs} className={styles.fadeInUp}>
+              <h2 style={{
+                fontWeight: '100',
+                color: 'white',
+                marginBottom: '32px',
+                lineHeight: '1.4',
+                wordBreak: 'break-word',
+                fontSize: 'clamp(48px, 5vw, 72px)',
+                paddingTop: '0.5em'
+              }}>
+                <span>
+                  Meet{' '}
+                  <span style={{
+                    background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    color: 'transparent',
+                    display: 'inline-block',
+                    verticalAlign: 'baseline',
+                    lineHeight: 'inherit',
+                    paddingBottom: '0.18em'
+                  }}>Sagaa.</span>
+                </span>
+                <br />
+                <span>
+                  The World's first{' '}
+                  <span style={{
+                    background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    color: 'transparent',
+                    display: 'inline-block',
+                    verticalAlign: 'baseline',
+                    lineHeight: 'inherit',
+                    whiteSpace: 'nowrap'
+                  }}>
+                    AI Personal Ecosystem
+                  </span>
+                </span>
+              </h2>
+              <p style={{
+                fontSize: 'clamp(18px, 3vw, 28px)',
+                fontWeight: '100',
+                marginBottom: '48px',
+                color: '#d1d5db',
+                maxWidth: '1024px',
+                margin: '0 auto 48px auto',
+                lineHeight: '1.6'
+              }}>
+                The ecosystem that intelligently connects your goals and simplifies life decisions across health, family, career, education, home, assets, and finance; automatically guided by real insights from a community of Sagaa users.
+              </p>
+            </div>
+            
+            <div ref={addToRefs} className={styles.fadeInUp}>
+              <div className={styles.ecosystemVisual}>
+                {/* Center - You */}
+                <div className={styles.ecosystemCenter}>
+                  <span style={{
+                    color: 'white',
+                    fontSize: '24px',
+                    fontWeight: 'bold'
+                  }}>👤</span>
+                </div>
+                
+                {/* Orbiting elements */}
+                <div className={`${styles.ecosystemRing}`} style={{width: '200px', height: '200px'}}></div>
+                <div className={`${styles.ecosystemRing}`} style={{width: '240px', height: '240px'}}></div>
+                
+                {/* Life domains */}
+                <div className={`${styles.ecosystemNode} ${styles.node1}`} style={{top: '20%', left: '70%'}}>
+                  <span style={{ fontSize: '16px' }}>💰</span>
+                </div>
+                <div className={`${styles.ecosystemNode} ${styles.node2}`} style={{top: '70%', left: '80%'}}>
+                  <span style={{ fontSize: '16px' }}>❤️</span>
+                </div>
+                <div className={`${styles.ecosystemNode} ${styles.node3}`} style={{top: '80%', left: '20%'}}>
+                  <span style={{ fontSize: '16px' }}>🏠</span>
+                </div>
+                <div className={`${styles.ecosystemNode} ${styles.node4}`} style={{top: '30%', left: '10%'}}>
+                  <span style={{ fontSize: '16px' }}>🎓</span>
+                </div>
+                <div className={`${styles.ecosystemNode} ${styles.node5}`} style={{top: '5%', left: '40%'}}>
+                  <span style={{ fontSize: '16px' }}>👥</span>
+                </div>
+              </div>
+              
+              <div style={{ textAlign: 'center', marginTop: '32px' }}>
+                <p style={{ color: '#6e6e73', fontSize: '14px' }}>Your life goals, intelligently connected</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  };
+
   return (
     <div className={styles.sagaaHomepage} style={{
       width: '100vw',
@@ -367,7 +483,8 @@ const SagaaHomepage: React.FC = () => {
       </section>
 
       <div className={styles.sectionDivider}></div>
-
+      {newHeroSection()}
+      <div className={styles.sectionDivider}></div>
       {/* Ecosystem Visualization Section */}
       <section id="ecosystem" style={{
         padding: '60px 0',
@@ -898,6 +1015,8 @@ const SagaaHomepage: React.FC = () => {
                 spaceBetween={40}
                 slidesPerView={1}
                 pagination={{ clickable: true }}
+                cssMode={true}
+                mousewheel={true}
                 modules={[Pagination]}
                 style={{ paddingBottom: '0px', marginBottom: '0px' }}
               >
