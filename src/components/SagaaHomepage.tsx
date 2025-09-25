@@ -330,150 +330,128 @@ const SagaaHomepage: React.FC = () => {
           margin: '0 auto',
           padding: '0 24px'
         }}>
+          <div ref={addToRefs} className={styles.fadeInUp} style={{ textAlign: 'center', marginBottom: '80px' }}>
+            <h2 style={{
+              fontSize: 'clamp(48px, 5vw, 60px)',
+              fontWeight: '100',
+              color: '#1d1d1f',
+              marginBottom: '32px',
+              lineHeight: '1.1',
+              textAlign: 'center',
+              maxWidth: '900px',
+              marginLeft: 'auto',
+              marginRight: 'auto'
+            }}>
+              <span style={{ 
+                color: '#1d1d1f',
+                backgroundColor: 'transparent'
+              }}>One ecosystem.</span>{' '}
+              <span style={{
+                background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                color: 'transparent'
+              }}>Infinite intelligence.</span>
+            </h2>
+          </div>
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
-            gap: '80px',
-            alignItems: 'center'
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'stretch',
+            gap: '40px',
+            flexWrap: 'wrap'
           }}>
-            <div ref={addToRefs} className={styles.fadeInUp}>
-              <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                <h2 style={{
-                  fontSize: 'clamp(48px, 5vw, 60px)',
-                  fontWeight: '100',
-                  color: '#1d1d1f',
-                  marginBottom: '32px',
-                  lineHeight: '1.1',
-                  textAlign: 'center',
-                  maxWidth: '900px'
-                }}>
+            {/* Left side points */}
+            <div ref={addToRefs} className={styles.fadeInUp} style={{ flex: '1 1 320px', display: 'flex', flexDirection: 'column', gap: '48px', justifyContent: 'center' }}>
+              {/* One Platform */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  backgroundColor: '#dbeafe',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }} className={styles.growthAnimation}>
                   <span style={{ 
+                    color: '#2563eb',
+                    fontSize: '32px'
+                  }}>🎯</span>
+                </div>
+                <div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: '500',
                     color: '#1d1d1f',
-                    backgroundColor: 'transparent'
-                  }}>One ecosystem.</span>{' '}
-                  <span style={{
-                    background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    color: 'transparent'
-                  }}>Infinite intelligence.</span>
-                </h2>
+                    marginBottom: '8px'
+                  }}>One Platform</h3>
+                  <p style={{ color: '#6e6e73' }}>Health, finance, home, education, and services all in one intelligent ecosystem</p>
+                </div>
               </div>
-             
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    backgroundColor: '#dbeafe',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0
-                  }} className={styles.growthAnimation}>
-                    <span style={{ 
-                      color: '#2563eb',
-                      fontSize: '32px'
-                    }}>🎯</span>
-                  </div>
-                  <div>
-                    <h3 style={{
-                      fontSize: '18px',
-                      fontWeight: '500',
-                      color: '#1d1d1f',
-                      marginBottom: '8px'
-                    }}>One Platform</h3>
-                    <p style={{ color: '#6e6e73' }}>Health, finance, home, education, and services all in one intelligent ecosystem</p>
-                  </div>
+              {/* Always learning */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  backgroundColor: '#faf5ff',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  animationDelay: '2s'
+                }} className={styles.growthAnimation}>
+                  <span style={{ 
+                    color: '#9333ea',
+                    fontSize: '32px'
+                  }}>🧠</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    backgroundColor: '#faf5ff',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                    animationDelay: '2s'
-                  }} className={styles.growthAnimation}>
-                    <span style={{ 
-                      color: '#9333ea',
-                      fontSize: '32px'
-                    }}>🧠</span>
-                  </div>
-                  <div>
-                    <h3 style={{
-                      fontSize: '18px',
-                      fontWeight: '500',
-                      color: '#1d1d1f',
-                      marginBottom: '8px'
-                    }}>Always learning</h3>
-                    <p style={{ color: '#6e6e73' }}>Gets smarter with every interaction.Evolves into a trusted partner in managing your interconnected life goals.</p>
-                  </div>
+                <div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: '500',
+                    color: '#1d1d1f',
+                    marginBottom: '8px'
+                  }}>Always learning</h3>
+                  <p style={{ color: '#6e6e73' }}>Gets smarter with every interaction. Evolves into a trusted partner in managing your interconnected life goals.</p>
                 </div>
-                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    backgroundColor: '#dcfce7',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                    animationDelay: '1s'
-                  }} className={styles.growthAnimation}>
-                    <span style={{ 
-                      color: '#16a34a',
-                      fontSize: '32px'
-                    }}>🔗</span>
-                  </div>
-                  <div>
-                    <h3 style={{
-                      fontSize: '18px',
-                      fontWeight: '500',
-                      color: '#1d1d1f',
-                      marginBottom: '8px'
-                    }}>Connected Intelligence</h3>
-                    <p style={{ color: '#6e6e73' }}>Sees relationships between your health, wealth, goals, and daily decisions that you might miss.</p>
-                  </div>
+              </div>
+               {/* Autonomous Actions */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  backgroundColor: '#faf5ff',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  animationDelay: '2s'
+                }} className={styles.growthAnimation}>
+                  <span style={{ 
+                    color: '#9333ea',
+                    fontSize: '32px'
+                  }}>⚡</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    backgroundColor: '#dbeafe',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0
-                  }} className={styles.growthAnimation}>
-                    <span style={{ 
-                      color: '#2563eb',
-                      fontSize: '32px'
-                    }}>🚀</span>
-                  </div>
-                  <div>
-                    <h3 style={{
-                      fontSize: '18px',
-                      fontWeight: '500',
-                      color: '#1d1d1f',
-                      marginBottom: '8px'
-                    }}>Proactive Partner</h3>
-                    <p style={{ color: '#6e6e73' }}>Anticipates your needs and suggests actions before you even think to ask.</p>
-                  </div>
+                <div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: '500',
+                    color: '#1d1d1f',
+                    marginBottom: '8px'
+                  }}>Autonomous Actions</h3>
+                  <p style={{ color: '#6e6e73' }}>Evolves to handle routine decisions independently, freeing you for creative work.</p>
                 </div>
-               
               </div>
             </div>
-            
-            <div ref={addToRefs} className={styles.fadeInUp}>
+
+            {/* Center: Orbiting elements */}
+            <div ref={addToRefs} className={styles.fadeInUp} style={{ flex: '0 1 400px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minWidth: '340px' }}>
               <div className={styles.ecosystemVisual}>
                 {/* Center - You */}
                 <div className={styles.ecosystemCenter}>
@@ -483,11 +461,9 @@ const SagaaHomepage: React.FC = () => {
                     fontWeight: 'bold'
                   }}>👤</span>
                 </div>
-                
                 {/* Orbiting elements */}
                 <div className={`${styles.ecosystemRing}`} style={{width: '200px', height: '200px'}}></div>
                 <div className={`${styles.ecosystemRing}`} style={{width: '240px', height: '240px'}}></div>
-                
                 {/* Life domains */}
                 <div className={`${styles.ecosystemNode} ${styles.node1}`} style={{top: '20%', left: '70%'}}>
                   <span style={{ fontSize: '16px' }}>💰</span>
@@ -505,9 +481,94 @@ const SagaaHomepage: React.FC = () => {
                   <span style={{ fontSize: '16px' }}>👥</span>
                 </div>
               </div>
-              
               <div style={{ textAlign: 'center', marginTop: '32px' }}>
                 <p style={{ color: '#6e6e73', fontSize: '14px' }}>Your life goals, intelligently connected</p>
+              </div>
+            </div>
+
+            {/* Right side points */}
+            <div ref={addToRefs} className={styles.fadeInUp} style={{ flex: '1 1 320px', display: 'flex', flexDirection: 'column', gap: '48px', justifyContent: 'center' }}>
+              {/* Connected Intelligence */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  backgroundColor: '#dcfce7',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  animationDelay: '1s'
+                }} className={styles.growthAnimation}>
+                  <span style={{ 
+                    color: '#16a34a',
+                    fontSize: '32px'
+                  }}>🔗</span>
+                </div>
+                <div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: '500',
+                    color: '#1d1d1f',
+                    marginBottom: '8px'
+                  }}>Connected Intelligence</h3>
+                  <p style={{ color: '#6e6e73' }}>Sees relationships between your health, wealth, goals, and daily decisions that you might miss.</p>
+                </div>
+              </div>
+              {/* Proactive Partner */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  backgroundColor: '#dbeafe',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }} className={styles.growthAnimation}>
+                  <span style={{ 
+                    color: '#2563eb',
+                    fontSize: '32px'
+                  }}>🚀</span>
+                </div>
+                <div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: '500',
+                    color: '#1d1d1f',
+                    marginBottom: '8px'
+                  }}>Proactive Partner</h3>
+                  <p style={{ color: '#6e6e73' }}>Anticipates your needs and suggests actions before you even think to ask.</p>
+                </div>
+              </div>
+              {/* Community Wisdom */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  backgroundColor: '#dbeafe',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }} className={styles.growthAnimation}>
+                  <span style={{ 
+                    color: '#2563eb',
+                    fontSize: '32px'
+                  }}>🧑‍🤝‍🧑</span>
+                </div>
+                <div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: '500',
+                    color: '#1d1d1f',
+                    marginBottom: '8px'
+                  }}>Community Wisdom</h3>
+                  <p style={{ color: '#6e6e73' }}>Shares insights from the community to help you make informed decisions.</p>
+                </div>
               </div>
             </div>
           </div>
