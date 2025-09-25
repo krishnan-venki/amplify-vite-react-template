@@ -149,7 +149,7 @@ const SagaaHomepage: React.FC = () => {
               </p>
             </div>
             
-            <div ref={addToRefs} className={`${styles.fadeInUp} ${styles.heroImageGlow}`}>
+            <div ref={addToRefs} className={styles.fadeInUp} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <img 
                 src={heroImage} 
                 alt="Sagaa Hero" 
@@ -164,8 +164,6 @@ const SagaaHomepage: React.FC = () => {
                   padding: 0,
                   objectFit: 'contain',
                   display: 'block',
-                  position: 'relative',
-                  zIndex: 1
                 }}
               />
             </div>
@@ -319,154 +317,7 @@ const SagaaHomepage: React.FC = () => {
           </div>
         </div>
       </nav>
-
-      {/* Hero Section */}
-      <section style={{
-        background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
-        color: 'white',
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-        overflow: 'hidden',
-        paddingTop: '120px',
-        paddingBottom: '80px'
-      }}>
-        <div style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          padding: '0 24px',
-          textAlign: 'center',
-          zIndex: 10
-        }}>
-          <div style={{ 
-            marginBottom: '32px',
-            position: 'relative',
-            overflow: 'visible'
-          }}>
-            <h1 style={{
-              fontSize: 'clamp(48px, 5vw, 72px)',
-              fontWeight: '100',
-              lineHeight: '1.4',
-              margin: 0,
-              paddingTop: '0.5em'
-            }}>
-              Your Personal{' '}
-              <span style={{ 
-                position: 'relative', 
-                display: 'inline-block',
-                verticalAlign: 'baseline'
-              }}>
-                AI{' '}
-                <span style={{
-                  position: 'relative',
-                  display: 'inline-block'
-                }}>
-                  {/* "Ecosystem" text above */}
-                  <span style={{
-                    position: 'absolute',
-                    top: '-0.8em',
-                    left: '0',
-                    background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    fontWeight: '500',
-                    fontSize: '1em',
-                    whiteSpace: 'nowrap',
-                    zIndex: 2
-                  }}>Ecosystem</span>
-                  
-                  {/* "Assistant" with strikethrough below */}
-                  <span style={{
-                    position: 'relative',
-                    color: 'white',
-                    fontWeight: '400',
-                    fontSize: '0.7em',
-                    opacity: 0.6
-                  }}>
-                    Assistant
-                    {/* Red strikethrough line */}
-                    <span style={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '-5%',
-                      right: '-5%',
-                      height: '3px',
-                      backgroundColor: '#ff3b30',
-                      transform: 'translateY(-50%) rotate(-2deg)',
-                      zIndex: 3
-                    }}></span>
-                  </span>
-                </span>
-              </span>
-            </h1>
-          </div>
-          <p style={{
-            fontSize: 'clamp(18px, 3vw, 32px)',
-            fontWeight: '300',
-            marginBottom: '48px',
-            color: '#d1d5db',
-            maxWidth: '1024px',
-            margin: '0 auto 48px auto',
-            lineHeight: '1.6'
-          }}>
-            AI that grows with you, learns from collective human wisdom, and evolves from reactive assistant to proactive life partner - accessible everywhere you are.
-          </p>
-          <div style={{
-            marginBottom: '64px'
-          }}>
-            <button onClick={() => navigate('/login')} style={{
-              backgroundColor: 'white',
-              color: 'black',
-              padding: '16px 40px',
-              borderRadius: '50px',
-              fontSize: '18px',
-              fontWeight: '500',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease'
-            }} onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#f3f4f6';
-            }} onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'white';
-            }}>
-              Start Growing Your Ecosystem
-            </button>
-            <div style={{
-              fontSize: '14px',
-              color: '#9ca3af',
-              marginTop: '16px'
-            }}>
-              Join 10,000+ people building smarter lives
-            </div>
-          </div>
-          
-          {/* Key differentiators */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '32px',
-            textAlign: 'center'
-          }}>
-            <div>
-              <div style={{ fontSize: '48px', marginBottom: '8px' }}>🌱</div>
-              <div style={{ fontSize: '14px', color: '#d1d5db' }}>Grows with You</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '48px', marginBottom: '8px' }}>🔗</div>
-              <div style={{ fontSize: '14px', color: '#d1d5db' }}>Connects Everything</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '48px', marginBottom: '8px' }}>👥</div>
-              <div style={{ fontSize: '14px', color: '#d1d5db' }}>Community Wisdom</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className={styles.sectionDivider}></div>
+     
       {newHeroSection()}
       <div className={styles.sectionDivider}></div>
       {/* Ecosystem Visualization Section */}
@@ -486,33 +337,30 @@ const SagaaHomepage: React.FC = () => {
             alignItems: 'center'
           }}>
             <div ref={addToRefs} className={styles.fadeInUp}>
-              <h2 style={{
-                fontSize: 'clamp(48px, 5vw, 60px)',
-                fontWeight: '100',
-                color: '#1d1d1f',
-                marginBottom: '32px',
-                lineHeight: '1.1'
-              }}>
-                <span style={{ 
+              <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                <h2 style={{
+                  fontSize: 'clamp(48px, 5vw, 60px)',
+                  fontWeight: '100',
                   color: '#1d1d1f',
-                  backgroundColor: 'transparent'
-                }}>One ecosystem.</span>{' '}
-                <span style={{
-                  background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  color: 'transparent'
-                }}>Infinite connections.</span>
-              </h2>
-              <p style={{
-                fontSize: '20px',
-                color: '#6e6e73',
-                marginBottom: '48px',
-                lineHeight: '1.6'
-              }}>
-                The first AI powered intelligent ecosystem where your health, home, assets, family, and financial goals work in harmony, while our community provides proven wisdom for every challenge.
-              </p>
+                  marginBottom: '32px',
+                  lineHeight: '1.1',
+                  textAlign: 'center',
+                  maxWidth: '900px'
+                }}>
+                  <span style={{ 
+                    color: '#1d1d1f',
+                    backgroundColor: 'transparent'
+                  }}>One ecosystem.</span>{' '}
+                  <span style={{
+                    background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    color: 'transparent'
+                  }}>Infinite intelligence.</span>
+                </h2>
+              </div>
+             
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
@@ -528,8 +376,8 @@ const SagaaHomepage: React.FC = () => {
                   }} className={styles.growthAnimation}>
                     <span style={{ 
                       color: '#2563eb',
-                      fontSize: '20px'
-                    }}>🌱</span>
+                      fontSize: '32px'
+                    }}>🎯</span>
                   </div>
                   <div>
                     <h3 style={{
@@ -537,35 +385,8 @@ const SagaaHomepage: React.FC = () => {
                       fontWeight: '500',
                       color: '#1d1d1f',
                       marginBottom: '8px'
-                    }}>Learns Your Patterns</h3>
-                    <p style={{ color: '#6e6e73' }}>Every interaction teaches Sagaa more about your goals, preferences, and success patterns.</p>
-                  </div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    backgroundColor: '#dcfce7',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                    animationDelay: '1s'
-                  }} className={styles.growthAnimation}>
-                    <span style={{ 
-                      color: '#16a34a',
-                      fontSize: '20px'
-                    }}>🔗</span>
-                  </div>
-                  <div>
-                    <h3 style={{
-                      fontSize: '18px',
-                      fontWeight: '500',
-                      color: '#1d1d1f',
-                      marginBottom: '8px'
-                    }}>Connects the Dots</h3>
-                    <p style={{ color: '#6e6e73' }}>Sees relationships between your health, wealth, goals, and daily decisions that you might miss.</p>
+                    }}>One Platform</h3>
+                    <p style={{ color: '#6e6e73' }}>Health, finance, home, education, and services all in one intelligent ecosystem</p>
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
@@ -582,7 +403,7 @@ const SagaaHomepage: React.FC = () => {
                   }} className={styles.growthAnimation}>
                     <span style={{ 
                       color: '#9333ea',
-                      fontSize: '20px'
+                      fontSize: '32px'
                     }}>🧠</span>
                   </div>
                   <div>
@@ -591,10 +412,64 @@ const SagaaHomepage: React.FC = () => {
                       fontWeight: '500',
                       color: '#1d1d1f',
                       marginBottom: '8px'
-                    }}>Evolves With You</h3>
-                    <p style={{ color: '#6e6e73' }}>Evolves into a trusted partner in managing your interconnected life goals.</p>
+                    }}>Always learning</h3>
+                    <p style={{ color: '#6e6e73' }}>Gets smarter with every interaction.Evolves into a trusted partner in managing your interconnected life goals.</p>
                   </div>
                 </div>
+                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    backgroundColor: '#dcfce7',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    animationDelay: '1s'
+                  }} className={styles.growthAnimation}>
+                    <span style={{ 
+                      color: '#16a34a',
+                      fontSize: '32px'
+                    }}>🔗</span>
+                  </div>
+                  <div>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: '500',
+                      color: '#1d1d1f',
+                      marginBottom: '8px'
+                    }}>Connected Intelligence</h3>
+                    <p style={{ color: '#6e6e73' }}>Sees relationships between your health, wealth, goals, and daily decisions that you might miss.</p>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    backgroundColor: '#dbeafe',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }} className={styles.growthAnimation}>
+                    <span style={{ 
+                      color: '#2563eb',
+                      fontSize: '32px'
+                    }}>🚀</span>
+                  </div>
+                  <div>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: '500',
+                      color: '#1d1d1f',
+                      marginBottom: '8px'
+                    }}>Proactive Partner</h3>
+                    <p style={{ color: '#6e6e73' }}>Anticipates your needs and suggests actions before you even think to ask.</p>
+                  </div>
+                </div>
+               
               </div>
             </div>
             
