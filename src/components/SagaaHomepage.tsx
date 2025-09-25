@@ -453,6 +453,30 @@ const SagaaHomepage: React.FC = () => {
             {/* Center: Orbiting elements */}
             <div ref={addToRefs} className={styles.fadeInUp} style={{ flex: '0 1 400px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minWidth: '340px' }}>
               <div className={styles.ecosystemVisual}>
+                {/* SVG lines connecting center to nodes */}
+                <svg width="320" height="320" style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none', zIndex: 0 }}>
+                  {/* Center at (160,160) */}
+                  {/* 💰 node: approx (224,64) */}
+                  <line x1="160" y1="160" x2="224" y2="64" stroke="#60a5fa" strokeWidth="2" opacity="0.25">
+                    <animate attributeName="opacity" values="0.15;0.4;0.15" dur="2.5s" repeatCount="indefinite" />
+                  </line>
+                  {/* ❤️ node: approx (256,224) */}
+                  <line x1="160" y1="160" x2="256" y2="224" stroke="#f472b6" strokeWidth="2" opacity="0.25">
+                    <animate attributeName="opacity" values="0.15;0.4;0.15" dur="2.2s" repeatCount="indefinite" />
+                  </line>
+                  {/* 🏠 node: approx (64,256) */}
+                  <line x1="160" y1="160" x2="64" y2="256" stroke="#fbbf24" strokeWidth="2" opacity="0.25">
+                    <animate attributeName="opacity" values="0.15;0.4;0.15" dur="2.7s" repeatCount="indefinite" />
+                  </line>
+                  {/* 🎓 node: approx (32,96) */}
+                  <line x1="160" y1="160" x2="32" y2="96" stroke="#a78bfa" strokeWidth="2" opacity="0.25">
+                    <animate attributeName="opacity" values="0.15;0.4;0.15" dur="2.3s" repeatCount="indefinite" />
+                  </line>
+                  {/* 👥 node: approx (128,16) */}
+                  <line x1="160" y1="160" x2="128" y2="16" stroke="#34d399" strokeWidth="2" opacity="0.25">
+                    <animate attributeName="opacity" values="0.15;0.4;0.15" dur="2.6s" repeatCount="indefinite" />
+                  </line>
+                </svg>
                 {/* Center - You */}
                 <div className={styles.ecosystemCenter}>
                   <span style={{
