@@ -120,7 +120,7 @@ const SagaaHomepage: React.FC = () => {
                 </span>
                 <br />
                 <span>
-                  The World's first{' '}
+                  The world's first{' '}
                   <span style={{
                     background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
                     WebkitBackgroundClip: 'text',
@@ -145,7 +145,7 @@ const SagaaHomepage: React.FC = () => {
                 margin: '0 auto 48px auto',
                 lineHeight: '1.6'
               }}>
-                The ecosystem that intelligently connects your goals and simplifies life decisions across health, family, career, education, home, assets, and finance - informed by real insights from the Sagaa user community.
+                 Sagaa helps navigate your goals and life decisions with confidence by connecting your finances, health, education and life essentials into one ecosystem of personalized intelligence, strengthened by trusted community insights.
               </p>
             </div>
             
@@ -345,14 +345,14 @@ const SagaaHomepage: React.FC = () => {
               <span style={{ 
                 color: '#1d1d1f',
                 backgroundColor: 'transparent'
-              }}>One ecosystem.</span>{' '}
+              }}>One Life.</span>{' '}
               <span style={{
                 background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
                 color: 'transparent'
-              }}>Infinite intelligence.</span>
+              }}>One Ecosystem.</span>
             </h2>
           </div>
           <div style={{
@@ -389,7 +389,7 @@ const SagaaHomepage: React.FC = () => {
                     color: '#1d1d1f',
                     marginBottom: '8px'
                   }}>One Platform</h3>
-                  <p style={{ color: '#6e6e73' }}>Health, finance, home, education, and services all in one intelligent ecosystem</p>
+                  <p style={{ color: '#6e6e73' }}>Management of Health, finance, education, and Life essentials all in one intelligent ecosystem</p>
                 </div>
               </div>
               {/* Connected Intelligence */}
@@ -417,26 +417,25 @@ const SagaaHomepage: React.FC = () => {
                     color: '#1d1d1f',
                     marginBottom: '8px'
                   }}>Connected Intelligence</h3>
-                  <p style={{ color: '#6e6e73' }}>Sees relationships between your health, wealth, goals, and daily decisions that you might miss.</p>
+                  <p style={{ color: '#6e6e73' }}>Surfaces meaningful connections between your health, finances, education, life essentials, daily decisions and goals — helping you make smarter decisions with a fuller picture.</p>
                 </div>
               </div>
-               {/* Autonomous Actions */}
+              {/* Proactive Partner */}
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
                 <div style={{
                   width: '48px',
                   height: '48px',
-                  backgroundColor: '#faf5ff',
+                  backgroundColor: '#dbeafe',
                   borderRadius: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  flexShrink: 0,
-                  animationDelay: '2s'
+                  flexShrink: 0
                 }} className={styles.growthAnimation}>
                   <span style={{ 
-                    color: '#9333ea',
+                    color: '#2563eb',
                     fontSize: '32px'
-                  }}>⚡</span>
+                  }}>🚀</span>
                 </div>
                 <div>
                   <h3 style={{
@@ -444,8 +443,35 @@ const SagaaHomepage: React.FC = () => {
                     fontWeight: '500',
                     color: '#1d1d1f',
                     marginBottom: '8px'
-                  }}>Autonomous Actions</h3>
-                  <p style={{ color: '#6e6e73' }}>Evolves to handle routine decisions independently, freeing you for creative work.</p>
+                  }}>Proactive Partner</h3>
+                  <p style={{ color: '#6e6e73' }}>Stays ahead of your needs, offering smart suggestions before you ask</p>
+                </div>
+              </div>
+              {/* Community Marketplace */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  backgroundColor: '#dbeafe',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }} className={styles.growthAnimation}>
+                  <span style={{ 
+                    color: '#2563eb',
+                    fontSize: '32px'
+                  }}>🤝</span>
+                </div>
+                <div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: '500',
+                    color: '#1d1d1f',
+                    marginBottom: '8px'
+                  }}>Community Marketplace</h3>
+                  <p style={{ color: '#6e6e73' }}>Connects you with trusted service providers tailored to your needs and preferences.</p>
                 </div>
               </div>
             </div>
@@ -528,7 +554,7 @@ const SagaaHomepage: React.FC = () => {
                   <span style={{ 
                     color: '#9333ea',
                     fontSize: '32px'
-                  }}>🧠</span>
+                  }}>🌱</span>
                 </div>
                 <div>
                   <h3 style={{
@@ -537,26 +563,26 @@ const SagaaHomepage: React.FC = () => {
                     color: '#1d1d1f',
                     marginBottom: '8px'
                   }}>Always learning</h3>
-                  <p style={{ color: '#6e6e73' }}>Gets smarter with every interaction. Evolves into a trusted partner in managing your interconnected life goals.</p>
+                  <p style={{ color: '#6e6e73' }}>Learns from every interaction and grows into a trusted partner guiding your interconnected life goals.</p>
                 </div>
               </div>
-              
-              {/* Proactive Partner */}
+              {/* Personalized Intelligence */}
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
                 <div style={{
                   width: '48px',
                   height: '48px',
-                  backgroundColor: '#dbeafe',
+                  backgroundColor: '#faf5ff',
                   borderRadius: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  flexShrink: 0
+                  flexShrink: 0,
+                  animationDelay: '2s'
                 }} className={styles.growthAnimation}>
                   <span style={{ 
-                    color: '#2563eb',
+                    color: '#9333ea',
                     fontSize: '32px'
-                  }}>🚀</span>
+                  }}>🧠</span>
                 </div>
                 <div>
                   <h3 style={{
@@ -564,10 +590,11 @@ const SagaaHomepage: React.FC = () => {
                     fontWeight: '500',
                     color: '#1d1d1f',
                     marginBottom: '8px'
-                  }}>Proactive Partner</h3>
-                  <p style={{ color: '#6e6e73' }}>Anticipates your needs and suggests actions before you even think to ask.</p>
+                  }}>Personalized Intelligence</h3>
+                  <p style={{ color: '#6e6e73' }}>Adapts to your life—offering guidance that's relevant, contextual, and uniquely yours.</p>
                 </div>
               </div>
+              
               {/* Community Wisdom */}
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
                 <div style={{
@@ -592,7 +619,35 @@ const SagaaHomepage: React.FC = () => {
                     color: '#1d1d1f',
                     marginBottom: '8px'
                   }}>Community Wisdom</h3>
-                  <p style={{ color: '#6e6e73' }}>Shares insights from the community to help you make informed decisions.</p>
+                  <p style={{ color: '#6e6e73' }}>Shares real insights from the community to help you make informed decisions.</p>
+                </div>
+              </div>
+
+              {/* Omnichannel presence */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  backgroundColor: '#dbeafe',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }} className={styles.growthAnimation}>
+                  <span style={{ 
+                    color: '#2563eb',
+                    fontSize: '32px'
+                  }}>💫</span>
+                </div>
+                <div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: '500',
+                    color: '#1d1d1f',
+                    marginBottom: '8px'
+                  }}>Omnichannel presence</h3>
+                  <p style={{ color: '#6e6e73' }}>Connects with you through mobile, web, and home assistant devices.</p>
                 </div>
               </div>
             </div>
@@ -2244,7 +2299,7 @@ const SagaaHomepage: React.FC = () => {
                       fontWeight: 'bold'
                     }}>✓</span>
                   </div>
-                  <span style={{ color: '#8e8e93' }}>All providers are verified Sagaa ecosystem members</span>
+                  <span style={{ color: '#8e8e93' }}>All providers are Sagaa members</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <div style={{
