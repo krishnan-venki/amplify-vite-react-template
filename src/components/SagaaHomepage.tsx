@@ -12,13 +12,12 @@ import eveningInteraction from '../assets/Evening_Interactions.jpg';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 
-
 const SagaaHomepage: React.FC = () => {
   const fadeInElementsRef = useRef<HTMLDivElement[]>([]);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 768);
