@@ -66,7 +66,7 @@ export function MobileChatDemo() {
         setTypingText('');
         setIsTypingAnimation(false);
         setIsSendingAnimation(false);
-      }, 9000);
+      }, 6000);
       return () => clearTimeout(resetTimer);
     }
 
@@ -123,7 +123,65 @@ export function MobileChatDemo() {
       }}
     >
       {/* Mobile Demo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '60px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '120px' }}>
+        {/* Feature List on the Left */}
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', height: '600px' }}>
+          {/* Vertical connecting line */}
+          <div
+            style={{
+              position: 'absolute',
+              left: '8px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '2px',
+              height: '320px',
+              background: 'linear-gradient(135deg, #488aff 0%, #007AFF 100%)',
+              borderRadius: '1px',
+              zIndex: 1
+            }}
+          />
+          
+          {/* Feature phrases */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '60px', paddingLeft: '30px' }}>
+            {[
+              'Remembers what matters',
+              'No manual reminders',
+              'Reminds at the right time',
+              'Surfaces community wisdom', 
+              'Takes action when you approve'
+            ].map((phrase, index) => (
+              <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                {/* Bullet point */}
+                <div
+                  style={{
+                    width: '16px',
+                    height: '16px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #488aff 0%, #007AFF 100%)',
+                    position: 'relative',
+                    zIndex: 2,
+                    boxShadow: '0 2px 8px rgba(72, 138, 255, 0.3)',
+                    border: '2px solid var(--background)'
+                  }}
+                />
+                {/* Phrase text */}
+                <span
+                  style={{
+                    color: 'var(--foreground)',
+                    fontWeight: '500',
+                    fontSize: '16px',
+                    lineHeight: '1.4',
+                    maxWidth: '220px',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  {phrase}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+        
         <div style={{ position: 'relative' }}>
           {/* Glow effect behind mobile frame */}
           <div

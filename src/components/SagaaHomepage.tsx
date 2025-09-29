@@ -354,6 +354,16 @@ const SagaaHomepage: React.FC = () => {
                 color: 'transparent'
               }}>One Ecosystem.</span>
             </h2>
+             <p style={{
+              fontSize: '22px',
+              color: '#6b7280',
+              maxWidth: '1024px',
+              margin: '0 auto',
+              lineHeight: '1.7',
+              fontWeight: '300'
+            }}>
+              Life is finite. Your time should go to what matters—family, creativity, passions, dreams. Let Sagaa handle the complexity of managing everything else.
+            </p>
           </div>
           <div style={{
             display: 'flex',
@@ -669,7 +679,7 @@ const SagaaHomepage: React.FC = () => {
         }}>
           <div ref={addToRefs} className={styles.fadeInUp} style={{
             textAlign: 'left',
-            marginBottom: '80px'
+            marginBottom: '32px'
           }}>
             <h2 style={{
               fontSize: 'clamp(48px, 5vw, 80px)',
@@ -693,7 +703,7 @@ const SagaaHomepage: React.FC = () => {
               lineHeight: '1.6',
               textAlign: 'left'
             }}>
-              Stays ahead of your needs, offering timely reminders and smart suggestions before you ask. As Sagaa learns more about you, it evolves as a proactive partner, anticipating your needs and helping you stay on track with your goals.
+              Anticipates your needs with timely reminders and smart suggestions before you even ask. As Sagaa learns your patterns, it evolves as a proactive partner, staying ahead of what you need to achieve your goals.
             </p>
           </div>
         </div>
