@@ -1,3 +1,4 @@
+import { MobileChatDemo } from './MobileChatDemo';
 import heroImage from '../assets/Hero_Image.png';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -656,7 +657,7 @@ const SagaaHomepage: React.FC = () => {
 
       <div className={styles.sectionDivider}></div>
 
-      {/* Growth Journey Section */}
+      {/* Proactive partner Section */}
       <section id="growth" style={{
         padding: '60px 0',
         backgroundColor: '#f9fafb'
@@ -667,278 +668,36 @@ const SagaaHomepage: React.FC = () => {
           padding: '0 24px'
         }}>
           <div ref={addToRefs} className={styles.fadeInUp} style={{
-            textAlign: 'center',
+            textAlign: 'left',
             marginBottom: '80px'
           }}>
             <h2 style={{
-              fontSize: 'clamp(48px, 5vw, 60px)',
+              fontSize: 'clamp(48px, 5vw, 80px)',
               fontWeight: '100',
               color: '#1d1d1f',
               marginBottom: '32px',
               lineHeight: '1.1'
-            }}>
-              From assistant to{' '}
+            }}>              
               <span style={{
                 background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
-              }}>autonomous partner</span>
+              }}>Proactive partner</span>
             </h2>
             <p style={{
               fontSize: '20px',
               color: '#6e6e73',
               maxWidth: '768px',
-              margin: '0 auto',
-              lineHeight: '1.6'
+              margin: '0 0 0 0',
+              lineHeight: '1.6',
+              textAlign: 'left'
             }}>
-              Watch Sagaa evolve through three distinct phases, becoming more intelligent and autonomous as it learns your patterns and preferences.
+              Stays ahead of your needs, offering timely reminders and smart suggestions before you ask. As Sagaa learns more about you, it evolves as a proactive partner, anticipating your needs and helping you stay on track with your goals.
             </p>
           </div>
-          
-          <div ref={addToRefs} className={styles.fadeInUp} style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '80px'
-          }}>
-            {/* Week 1 */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-              gap: '48px',
-              alignItems: 'center'
-            }}>
-              <div>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginBottom: '24px'
-                }}>
-                  <div style={{
-                    width: '12px',
-                    height: '12px',
-                    backgroundColor: '#3b82f6',
-                    borderRadius: '50%',
-                    marginRight: '16px'
-                  }}></div>
-                  <span style={{
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    color: '#6e6e73'
-                  }}>WEEK 1: LEARNING</span>
-                </div>
-                <h3 style={{
-                  fontSize: '48px',
-                  fontWeight: '100',
-                  color: '#1d1d1f',
-                  marginBottom: '16px'
-                }}>Smart Assistant</h3>
-                <p style={{
-                  color: '#6e6e73',
-                  marginBottom: '32px'
-                }}>Sagaa observes your patterns, understands your goals, and provides contextual responses based on your life data.</p>
-                
-                <div style={{
-                  backgroundColor: 'white',
-                  borderRadius: '16px',
-                  padding: '32px',
-                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-                }}>
-                  <div style={{
-                    fontSize: '14px',
-                    color: '#6b7280',
-                    marginBottom: '12px'
-                  }}>You ask:</div>
-                  <div style={{
-                    color: '#1d1d1f',
-                    marginBottom: '16px'
-                  }}>"Should I buy this $200 gaming headset?"</div>
-                  <div style={{
-                    fontSize: '14px',
-                    color: '#3b82f6',
-                    marginBottom: '8px'
-                  }}>Sagaa responds:</div>
-                  <div style={{ color: '#1d1d1f' }}>"Based on your electronics budget ($100/month, currently $150 spent) and emergency fund progress (60% complete), this would exceed your budget. Let me learn more about your priorities."</div>
-                </div>
-              </div>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center'
-              }}>
-                <div style={{
-                  width: '256px',
-                  height: '256px',
-                  background: 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <span style={{
-                    fontSize: '96px',
-                    color: '#3b82f6',
-                    opacity: 0.6
-                  }}>🔍</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Month 3 */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-              gap: '48px',
-              alignItems: 'center'
-            }}>
-              <div className="order-2 lg:order-1" style={{
-                display: 'flex',
-                justifyContent: 'center'
-              }}>
-                <div style={{
-                  width: '256px',
-                  height: '256px',
-                  background: 'linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%)',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <span style={{
-                    fontSize: '96px',
-                    color: '#22c55e',
-                    opacity: 0.6
-                  }}>💡</span>
-                </div>
-              </div>
-              <div className="order-1 lg:order-2">
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginBottom: '24px'
-                }}>
-                  <div style={{
-                    width: '12px',
-                    height: '12px',
-                    backgroundColor: '#22c55e',
-                    borderRadius: '50%',
-                    marginRight: '16px'
-                  }}></div>
-                  <span style={{
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    color: '#6e6e73'
-                  }}>MONTH 3: PREDICTING</span>
-                </div>
-                <h3 style={{
-                  fontSize: '48px',
-                  fontWeight: '100',
-                  color: '#1d1d1f',
-                  marginBottom: '16px'
-                }}>Predictive Partner</h3>
-                <p style={{
-                  color: '#6e6e73',
-                  marginBottom: '32px'
-                }}>Now understanding your life context, Sagaa provides proactive insights connecting decisions across health, finance, career, and family domains.</p>
-                
-                <div style={{
-                  backgroundColor: 'white',
-                  borderRadius: '16px',
-                  padding: '32px',
-                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-                }}>
-                  <div style={{
-                    fontSize: '14px',
-                    color: '#6b7280',
-                    marginBottom: '12px'
-                  }}>You ask:</div>
-                  <div style={{
-                    color: '#1d1d1f',
-                    marginBottom: '16px'
-                  }}>"Should I buy this $200 gaming headset?"</div>
-                  <div style={{
-                    fontSize: '14px',
-                    color: '#22c55e',
-                    marginBottom: '8px'
-                  }}>Sagaa responds:</div>
-                  <div style={{ color: '#1d1d1f' }}>"I notice you have a presentation next week and mentioned wanting better audio for work calls. Your professional development budget has $250 available. Community data shows 73% of remote workers saw productivity gains with quality headsets. This aligns with your career advancement goals."</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Month 8+ */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-              gap: '48px',
-              alignItems: 'center'
-            }}>
-              <div>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginBottom: '24px'
-                }}>
-                  <div style={{
-                    width: '12px',
-                    height: '12px',
-                    backgroundColor: '#a855f7',
-                    borderRadius: '50%',
-                    marginRight: '16px'
-                  }}></div>
-                  <span style={{
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    color: '#6e6e73'
-                  }}>MONTH 8+: MANAGING</span>
-                </div>
-                <h3 style={{
-                  fontSize: '48px',
-                  fontWeight: '100',
-                  color: '#1d1d1f',
-                  marginBottom: '16px'
-                }}>Autonomous Partner</h3>
-                <p style={{
-                  color: '#6e6e73',
-                  marginBottom: '32px'
-                }}>Sagaa proactively manages routine decisions, anticipates needs, and optimizes your entire life strategy with minimal input required.</p>
-                
-                <div style={{
-                  backgroundColor: 'white',
-                  borderRadius: '16px',
-                  padding: '32px',
-                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-                }}>
-                  <div style={{
-                    fontSize: '14px',
-                    color: '#a855f7',
-                    marginBottom: '8px'
-                  }}>Sagaa proactively suggests:</div>
-                  <div style={{ color: '#1d1d1f' }}>"I've noticed your current headset is 3 years old and you have important client calls this month. I found three options within your tech budget, scheduled delivery for tomorrow (before your big presentation), and can optimize the purchase by using your credit card with 5% cashback on electronics. Approve this plan?"</div>
-                </div>
-              </div>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center'
-              }}>
-                <div style={{
-                  width: '256px',
-                  height: '256px',
-                  background: 'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <span style={{
-                    fontSize: '96px',
-                    color: '#a855f7',
-                    opacity: 0.6
-                  }}>✨</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
+         <MobileChatDemo />
       </section>
 
       <div className={styles.sectionDivider}></div>
@@ -1925,6 +1684,7 @@ const SagaaHomepage: React.FC = () => {
           </div>
           {/* Real user insight cards */}
         </div>
+        
       </section>
 
       <div className={styles.sectionDivider}></div>
