@@ -1,4 +1,4 @@
-import { MobileChatDemo } from './MobileChatDemo';
+import {ProactivePartner_ServiceWarranty_Example} from './ProactivePartner_ServiceWarranty_example';
 import heroImage from '../assets/Hero_Image.png';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -707,7 +707,17 @@ const SagaaHomepage: React.FC = () => {
             </p>
           </div>
         </div>
-         <MobileChatDemo />
+        <div style={{
+          background: 'white',
+          borderRadius: '20px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)',
+          border: '1px solid rgba(255,255,255,0.8)',
+          padding: '12px',
+          maxWidth: '1220px',
+          margin: '0 auto'
+        }}>
+          <ProactivePartner_ServiceWarranty_Example />
+        </div>
       </section>
 
       <div className={styles.sectionDivider}></div>

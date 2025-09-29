@@ -11,18 +11,19 @@ interface Message {
 }
 
 const conversationScript = [
-  { message: "Your annual health checkup is not booked yet. Its due next month. Shall I go ahead and book?", isUser: false, messageType: 'reminder' as const },
-  { message: "Yes, Please. Look for a Friday availability.", isUser: true },
-  { message: "Sure. Checking for Dr.Deramo's availability....", isUser: false },
-  { message: "Dr.Deramo is available at 10:30 AM on the 28th of this month , which is a Friday. Shall I go ahead and schedule?", isUser: false },
-  { message: "Yes, go ahead", isUser: true },
-  { message: "I have booked your annual checkup on the 28th at 10:30 AM with Dr.Deramo.", isUser: false},
+  { message: "Hi! Your NordicTrack treadmill warranty expires in 3 weeks (Nov 15th). I recommend scheduling maintenance now - 94% of users who serviced before expiration avoided costly repairs later.", isUser: false, messageType: 'reminder' as const },
+  { message: "How much would that cost?", isUser: true },
+  { message: "Checking for pricing...", isUser: false },
+  { message: "I found 3 trusted technicians from our community in your area: (1) Mike - $140 (0.8 miles, 5⭐, serviced 23 NordicTrack units) (2) Sarah - $160 (2.1 miles, former NordicTrack tech, includes belt check) (3) Tom - $135 (1.5 miles, weekend availability).  All three are available during your work-from-home week. Tuesday morning at 9 AM works with your schedule.", isUser: false },
+  { message: "Book Mike for Tuesday", isUser: true },
+  { message: "Done! Mike is scheduled for Tuesday, Nov 7th at 9 AM.", isUser: false},
+  { message: "I've added it to your calendar and allocated $140 from your home maintenance budget. You'll get a reminder the day before.", isUser: false},
   { message: "Thank you", isUser: true },
   { message: "You are welcome!.", isUser: false},
-  { message: "Over 50 Sagaa users have successfully stabilized their blood sugar and reversed prediabetes using Ayurvedic supplements—specifically Bitter Melon, Fenugreek, and Gymnema Sylvestre. These natural supplements are clinically recognized for their blood sugar-lowering properties and work effectively alongside lifestyle changes. Consult your healthcare provider before adding these to your routine", isUser: false, messageType: 'insight' as const }
+  { message: "Caught a belt issue during warranty service that would've cost $400 later - User in Seattle", isUser: false, messageType: 'insight' as const }
 ];
 
-export function MobileChatDemo() {
+export function ProactivePartner_ServiceWarranty_Example() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [showTyping, setShowTyping] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -144,10 +145,10 @@ export function MobileChatDemo() {
           {/* Feature phrases */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '60px', paddingLeft: '30px' }}>
             {[
-              'Remembers what matters',
-              'No manual reminders',
-              'Reminds at the right time',
-              'Surfaces community wisdom', 
+              'Tracks warranty deadlines',
+              'Prevents costly repairs',
+              'Finds trusted technicians',
+              'Matches to your budget', 
               'Takes action when you approve'
             ].map((phrase, index) => (
               <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
