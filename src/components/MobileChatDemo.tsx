@@ -7,11 +7,11 @@ interface Message {
   message: string;
   isUser: boolean;
   timestamp: string;
-  messageType?: 'reminder' | 'insight';
+ messageType?: 'reminder_Health' | 'insight' | 'reminder_Service';
 }
 
 const conversationScript = [
-  { message: "Your annual health checkup is not booked yet. Its due next month. Shall I go ahead and book?", isUser: false, messageType: 'reminder' as const },
+  { message: "Your annual health checkup is not booked yet. Its due next month. Shall I go ahead and book?", isUser: false, messageType: 'reminder_Health' as const },
   { message: "Yes, Please. Look for a Friday availability.", isUser: true },
   { message: "Sure. Checking for Dr.Deramo's availability....", isUser: false },
   { message: "Dr.Deramo is available at 10:30 AM on the 28th of this month , which is a Friday. Shall I go ahead and schedule?", isUser: false },

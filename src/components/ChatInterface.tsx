@@ -9,7 +9,7 @@ interface Message {
   message: string;
   isUser: boolean;
   timestamp: string;
-  messageType?: 'reminder' | 'insight';
+  messageType?: 'reminder_Health' | 'insight' | 'reminder_Service';
 }
 
 interface ChatInterfaceProps {

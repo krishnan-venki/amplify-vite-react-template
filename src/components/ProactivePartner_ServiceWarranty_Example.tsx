@@ -7,11 +7,11 @@ interface Message {
   message: string;
   isUser: boolean;
   timestamp: string;
-  messageType?: 'reminder' | 'insight';
+  messageType?: 'reminder_Health' | 'insight' | 'reminder_Service';
 }
 
 const conversationScript = [
-  { message: "Hi! Your NordicTrack treadmill warranty expires in 3 weeks (Nov 15th). I recommend scheduling maintenance now - 94% of users who serviced before expiration avoided costly repairs later.", isUser: false, messageType: 'reminder' as const },
+  { message: "Hi! Your NordicTrack treadmill warranty expires in 3 weeks (Nov 15th). I recommend scheduling maintenance now - 94% of users who serviced before expiration avoided costly repairs later.", isUser: false, messageType: 'reminder_Service' as const },
   { message: "How much would that cost?", isUser: true },
   { message: "Checking for pricing...", isUser: false },
   { message: "I found 3 trusted technicians from our community in your area: (1) Mike - $140 (0.8 miles, 5⭐, serviced 23 NordicTrack units) (2) Sarah - $160 (2.1 miles, former NordicTrack tech, includes belt check) (3) Tom - $135 (1.5 miles, weekend availability).  All three are available during your work-from-home week. Tuesday morning at 9 AM works with your schedule.", isUser: false,messageType: 'insight' as const  },

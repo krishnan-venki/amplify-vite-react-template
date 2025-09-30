@@ -174,6 +174,382 @@ const SagaaHomepage: React.FC = () => {
     );
   };
 
+  const CommunityMarketplaceSection = () => {
+    const matchingSteps = [
+      {
+        step: "Need Identified",
+        content: "Daughter struggling with AP Calculus",
+        detail: "Detected from recent test scores and stress patterns"
+      },
+      {
+        step: "Smart Matching",
+        content: "Sagaa analyzes your ecosystem",
+        detail: "Budget: $60/hour • Schedule: Tuesday evenings • Subject: AP Calculus"
+      },
+      {
+        step: "Trusted Providers",
+        content: "5 qualified tutors found",
+        detail: "All with AP Calculus specialization"
+      },
+      {
+        step: "Perfect Match",
+        content: "Maria - Best fit for your needs",
+        detail: "Helped 34 AP students • $60/hour • Tuesday evenings • 89% improved by one letter grade"
+      }
+    ];
+
+    return (
+      <section style={{
+        padding: '80px 0',
+        backgroundColor: 'white'
+      }}>
+        <div style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '0 24px'
+        }}>
+          {/* Section header */}
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '64px'
+          }}>
+            <h2 style={{
+              fontSize: 'clamp(42px, 5vw, 56px)',
+              fontWeight: '100',
+              color: '#1d1d1f',
+              marginBottom: '24px',
+              lineHeight: '1.1'
+            }}>
+              Trusted Services from{' '}
+              <span style={{
+                background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>Your Community</span>
+            </h2>
+            <p style={{
+              fontSize: '18px',
+              color: '#6b7280',
+              maxWidth: '900px',
+              margin: '0 auto',
+              lineHeight: '1.6'
+            }}>
+              Connect with service providers from the Sagaa community. Sagaa matches you intelligently based on your specific needs, budget, schedule, and context—not just zip code. See providers' experience with your exact situation before you book.
+            </p>
+          </div>
+
+          {/* Main content card */}
+          <div style={{
+            backgroundColor: '#f8fafc',
+            borderRadius: '24px',
+            padding: '48px',
+            marginBottom: '64px'
+          }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '64px',
+              alignItems: 'center'
+            }}>
+              {/* Left side - Benefits */}
+              <div>
+                <h3 style={{
+                  fontSize: '32px',
+                  fontWeight: '600',
+                  color: '#1d1d1f',
+                  marginBottom: '24px'
+                }}>
+                  Intelligent Matching, Not Just Zip Code
+                </h3>
+                
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '24px'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    gap: '16px',
+                    alignItems: 'flex-start'
+                  }}>
+                    <div style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      backgroundColor: '#dbeafe',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      <span style={{ fontSize: '16px' }}>👥</span>
+                    </div>
+                    <div>
+                      <div style={{
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        color: '#1d1d1f',
+                        marginBottom: '4px'
+                      }}>Community member providers</div>
+                      <div style={{
+                        fontSize: '14px',
+                        color: '#6b7280',
+                        lineHeight: '1.5'
+                      }}>Service providers who are also Sagaa ecosystem members</div>
+                    </div>
+                  </div>
+
+                  <div style={{
+                    display: 'flex',
+                    gap: '16px',
+                    alignItems: 'flex-start'
+                  }}>
+                    <div style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      backgroundColor: '#dcfce7',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      <span style={{ fontSize: '16px' }}>🎯</span>
+                    </div>
+                    <div>
+                      <div style={{
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        color: '#1d1d1f',
+                        marginBottom: '4px'
+                      }}>Context-aware matching</div>
+                      <div style={{
+                        fontSize: '14px',
+                        color: '#6b7280',
+                        lineHeight: '1.5'
+                      }}>Matches based on your exact needs, budget, schedule, and situation—not just zip code</div>
+                    </div>
+                  </div>
+
+                  <div style={{
+                    display: 'flex',
+                    gap: '16px',
+                    alignItems: 'flex-start'
+                  }}>
+                    <div style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      backgroundColor: '#fef3c7',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      <span style={{ fontSize: '16px' }}>✓</span>
+                    </div>
+                    <div>
+                      <div style={{
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        color: '#1d1d1f',
+                        marginBottom: '4px'
+                      }}>Transparent service history</div>
+                      <div style={{
+                        fontSize: '14px',
+                        color: '#6b7280',
+                        lineHeight: '1.5'
+                      }}>See providers' experience with your specific situation—equipment, tutoring subjects, financial planning, and more</div>
+                    </div>
+                  </div>
+
+                  <div style={{
+                    display: 'flex',
+                    gap: '16px',
+                    alignItems: 'flex-start'
+                  }}>
+                    <div style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      backgroundColor: '#fae8ff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      <span style={{ fontSize: '16px' }}>🔄</span>
+                    </div>
+                    <div>
+                      <div style={{
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        color: '#1d1d1f',
+                        marginBottom: '4px'
+                      }}>Seamless ecosystem integration</div>
+                      <div style={{
+                        fontSize: '14px',
+                        color: '#6b7280',
+                        lineHeight: '1.5'
+                      }}>Booking, payment, and follow-up all tracked in your Sagaa ecosystem</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right side - Matching visualization */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '20px',
+                padding: '32px',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.08)'
+              }}>
+                <div style={{
+                  marginBottom: '24px',
+                  textAlign: 'center'
+                }}>
+                  <h4 style={{
+                    fontSize: '18px',
+                    fontWeight: '600',
+                    color: '#1d1d1f',
+                    marginBottom: '8px'
+                  }}>Intelligent Matching Process</h4>
+                  <p style={{
+                    fontSize: '14px',
+                    color: '#6b7280'
+                  }}>Example: Finding a calculus tutor</p>
+                </div>
+
+                {/* Matching steps */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px'
+                }}>
+                  {matchingSteps.map((item, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        padding: '20px',
+                        backgroundColor: '#f8fafc',
+                        borderRadius: '12px',
+                        border: '1px solid #e5e7eb'
+                      }}
+                    >
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        marginBottom: '8px'
+                      }}>
+                        <div style={{
+                          width: '28px',
+                          height: '28px',
+                          borderRadius: '50%',
+                          backgroundColor: '#e5e7eb',
+                          color: '#6b7280',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          flexShrink: 0
+                        }}>
+                          {index + 1}
+                        </div>
+                        <div style={{
+                          fontSize: '12px',
+                          fontWeight: '600',
+                          color: '#6b7280',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px'
+                        }}>
+                          {item.step}
+                        </div>
+                      </div>
+                      <div style={{
+                        fontSize: '15px',
+                        fontWeight: '600',
+                        color: '#1d1d1f',
+                        marginBottom: '4px',
+                        marginLeft: '40px'
+                      }}>
+                        {item.content}
+                      </div>
+                      <div style={{
+                        fontSize: '13px',
+                        color: '#6b7280',
+                        marginLeft: '40px',
+                        lineHeight: '1.4'
+                      }}>
+                        {item.detail}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Service categories */}
+          <div>
+            <h3 style={{
+              fontSize: '28px',
+              fontWeight: '600',
+              color: '#1d1d1f',
+              marginBottom: '32px',
+              textAlign: 'center'
+            }}>
+              Available Service Categories
+            </h3>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+              gap: '24px'
+            }}>
+              {[
+                { icon: '🔧', title: 'Home Services', desc: 'Repair, maintenance, improvement' },
+                { icon: '📈', title: 'Financial Planning', desc: 'Strategy, investment, optimization' },
+                { icon: '🩺', title: 'Health & Wellness', desc: 'Fitness, nutrition, mental health' },
+                { icon: '🎓', title: 'Learning & Growth', desc: 'Tutoring, coaching, mentoring' },
+                { icon: '🚗', title: 'Asset Care', desc: 'Vehicle, equipment maintenance' },
+                { icon: '👨‍👩‍👧‍👦', title: 'Family Support', desc: 'Childcare, eldercare, assistance' }
+              ].map((category, index) => (
+                <div
+                  key={index}
+                  style={{
+                    backgroundColor: 'white',
+                    padding: '24px',
+                    borderRadius: '16px',
+                    textAlign: 'center',
+                    border: '1px solid #e5e7eb',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <div style={{ fontSize: '32px', marginBottom: '12px' }}>{category.icon}</div>
+                  <h4 style={{
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: '#1d1d1f',
+                    marginBottom: '4px'
+                  }}>{category.title}</h4>
+                  <p style={{
+                    fontSize: '13px',
+                    color: '#6b7280',
+                    margin: 0
+                  }}>{category.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  };
+
+
   return (
     <div className={styles.sagaaHomepage} style={{
       width: '100vw',
@@ -2035,417 +2411,7 @@ const SagaaHomepage: React.FC = () => {
       <div className={styles.sectionDivider}></div>
 
       {/* Trusted Community Services Section */}
-      <section id="services" style={{
-        padding: '60px 0',
-        backgroundColor: 'white'
-      }}>
-        <div style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          padding: '0 24px'
-        }}>
-          <div ref={addToRefs} className={styles.fadeInUp} style={{
-            textAlign: 'center',
-            marginBottom: '80px'
-          }}>
-            <h2 style={{
-              fontSize: 'clamp(48px, 5vw, 60px)',
-              fontWeight: '100',
-              color: '#1d1d1f',
-              marginBottom: '32px',
-              lineHeight: '1.1'
-            }}>
-              Trusted community{' '}
-              <span style={{
-                background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}>marketplace</span>
-            </h2>
-            <p style={{
-              fontSize: '20px',
-              color: '#8e8e93',
-              maxWidth: '1024px',
-              margin: '0 auto',
-              lineHeight: '1.6'
-            }}>
-              Connect with pre-vetted service providers who are also Sagaa ecosystem members. Sagaa connects you with the right experts as Sagaa knows your needs, budget, and priorities.
-            </p>
-          </div>
-
-          <div ref={addToRefs} className={styles.fadeInUp} style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '80px',
-            alignItems: 'center'
-          }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-              <div>
-                <h3 style={{
-                  fontSize: '28px',
-                  fontWeight: '100',
-                  color: '#1d1d1f',
-                  marginBottom: '24px'
-                }}>Beyond transactions. Mutual accountability.</h3>
-                <p style={{
-                  color: '#8e8e93',
-                  lineHeight: '1.6',
-                  marginBottom: '32px'
-                }}>
-                  With Sagaa, you’re not just relying on reviews—you’re connecting with service providers trusted by the community. Every recommendation is based on real experiences, repeat requests, and proven value, so you find people who truly fit your needs.
-                </p>
-              </div>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    backgroundColor: '#f0fdf4',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    <span style={{
-                      color: '#16a34a',
-                      fontSize: '14px',
-                      fontWeight: 'bold'
-                    }}>✓</span>
-                  </div>
-                  <span style={{ color: '#8e8e93' }}>All providers are Sagaa members</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    backgroundColor: '#f0fdf4',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    <span style={{
-                      color: '#16a34a',
-                      fontSize: '14px',
-                      fontWeight: 'bold'
-                    }}>✓</span>
-                  </div>
-                  <span style={{ color: '#8e8e93' }}>Context-aware matching based on your ecosystem data</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    backgroundColor: '#f0fdf4',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    <span style={{
-                      color: '#16a34a',
-                      fontSize: '14px',
-                      fontWeight: 'bold'
-                    }}>✓</span>
-                  </div>
-                  <span style={{ color: '#8e8e93' }}>Mutual accountability through shared platform investment</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    backgroundColor: '#f0fdf4',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    <span style={{
-                      color: '#16a34a',
-                      fontSize: '14px',
-                      fontWeight: 'bold'
-                    }}>✓</span>
-                  </div>
-                  <span style={{ color: '#8e8e93' }}>Seamless booking, payment, and follow-up tracking</span>
-                </div>
-              </div>
-              
-              <div style={{
-                backgroundColor: '#eff6ff',
-                borderRadius: '16px',
-                padding: '24px'
-              }}>
-                <div style={{
-                  fontSize: '14px',
-                  color: '#2563eb',
-                  marginBottom: '8px'
-                }}>Example connection:</div>
-                <div style={{
-                  color: '#1d1d1f',
-                  lineHeight: '1.6'
-                }}>"Your treadmill needs repair and you have a $200 maintenance budget this month. Sarah, a Sagaa community member and certified repair technician, has fixed this exact model 23 times with a 100% success rate. Her rate fits your budget, and she's available Tuesday morning when you work from home."</div>
-              </div>
-            </div>
-
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '24px'
-            }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                <div style={{
-                  backgroundColor: '#f9fafb',
-                  borderRadius: '16px',
-                  padding: '24px',
-                  textAlign: 'center',
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }} onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
-                }} onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    backgroundColor: '#eff6ff',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 16px auto'
-                  }}>
-                    <span style={{ 
-                      color: '#3b82f6',
-                      fontSize: '20px'
-                    }}>🔧</span>
-                  </div>
-                  <h3 style={{
-                    fontWeight: '500',
-                    color: '#1d1d1f',
-                    marginBottom: '8px'
-                  }}>Home Services</h3>
-                  <p style={{
-                    fontSize: '12px',
-                    color: '#8e8e93'
-                  }}>Repair, maintenance, improvement</p>
-                </div>
-                
-                <div style={{
-                  backgroundColor: '#f9fafb',
-                  borderRadius: '16px',
-                  padding: '24px',
-                  textAlign: 'center',
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }} onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
-                }} onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    backgroundColor: '#f0fdf4',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 16px auto'
-                  }}>
-                    <span style={{ 
-                      color: '#16a34a',
-                      fontSize: '20px'
-                    }}>📈</span>
-                  </div>
-                  <h3 style={{
-                    fontWeight: '500',
-                    color: '#1d1d1f',
-                    marginBottom: '8px'
-                  }}>Financial Planning</h3>
-                  <p style={{
-                    fontSize: '12px',
-                    color: '#8e8e93'
-                  }}>Strategy, investment, optimization</p>
-                </div>
-                
-                <div style={{
-                  backgroundColor: '#f9fafb',
-                  borderRadius: '16px',
-                  padding: '24px',
-                  textAlign: 'center',
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }} onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
-                }} onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    backgroundColor: '#fef2f2',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 16px auto'
-                  }}>
-                    <span style={{ 
-                      color: '#dc2626',
-                      fontSize: '20px'
-                    }}>🩺</span>
-                  </div>
-                  <h3 style={{
-                    fontWeight: '500',
-                    color: '#1d1d1f',
-                    marginBottom: '8px'
-                  }}>Health & Wellness</h3>
-                  <p style={{
-                    fontSize: '12px',
-                    color: '#8e8e93'
-                  }}>Fitness, nutrition, mental health</p>
-                </div>
-              </div>
-              
-              <div style={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                gap: '24px',
-                marginTop: '32px'
-              }}>
-                <div style={{
-                  backgroundColor: '#f9fafb',
-                  borderRadius: '16px',
-                  padding: '24px',
-                  textAlign: 'center',
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }} onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
-                }} onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    backgroundColor: '#faf5ff',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 16px auto'
-                  }}>
-                    <span style={{ 
-                      color: '#9333ea',
-                      fontSize: '20px'
-                    }}>🎓</span>
-                  </div>
-                  <h3 style={{
-                    fontWeight: '500',
-                    color: '#1d1d1f',
-                    marginBottom: '8px'
-                  }}>Learning & Growth</h3>
-                  <p style={{
-                    fontSize: '12px',
-                    color: '#8e8e93'
-                  }}>Tutoring, coaching, mentoring</p>
-                </div>
-                
-                <div style={{
-                  backgroundColor: '#f9fafb',
-                  borderRadius: '16px',
-                  padding: '24px',
-                  textAlign: 'center',
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }} onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
-                }} onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    backgroundColor: '#fff7ed',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 16px auto'
-                  }}>
-                    <span style={{ 
-                      color: '#ea580c',
-                      fontSize: '20px'
-                    }}>🚗</span>
-                  </div>
-                  <h3 style={{
-                    fontWeight: '500',
-                    color: '#1d1d1f',
-                    marginBottom: '8px'
-                  }}>Asset Care</h3>
-                  <p style={{
-                    fontSize: '12px',
-                    color: '#8e8e93'
-                  }}>Vehicle, equipment maintenance</p>
-                </div>
-                
-                <div style={{
-                  backgroundColor: '#f9fafb',
-                  borderRadius: '16px',
-                  padding: '24px',
-                  textAlign: 'center',
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }} onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
-                }} onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    backgroundColor: '#ecfeff',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 16px auto'
-                  }}>
-                    <span style={{ 
-                      color: '#0891b2',
-                      fontSize: '20px'
-                    }}>👨‍👩‍👧‍👦</span>
-                  </div>
-                  <h3 style={{
-                    fontWeight: '500',
-                    color: '#1d1d1f',
-                    marginBottom: '8px'
-                  }}>Family Support</h3>
-                  <p style={{
-                    fontSize: '12px',
-                    color: '#8e8e93'
-                  }}>Childcare, eldercare, assistance</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CommunityMarketplaceSection />
 
       {/* Join the Ecosystem Pricing Section */}
       <section id="pricing" style={{
