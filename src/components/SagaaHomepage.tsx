@@ -1,4 +1,5 @@
 import {ProactivePartner_ServiceWarranty_Example} from './ProactivePartner_ServiceWarranty_example';
+import {MobileChatDemo} from './MobileChatDemo';
 import heroImage from '../assets/Hero_Image.png';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -703,21 +704,56 @@ const SagaaHomepage: React.FC = () => {
               lineHeight: '1.6',
               textAlign: 'left'
             }}>
-              Anticipates your needs with timely reminders and smart suggestions before you even ask. As Sagaa learns your patterns, it evolves as a proactive partner, staying ahead of what you need to achieve your goals.
+              Anticipates your needs with timely reminders and smart suggestions before you even ask. As Sagaa learns from your interactions, preferences, and life context, it evolves as a proactive partner, staying ahead of what you need to achieve your goals
             </p>
           </div>
         </div>
-        <div style={{
-          background: 'white',
-          borderRadius: '20px',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)',
-          border: '1px solid rgba(255,255,255,0.8)',
-          padding: '12px',
-          maxWidth: '1220px',
-          margin: '0 auto'
-        }}>
-          <ProactivePartner_ServiceWarranty_Example />
+        
+        <div style={{ width: '100%', textAlign: 'center', margin: '24px 0 8px 0' }}>
+          <span style={{ fontSize: '22px', color: '#007AFF', fontWeight: 350 }}>See how it works....</span>
         </div>
+        
+        {/* Swiper */}
+        <div ref={addToRefs} className={styles.fadeInUp}>
+              <Swiper
+                spaceBetween={20}
+                slidesPerView={1.15}
+                centeredSlides={true}
+                pagination={{ clickable: true }}
+                cssMode={true}
+                mousewheel={true}
+                modules={[Pagination]}
+                style={{ paddingBottom: '0px', marginBottom: '0px' }}
+              >
+                <SwiperSlide>
+                  <div style={{
+                    background: 'white',
+                    borderRadius: '20px',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)',
+                    border: '1px solid rgba(255,255,255,0.8)',
+                    padding: '12px',
+                    width: '100%'
+                   }}>
+                    <MobileChatDemo />
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div style={{
+                    background: 'white',
+                    borderRadius: '20px',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)',
+                    border: '1px solid rgba(255,255,255,0.8)',
+                    padding: '12px',
+                    width: '100%'
+                  }}>
+                    <ProactivePartner_ServiceWarranty_Example />
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+            </div>
+            <div style={{ width: '100%', textAlign: 'center', margin: '24px 0 8px 0' }}>
+              <span style={{ fontSize: '22px', color: '#007AFF', fontWeight: 350 }}>Proactive intelligence applies across family, education, finance, health and all your life essentials</span>
+            </div>
       </section>
 
       <div className={styles.sectionDivider}></div>

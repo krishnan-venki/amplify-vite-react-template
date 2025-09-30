@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MobileFrame } from './MobileFrame';
 import { ChatInterface } from './ChatInterface';
 
@@ -14,13 +14,13 @@ const conversationScript = [
   { message: "Hi! Your NordicTrack treadmill warranty expires in 3 weeks (Nov 15th). I recommend scheduling maintenance now - 94% of users who serviced before expiration avoided costly repairs later.", isUser: false, messageType: 'reminder' as const },
   { message: "How much would that cost?", isUser: true },
   { message: "Checking for pricing...", isUser: false },
-  { message: "I found 3 trusted technicians from our community in your area: (1) Mike - $140 (0.8 miles, 5⭐, serviced 23 NordicTrack units) (2) Sarah - $160 (2.1 miles, former NordicTrack tech, includes belt check) (3) Tom - $135 (1.5 miles, weekend availability).  All three are available during your work-from-home week. Tuesday morning at 9 AM works with your schedule.", isUser: false },
+  { message: "I found 3 trusted technicians from our community in your area: (1) Mike - $140 (0.8 miles, 5⭐, serviced 23 NordicTrack units) (2) Sarah - $160 (2.1 miles, former NordicTrack tech, includes belt check) (3) Tom - $135 (1.5 miles, weekend availability).  All three are available during your work-from-home week. Tuesday morning at 9 AM works with your schedule.", isUser: false,messageType: 'insight' as const  },
   { message: "Book Mike for Tuesday", isUser: true },
   { message: "Done! Mike is scheduled for Tuesday, Nov 7th at 9 AM.", isUser: false},
   { message: "I've added it to your calendar and allocated $140 from your home maintenance budget. You'll get a reminder the day before.", isUser: false},
   { message: "Thank you", isUser: true },
   { message: "You are welcome!.", isUser: false},
-  { message: "Caught a belt issue during warranty service that would've cost $400 later - User in Seattle", isUser: false, messageType: 'insight' as const }
+  { message: "By servicing your treadmill before the warranty expires, you reduce the risk of unexpected repair costs by 85%. Regular maintenance also extends the lifespan of your equipment, ensuring optimal performance and safety during workouts.", isUser: false, messageType: 'insight' as const }
 ];
 
 export function ProactivePartner_ServiceWarranty_Example() {
@@ -30,6 +30,18 @@ export function ProactivePartner_ServiceWarranty_Example() {
   const [typingText, setTypingText] = useState('');
   const [isTypingAnimation, setIsTypingAnimation] = useState(false);
   const [isSendingAnimation, setIsSendingAnimation] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const resetAnimation = () => {
+    setMessages([]);
+    setCurrentIndex(0);
+    setShowTyping(false);
+    setTypingText('');
+    setIsTypingAnimation(false);
+    setIsSendingAnimation(false);
+  };
 
   const animateUserTyping = (message: string) => {
     return new Promise<void>((resolve) => {
@@ -57,18 +69,42 @@ export function ProactivePartner_ServiceWarranty_Example() {
     });
   };
 
+  // Intersection Observer to detect visibility
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isNowVisible = entry.isIntersecting;
+        
+        // If coming into view and animation is complete, restart
+        if (isNowVisible && !isVisible && currentIndex >= conversationScript.length) {
+          setTimeout(() => {
+            resetAnimation();
+          }, 500); // Small delay before restart
+        }
+        
+        setIsVisible(isNowVisible);
+      },
+      {
+        threshold: 0.3, // Trigger when 30% of component is visible
+        rootMargin: '-50px' // Add some margin to avoid triggering too early
+      }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
+  }, [isVisible, currentIndex]);
+
   useEffect(() => {
     if (currentIndex >= conversationScript.length) {
-      // Reset conversation after completion
-      const resetTimer = setTimeout(() => {
-        setMessages([]);
-        setCurrentIndex(0);
-        setShowTyping(false);
-        setTypingText('');
-        setIsTypingAnimation(false);
-        setIsSendingAnimation(false);
-      }, 6000);
-      return () => clearTimeout(resetTimer);
+      // Stop the conversation once all messages are displayed
+      return;
     }
 
     const timer = setTimeout(async () => {
@@ -113,7 +149,7 @@ export function ProactivePartner_ServiceWarranty_Example() {
   }, [currentIndex]);
 
   return (
-    <div
+    <div ref={containerRef}
       style={{
         padding: '60px 20px',
         backgroundColor: 'var(--muted)',

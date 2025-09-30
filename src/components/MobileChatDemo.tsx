@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MobileFrame } from './MobileFrame';
 import { ChatInterface } from './ChatInterface';
 
@@ -29,6 +29,18 @@ export function MobileChatDemo() {
   const [typingText, setTypingText] = useState('');
   const [isTypingAnimation, setIsTypingAnimation] = useState(false);
   const [isSendingAnimation, setIsSendingAnimation] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const resetAnimation = () => {
+    setMessages([]);
+    setCurrentIndex(0);
+    setShowTyping(false);
+    setTypingText('');
+    setIsTypingAnimation(false);
+    setIsSendingAnimation(false);
+  };
 
   const animateUserTyping = (message: string) => {
     return new Promise<void>((resolve) => {
@@ -56,18 +68,42 @@ export function MobileChatDemo() {
     });
   };
 
+  // Intersection Observer to detect visibility
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isNowVisible = entry.isIntersecting;
+        
+        // If coming into view and animation is complete, restart
+        if (isNowVisible && !isVisible && currentIndex >= conversationScript.length) {
+          setTimeout(() => {
+            resetAnimation();
+          }, 500); // Small delay before restart
+        }
+        
+        setIsVisible(isNowVisible);
+      },
+      {
+        threshold: 0.3, // Trigger when 30% of component is visible
+        rootMargin: '-50px' // Add some margin to avoid triggering too early
+      }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
+  }, [isVisible, currentIndex]);
+
   useEffect(() => {
     if (currentIndex >= conversationScript.length) {
-      // Reset conversation after completion
-      const resetTimer = setTimeout(() => {
-        setMessages([]);
-        setCurrentIndex(0);
-        setShowTyping(false);
-        setTypingText('');
-        setIsTypingAnimation(false);
-        setIsSendingAnimation(false);
-      }, 6000);
-      return () => clearTimeout(resetTimer);
+       // Stop the conversation once all messages are displayed
+      return;
     }
 
     const timer = setTimeout(async () => {
@@ -112,7 +148,7 @@ export function MobileChatDemo() {
   }, [currentIndex]);
 
   return (
-    <div
+    <div ref={containerRef}
       style={{
         padding: '60px 20px',
         backgroundColor: 'var(--muted)',
@@ -144,11 +180,11 @@ export function MobileChatDemo() {
           {/* Feature phrases */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '60px', paddingLeft: '30px' }}>
             {[
-              'Remembers what matters',
               'No manual reminders',
-              'Reminds at the right time',
-              'Surfaces community wisdom', 
-              'Takes action when you approve'
+              'Keeps priorities in focus',
+              'Timely, context-aware alerts',
+              'Takes action when you approve',
+              'Surfaces community wisdom'
             ].map((phrase, index) => (
               <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                 {/* Bullet point */}
