@@ -1,14 +1,23 @@
 import styles from './SagaaHomepage.module.css';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 
 export const OneEcosystem = () => {
     const fadeInElementsRef = useRef<HTMLDivElement[]>([]);
     const addToRefs = (el: HTMLDivElement | null) => {
-    if (el && !fadeInElementsRef.current.includes(el)) {
-      fadeInElementsRef.current.push(el);
-    }
-  };
-    <section id="ecosystem" style={{
+      if (el && !fadeInElementsRef.current.includes(el)) {
+        fadeInElementsRef.current.push(el);
+      }
+    };
+
+    useEffect(() => {
+      fadeInElementsRef.current.forEach((el) => {
+        if (el) {
+          el.classList.add(styles.visible);
+        }
+      });
+    }, []);
+  return (
+  <section id="ecosystem" style={{
         padding: '60px 0',
         backgroundColor: 'white'
       }}>
@@ -352,4 +361,7 @@ export const OneEcosystem = () => {
         </div>
       </section>
 
+    )
 };
+
+export default OneEcosystem;
