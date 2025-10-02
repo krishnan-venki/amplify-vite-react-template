@@ -1,5 +1,6 @@
 import { CommunityMarketplaceSection } from './CommunityMarketplaceSection';
 import {ProactivePartner_ServiceWarranty_Example} from './ProactivePartner_ServiceWarranty_Example';
+import { PersonalizedIntelligence_Section } from './PersonalizedIntelligence_Section';
 import { OneEcosystem } from './OneEcosystem';
 import {MobileChatDemo} from './MobileChatDemo';
 import {CommunityWisdomSection} from './CommunityWisdomSection';
@@ -327,6 +328,8 @@ const SagaaHomepage: React.FC = () => {
       <div className={styles.sectionDivider}></div>
       {/* Community Wisdom Section */}
       <OneEcosystem />
+      <div className={styles.sectionDivider}></div>
+      <PersonalizedIntelligence_Section />
       <div className={styles.sectionDivider}></div>
       {/* Proactive partner Section */}
       <section id="growth" style={{

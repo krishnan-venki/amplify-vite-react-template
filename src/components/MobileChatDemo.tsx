@@ -161,37 +161,50 @@ export function MobileChatDemo() {
       {/* Mobile Demo */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '120px' }}>
         {/* Feature List on the Left */}
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', height: '600px' }}>
-          {/* Vertical connecting line */}
-          <div
-            style={{
-              position: 'absolute',
-              left: '8px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              width: '2px',
-              height: '320px',
-              background: 'linear-gradient(135deg, #488aff 0%, #007AFF 100%)',
-              borderRadius: '1px',
-              zIndex: 1
-            }}
-          />
-          
-          {/* Feature phrases */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '60px', paddingLeft: '30px' }}>
+        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '600px' }}>
+          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', flex: 1 }}>
+            {/* Feature phrases */}
+            <div style={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              paddingLeft: '46px',
+              position: 'relative'
+            }}>
+              
+
+              {/* Feature list */}
+              <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: '60px',
+                position: 'relative'
+              }}>
+                {/* Vertical line through dots */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '4px', // Center of 16px dot (8px - 0.5px for 1px line)
+                    top: '5px', // Center of first dot (16px/2 = 8px)
+                    bottom: '5px', // Center of last dot
+                    width: '2px',
+                    background: 'linear-gradient(135deg, #488aff 0%, #007AFF 100%)',
+                    borderRadius: '1px',
+                    zIndex: 1 // Lower than dots so dots appear on top
+                  }}
+                />
             {[
-              'No manual reminders',
-              'Keeps priorities in focus',
-              'Timely, context-aware alerts',
-              'Takes action when you approve',
-              'Surfaces community wisdom'
+              '✨ No manual reminders',
+              '✨ Keeps priorities in focus',
+              '🧠 Timely, context-aware alerts',
+              '✨ Takes action when you approve',
+              '🧑‍🤝‍🧑 Surfaces community wisdom'
             ].map((phrase, index) => (
               <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                 {/* Bullet point */}
                 <div
                   style={{
-                    width: '16px',
-                    height: '16px',
+                    width: '10px',
+                    height: '10px',
                     borderRadius: '50%',
                     background: 'linear-gradient(135deg, #488aff 0%, #007AFF 100%)',
                     position: 'relative',
@@ -217,7 +230,8 @@ export function MobileChatDemo() {
             ))}
           </div>
         </div>
-        
+        </div>
+        </div>
         <div style={{ position: 'relative' }}>
           {/* Mobile frame on top */}
           <div style={{ position: 'relative', zIndex: 2 }}>
