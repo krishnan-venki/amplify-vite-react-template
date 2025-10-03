@@ -46,17 +46,21 @@ export const OneEcosystem = () => {
     detailText: string;
     example: string;
     relatedDomains: string[];
+    showExample?: boolean;
+    showDomains?: boolean;
   }> = {
     onePlatform: {
       id: 'onePlatform',
       icon: '🎯',
       iconBg: '#dbeafe',
       title: 'One Platform',
-      shortDesc: 'Management of Health, finance, education, and Life essentials all in one intelligent ecosystem',
+      shortDesc: 'Health, finance, education, and life essentials all in one intelligent ecosystem',
       detailHeadline: 'Everything in One Place',
-      detailText: 'Stop switching between 10+ apps. Sagaa unifies your healthcare appointments, financial accounts, home tasks, and learning goals into a single intelligent hub that understands how everything in your life connects.',
+      detailText: 'Stop app-switching. Sagaa offers specialized verticals — Sagaa Financials, Sagaa Healthcare, Sagaa Education, and Sagaa Life Essentials — unified in one intelligent platform that connects every aspect of your life.',
       example: '"Morning briefing: Doctor appointment at 2pm, budget has room for that book you wanted, and the plumber confirmed for Thursday."',
-      relatedDomains: ['finance', 'health', 'home', 'education']
+      relatedDomains: ['finance', 'health', 'home', 'education'],
+      showExample: false,
+      showDomains: false
     },
     connectedIntelligence: {
       id: 'connectedIntelligence',
@@ -67,7 +71,9 @@ export const OneEcosystem = () => {
       detailHeadline: 'Decisions That See the Full Picture',
       detailText: 'Your fitness goals inform your budget. Your health appointments sync with your calendar. Your home maintenance alerts your finances. Everything connects because your life isn\'t separate compartments.',
       example: '"Doctor recommends physical therapy → Budget adjusted automatically → In-network providers matched → Calendar slots suggested"',
-      relatedDomains: ['finance', 'health', 'education']
+      relatedDomains: ['finance', 'health', 'education'],
+      showExample: true,
+      showDomains: true
     },
     proactivePartner: {
       id: 'proactivePartner',
@@ -78,7 +84,9 @@ export const OneEcosystem = () => {
       detailHeadline: 'Always One Step Ahead',
       detailText: 'Anticipates your needs before they become urgent. Insurance renewals, health checkups, bill optimizations—handled before you even think about them. Sagaa learns your patterns and acts proactively.',
       example: '"Your car insurance renews in 30 days. Based on your improved driving record, I found 3 better options that could save you $200/year. Want to review?"',
-      relatedDomains: ['finance', 'home']
+      relatedDomains: ['finance', 'home'],
+      showExample: true,
+      showDomains: true
     },
     communityMarketplace: {
       id: 'communityMarketplace',
@@ -89,7 +97,9 @@ export const OneEcosystem = () => {
       detailHeadline: 'Verified Help When You Need It',
       detailText: 'Connect with verified community members for services you need—from home repairs to financial advice—all pre-vetted and context-aware to your specific situation. Mutual accountability creates unprecedented trust.',
       example: '"Your water heater is 12 years old. Based on your home profile, here are 3 community plumbers with 5-star ratings who specialize in your model."',
-      relatedDomains: ['home', 'community', 'finance']
+      relatedDomains: ['home', 'community', 'finance'],
+      showExample: true,
+      showDomains: true
     },
     alwaysLearning: {
       id: 'alwaysLearning',
@@ -100,7 +110,9 @@ export const OneEcosystem = () => {
       detailHeadline: 'Grows With You Over Time',
       detailText: 'Evolves from basic assistant to trusted autonomous partner. Week 1: Learns your patterns. Month 6: Predicts your needs. Year 1: Manages routine decisions independently with your approval.',
       example: '"I\'ve learned you prefer cashback rewards and tend to overspend after stressful weeks. Your presentation is Friday—should I set a gentle spending reminder for the weekend?"',
-      relatedDomains: ['finance', 'health', 'education']
+      relatedDomains: ['finance', 'health', 'education'],
+      showExample: false,
+      showDomains: false
     },
     personalizedIntelligence: {
       id: 'personalizedIntelligence',
@@ -111,7 +123,9 @@ export const OneEcosystem = () => {
       detailHeadline: 'Deeply Personal, Never Generic',
       detailText: 'Not generic advice—deeply personal guidance based on your unique life context, spending psychology, health history, and family dynamics. Every recommendation is tailored specifically to you.',
       example: '"Based on your health goals, family schedule, and budget constraints, here\'s a personalized meal plan that saves $80/month and supports your fitness targets."',
-      relatedDomains: ['finance', 'health', 'home']
+      relatedDomains: ['finance', 'health', 'home'],
+      showExample: true,
+      showDomains: true
     },
     communityWisdom: {
       id: 'communityWisdom',
@@ -122,7 +136,9 @@ export const OneEcosystem = () => {
       detailHeadline: 'Learn From Real Experiences',
       detailText: 'Learn from millions who\'ve faced similar challenges. 87% success rate when users follow community-validated strategies. Real experiences, real outcomes—not theoretical advice.',
       example: '"Users in Seattle with your income who paid off similar debt succeeded with these 3 strategies. The meal-planning approach has an 87% success rate."',
-      relatedDomains: ['community', 'finance', 'health']
+      relatedDomains: ['community', 'finance', 'health'],
+      showExample: true,
+      showDomains: true
     },
     omnichannelPresence: {
       id: 'omnichannelPresence',
@@ -133,7 +149,9 @@ export const OneEcosystem = () => {
       detailHeadline: 'Always There, Everywhere',
       detailText: 'Morning briefing through Alexa. Commute notifications in your car. Deep planning on desktop. Evening updates on mobile. Sagaa follows your life, not the other way around.',
       example: '"Hey Alexa, ask Sagaa about my day" → Car dashboard alerts you to bill payment → Lunch break deep-dive on web → Evening grocery reminder on phone"',
-      relatedDomains: ['finance', 'health', 'home', 'education']
+      relatedDomains: ['finance', 'health', 'home', 'education'],
+      showExample: true,
+      showDomains: true
     }
   };
 
@@ -466,62 +484,66 @@ export const OneEcosystem = () => {
             {feature.detailText}
           </p>
 
-          {/* Example */}
-          <div style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            borderRadius: '12px',
-            padding: '16px',
-            borderLeft: '3px solid rgba(255, 255, 255, 0.4)',
-            marginBottom: '24px'
-          }}>
-            <p style={{
-              fontSize: '14px',
-              color: 'rgba(255, 255, 255, 0.85)',
-              fontStyle: 'italic',
-              margin: 0
-            }}>
-              {feature.example}
-            </p>
-          </div>
-
-          {/* Related domains */}
-          <div>
-            <p style={{
-              fontSize: '12px',
-              color: 'rgba(255, 255, 255, 0.6)',
-              marginBottom: '12px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              fontWeight: '600'
-            }}>Connected Domains</p>
+          {/* Example - only show if showExample is true */}
+          {feature.showExample && feature.example && (
             <div style={{
-              display: 'flex',
-              gap: '12px',
-              flexWrap: 'wrap'
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              borderRadius: '12px',
+              padding: '16px',
+              borderLeft: '3px solid rgba(255, 255, 255, 0.4)',
+              marginBottom: feature.showDomains ? '24px' : '0'
             }}>
-              {feature.relatedDomains.map(domainKey => {
-                const domain = domainIcons[domainKey];
-                return (
-                  <div
-                    key={domainKey}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                      padding: '8px 12px',
-                      borderRadius: '8px',
-                      fontSize: '14px',
-                      border: '1px solid rgba(255, 255, 255, 0.2)'
-                    }}
-                  >
-                    <span style={{ fontSize: '16px' }}>{domain.emoji}</span>
-                    <span style={{ color: '#ffffff', fontWeight: '500' }}>{domain.label}</span>
-                  </div>
-                );
-              })}
+              <p style={{
+                fontSize: '14px',
+                color: 'rgba(255, 255, 255, 0.85)',
+                fontStyle: 'italic',
+                margin: 0
+              }}>
+                {feature.example}
+              </p>
             </div>
-          </div>
+          )}
+
+          {/* Related domains - only show if showDomains is true */}
+          {feature.showDomains && (
+            <div>
+              <p style={{
+                fontSize: '12px',
+                color: 'rgba(255, 255, 255, 0.6)',
+                marginBottom: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                fontWeight: '600'
+              }}>Connected Domains</p>
+              <div style={{
+                display: 'flex',
+                gap: '12px',
+                flexWrap: 'wrap'
+              }}>
+                {feature.relatedDomains.map(domainKey => {
+                  const domain = domainIcons[domainKey];
+                  return (
+                    <div
+                      key={domainKey}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        border: '1px solid rgba(255, 255, 255, 0.2)'
+                      }}
+                    >
+                      <span style={{ fontSize: '16px' }}>{domain.emoji}</span>
+                      <span style={{ color: '#ffffff', fontWeight: '500' }}>{domain.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );

@@ -342,7 +342,7 @@ const SagaaHomepage: React.FC = () => {
           padding: '0 24px'
         }}>
           <div ref={addToRefs} className={styles.fadeInUp} style={{
-            textAlign: 'left',
+            textAlign: 'center',
             marginBottom: '32px'
           }}>
             <h2 style={{
@@ -362,25 +362,22 @@ const SagaaHomepage: React.FC = () => {
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
                   color: 'transparent'
-                }}>Partner.</span>
+                }}>Partner</span>
             </h2>
             <p style={{
               fontSize: '20px',
               color: '#6e6e73',
-              maxWidth: '768px',
+              maxWidth: '1280px',
               margin: '0 0 0 0',
               lineHeight: '1.6',
-              textAlign: 'left'
+              textAlign: 'center'
             }}>
               Anticipates your needs with timely reminders and smart suggestions before you even ask. As Sagaa learns from your interactions, preferences, and life context, it evolves as a proactive partner, staying ahead of what you need to achieve your goals
             </p>
           </div>
         </div>
         
-        <div style={{ width: '100%', textAlign: 'center', margin: '24px 0 8px 0' }}>
-          <span style={{ fontSize: '22px', color: '#007AFF', fontWeight: 350 }}>See how it works....</span>
-        </div>
-        
+            
         {/* Swiper */}
         <div ref={addToRefs} className={styles.fadeInUp}>
               <Swiper
@@ -418,9 +415,6 @@ const SagaaHomepage: React.FC = () => {
                   </div>
                 </SwiperSlide>
               </Swiper>
-            </div>
-            <div style={{ width: '100%', textAlign: 'center', margin: '24px 0 8px 0' }}>
-              <span style={{ fontSize: '22px', color: '#007AFF', fontWeight: 350 }}>Proactive intelligence applies across family, education, finance, health and all your life essentials</span>
             </div>
       </section>
 

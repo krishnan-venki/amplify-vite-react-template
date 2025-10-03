@@ -83,10 +83,7 @@ export const PersonalizedIntelligence_Section = () => {
           </div>
         </div>
         
-        <div style={{ width: '100%', textAlign: 'center', margin: '24px 0 8px 0' }}>
-          <span style={{ fontSize: '22px', color: '#007AFF', fontWeight: 350 }}>See how it works....</span>
-        </div>
-        
+                
         {/* Swiper */}
         <div ref={addToRefs} className={styles.fadeInUp}>
               <Swiper
