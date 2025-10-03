@@ -193,8 +193,8 @@ export function MobileChatDemo() {
                   }}
                 />
             {[
-              '✨ No manual reminders',
-              '✨ Keeps priorities in focus',
+              '🔔 No manual reminders',
+              '❤️ Keeps priorities in focus',
               '🧠 Timely, context-aware alerts',
               '✨ Takes action when you approve',
               '🧑‍🤝‍🧑 Surfaces community wisdom'

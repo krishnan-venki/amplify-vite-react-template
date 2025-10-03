@@ -22,6 +22,9 @@ const conversationScript = [
 export function StudentChatDemo() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [showTyping, setShowTyping] = useState(false);
+  const [isConversationRunning, setIsConversationRunning] = useState(false);
+  const [hasLeftView, setHasLeftView] = useState(false);
+  const [conversationCompleted, setConversationCompleted] = useState(false);
 
   const [userTypingText, setUserTypingText] = useState('');
   const [isUserTyping, setIsUserTyping] = useState(false);
@@ -79,6 +82,9 @@ export function StudentChatDemo() {
   };
 
   const runConversation = async () => {
+    if (isConversationRunning) return; // Prevent multiple runs
+    setIsConversationRunning(true);
+    setConversationCompleted(false);
     setMessages([]);
     
     for (let i = 0; i < conversationScript.length; i++) {
@@ -102,6 +108,9 @@ export function StudentChatDemo() {
       
       await new Promise(resolve => setTimeout(resolve, 1200));
     }
+    // Mark conversation as completed
+    setConversationCompleted(true);
+    setIsConversationRunning(false);
   };
 
   // Intersection Observer for auto-restart
@@ -109,11 +118,21 @@ export function StudentChatDemo() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Small delay to ensure smooth restart
-          const timer = setTimeout(() => {
-            runConversation();
-          }, 500);
-          return () => clearTimeout(timer);
+          // Only start conversation if:
+          // 1. Not currently running
+          // 2. Either conversation hasn't completed yet, OR user has left and come back
+          if (!isConversationRunning && (!conversationCompleted || hasLeftView)) {
+            const timer = setTimeout(() => {
+              runConversation();
+              setHasLeftView(false); // Reset the flag after starting
+            }, 500);
+            return () => clearTimeout(timer);
+          }
+        } else {
+          // User has left the view
+          if (conversationCompleted) {
+            setHasLeftView(true);
+          }
         }
       },
       { threshold: 0.3 }
@@ -124,7 +143,7 @@ export function StudentChatDemo() {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [isConversationRunning, conversationCompleted, hasLeftView]);
 
   return (
     <section 

@@ -352,12 +352,17 @@ const SagaaHomepage: React.FC = () => {
               marginBottom: '32px',
               lineHeight: '1.1'
             }}>              
-              <span style={{
-                background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}>Proactive partner</span>
+               <span style={{ 
+                  color: '#1d1d1f',
+                  backgroundColor: 'transparent'
+                }}>Proactive</span>{' '}
+                <span style={{
+                  background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  color: 'transparent'
+                }}>Partner.</span>
             </h2>
             <p style={{
               fontSize: '20px',

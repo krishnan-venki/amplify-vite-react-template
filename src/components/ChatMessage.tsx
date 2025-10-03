@@ -224,7 +224,7 @@ export function ChatMessage({ message, isUser, timestamp, messageType }: ChatMes
                     <span style={{ 
                       color: '#f6863bff',
                       fontSize: '18px'
-                    }}>✨</span>
+                    }}>🧑‍🤝‍🧑</span>
                  </div>
                  
 

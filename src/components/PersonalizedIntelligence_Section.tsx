@@ -48,7 +48,7 @@ export const PersonalizedIntelligence_Section = () => {
           padding: '0 24px'
         }}>
           <div ref={addToRefs} className={styles.fadeInUp} style={{
-            textAlign: 'left',
+            textAlign: 'center',
             marginBottom: '32px'
           }}>
             <h2 style={{
@@ -58,20 +58,25 @@ export const PersonalizedIntelligence_Section = () => {
               marginBottom: '32px',
               lineHeight: '1.1'
             }}>              
-              <span style={{
-                background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}>Personalized Intelligence</span>
+               <span style={{ 
+                    color: '#1d1d1f',
+                    backgroundColor: 'transparent'
+                }}>Personalized</span>{' '}
+                <span style={{
+                    background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    color: 'transparent'
+                }}>Intelligence</span>
             </h2>
             <p style={{
               fontSize: '20px',
               color: '#6e6e73',
-              maxWidth: '768px',
+              maxWidth: '1280px',
               margin: '0 0 0 0',
               lineHeight: '1.6',
-              textAlign: 'left'
+              textAlign: 'center'
             }}>
               Beyond just a chat application —personalized recommendations tailored to your preferences, and life events, powered by linked sources of truth and evolving insights as your life unfolds, to guide you to the next best step, on time.
             </p>
