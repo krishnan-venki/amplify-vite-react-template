@@ -1,5 +1,5 @@
-import HealthDeviceImg from '../assets/Health_Wearables.jpg';
-import SagaaIcon from '../assets/sagaa_48x48.png';
+import HealthDeviceImg from '../../assets/Health_Wearables.jpg';
+import SagaaIcon from '../../assets/sagaa_48x48.png';
 import React, { useState, useEffect } from 'react';
 import { Heart, Activity, Droplet, Moon, CheckCircle, TrendingDown, TrendingUp, Users, Award } from 'lucide-react';
 
