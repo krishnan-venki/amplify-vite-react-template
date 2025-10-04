@@ -10,6 +10,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import Login from './pages/Login';
+import SagaaHealthCarePage from './components/SagaaHealthCarePage';
 
 Amplify.configure(outputs);
 
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
       { path: 'home', element: <Home /> },
       { path: 'chat', element: <Chat /> },
       { path: 'login', element: <Login /> },
+      { path: 'healthcare', element: <SagaaHealthCarePage /> },
     ],
   },
 ]);
