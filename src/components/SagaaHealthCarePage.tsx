@@ -1,6 +1,6 @@
 import React from 'react';
 import {HealthcareCapabilities} from './HealthcareCapabilities';
-import {Smartdeviceintegration} from './SmartdeviceIntegration';
+import {SmartDeviceIntegration} from './SmartdeviceIntegration';
 import sagaaLogo from '../assets/sagaa_48x48.png';
 import heroImage from '../assets/Healthcare_Hero_Image.png';
 
@@ -66,7 +66,7 @@ const SagaaHealthCarePage: React.FC = () => {
         </div>
       </section>
       <HealthcareCapabilities />
-      <Smartdeviceintegration />
+      <SmartDeviceIntegration />
     </div>
   );
 };
