@@ -37,7 +37,7 @@ export const MedicationManagement = () => {
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
                   color: 'transparent'
-              }}>True Partnership</span>
+              }}>Simplified</span>
               </h2>
               <p style={{ 
                 fontSize: '20px', 

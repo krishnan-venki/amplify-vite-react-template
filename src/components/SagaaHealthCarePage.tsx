@@ -3,6 +3,7 @@ import {HealthcareCapabilities} from './HealthcareCapabilities';
 import {SmartDeviceIntegration} from './healthcare/SmartDeviceIntegration';
 import {MedicalRecordsIntegration} from './healthcare/MedicalRecordsIntegration';
 import {MedicationManagement} from './healthcare/MedicationManagement';
+import { AppointmentsAndCareTeamManagement } from './healthcare/CheckupAndAppointments';
 import sagaaLogo from '../assets/sagaa_48x48.png';
 import heroImage from '../assets/Healthcare_Hero_Image.png';
 
@@ -70,9 +71,11 @@ const SagaaHealthCarePage: React.FC = () => {
       </section>
       
       <HealthcareCapabilities />
+     
       <SmartDeviceIntegration />
       <MedicalRecordsIntegration />
       <MedicationManagement />
+      <AppointmentsAndCareTeamManagement />
     </div>
   );
 };
