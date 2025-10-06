@@ -34,14 +34,14 @@ export const ConnectedLife = () => {
 
   return (
         <section id="connected" style={{
-    padding: '60px 0',
-    backgroundColor: '#f9fafb'
-    }}>
-    <div style={{
-  maxWidth: '1280px',
-  margin: '0 auto',
-  padding: '0 24px'
-}}>
+            padding: '60px 0',
+            backgroundColor: '#f9fafb'
+            }}>
+            <div style={{
+        maxWidth: '1280px',
+        margin: '0 auto',
+        padding: '0 24px'
+        }}>
   {/* Title, Description and Image Row */}
   <div ref={addToRefs} style={{
     ...fadeInUpStyle,
@@ -74,7 +74,7 @@ export const ConnectedLife = () => {
         color: '#475569',
         lineHeight: '1.8'
       }}>
-        Life doesn't happen in silos. A new health goal / crisis impacts your finances. Family needs impacts your individual goals. A home repair affects your vacation plans. Sagaa connects the dots.
+        Life doesn't happen in silos. Sagaa understands how your decisions, events, and goals influence one another—guiding next steps shaped by your full reality, something no single-purpose app can do.
       </p>
     </div>
 
@@ -222,7 +222,7 @@ export const ConnectedLife = () => {
                     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
                     display: 'flex',
                     flexDirection: 'column',
-                    height: '800px',
+                    height: '720px',
                     overflow: 'hidden'
                 }}>
                 {/* Enhanced Header Section */}
@@ -452,7 +452,7 @@ export const ConnectedLife = () => {
                     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
                     display: 'flex',
                     flexDirection: 'column',
-                    height: '800px',
+                    height: '720px',
                     overflow: 'hidden'
                 }}>
                 {/* Enhanced Header Section */}
@@ -687,7 +687,7 @@ export const ConnectedLife = () => {
                 boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
                 display: 'flex',
                 flexDirection: 'column',
-                height: '800px',
+                height: '720px',
                 overflow: 'hidden'
                 }}>
                 {/* Enhanced Header Section */}
@@ -925,7 +925,7 @@ export const ConnectedLife = () => {
                 boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
                 display: 'flex',
                 flexDirection: 'column',
-                height: '800px',
+                height: '720px',
                 overflow: 'hidden'
                 }}>
                 {/* Enhanced Header Section */}
