@@ -1,14 +1,14 @@
 import React from 'react';
 import {HealthcareCapabilities} from './HealthcareCapabilities';
-import {SmartDeviceIntegration} from './healthcare/SmartDeviceIntegration';
-import {MedicalRecordsIntegration} from './healthcare/MedicalRecordsIntegration';
-import {MedicationManagement} from './healthcare/MedicationManagement';
-import { AppointmentsAndCareTeamManagement } from './healthcare/CheckupAndAppointments';
-import { MentalHealthAndWellness } from './healthcare/MentalHealthAndWellness';
-import { PreventativeCare } from './healthcare/PreventativeCare';
-import sagaaLogo from '../assets/sagaa_48x48.png';
-import heroImage from '../assets/Healthcare_Hero_Image.png';
-import { ChronicConditionManagement } from './healthcare/ChronicContionManagement';
+import {SmartDeviceIntegration} from './SmartDeviceIntegration';
+import {MedicalRecordsIntegration} from './MedicalRecordsIntegration';
+import {MedicationManagement} from './MedicationManagement';
+import { AppointmentsAndCareTeamManagement } from './CheckupAndAppointments';
+import { MentalHealthAndWellness } from './MentalHealthAndWellness';
+import { PreventativeCare } from './PreventativeCare';
+import sagaaLogo from '../../assets/sagaa_48x48.png';
+import heroImage from '../../assets/Healthcare_Hero_Image.png';
+import { ChronicConditionManagement } from './ChronicContionManagement';
 
 
 

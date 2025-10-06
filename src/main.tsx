@@ -10,7 +10,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import Login from './pages/Login';
-import SagaaHealthCarePage from './components/SagaaHealthCarePage';
+import SagaaHealthCarePage from './components/healthcare/SagaaHealthCarePage.tsx';
 
 Amplify.configure(outputs);
 
