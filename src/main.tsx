@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import Chat from './pages/Chat';
 import Login from './pages/Login';
 import SagaaHealthCarePage from './components/healthcare/SagaaHealthCarePage.tsx';
+import SagaaMoneyPage from './components/money/SagaaMoneyPage';
 
 Amplify.configure(outputs);
 
@@ -39,8 +40,9 @@ const router = createBrowserRouter([
       { path: 'home', element: <Home /> },
       { path: 'chat', element: <Chat /> },
       { path: 'login', element: <Login /> },
-      { path: 'healthcare', element: <SagaaHealthCarePage /> },
-      { path: 'sagaa-healthcare', element: <SagaaHealthCarePage /> },
+  { path: 'healthcare', element: <SagaaHealthCarePage /> },
+  { path: 'sagaa-healthcare', element: <SagaaHealthCarePage /> },
+  { path: 'money', element: <SagaaMoneyPage /> },
     ],
   },
 ]);

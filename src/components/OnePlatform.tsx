@@ -20,7 +20,7 @@ export  const OnePlatform = () => {
     {
       icon: GraduationCap,
       name: "Sagaa Education",
-      description: "Personalized learning intelligence that adapts to your goals and connects knowledge to real-world success.",
+      description: "Transforms academic data into intelligent guidance — connecting directly to your school's systems to deliver personalized recommendations that evolve with each student's unique learning journey.",
       gradient: "linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)",
       link: "/education"
     },
@@ -307,9 +307,9 @@ function VerticalCard({ vertical, Icon }: VerticalCardProps) {
           {vertical.description}
         </p>
         {/* Learn More Link */}
-        {vertical.name === 'Sagaa Healthcare' ? (
+        {(vertical.name === 'Sagaa Healthcare' || vertical.name === 'Sagaa Money') ? (
           <Link
-            to="/sagaa-healthcare"
+            to={vertical.name === 'Sagaa Healthcare' ? '/sagaa-healthcare' : '/money'}
             style={{
               display: 'inline-flex',
               alignItems: 'center',

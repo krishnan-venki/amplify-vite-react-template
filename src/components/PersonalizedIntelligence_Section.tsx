@@ -1,53 +1,24 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
-import styles from './SagaaHomepage.module.css';
-import { useEffect, useRef } from 'react';
+// ...existing code...
 import { StudentChatDemo } from './StudentChatDemo';
 
 export const PersonalizedIntelligence_Section = () => {
     
-      const fadeInElementsRef = useRef<HTMLDivElement[]>([]);
-      useEffect(() => {
-        // Fade in animation on scroll
-        const observerOptions = {
-          threshold: 0.1,
-          rootMargin: '0px 0px -100px 0px'
-        };
-    
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add(styles.visible);
-            }
-          });
-        }, observerOptions);
-    
-        // Observe all fade-in elements
-        fadeInElementsRef.current.forEach(el => {
-          if (el) observer.observe(el);
-        });
-    
-        return () => observer.disconnect();
-      }, []);
-    
-      const addToRefs = (el: HTMLDivElement | null) => {
-        if (el && !fadeInElementsRef.current.includes(el)) {
-          fadeInElementsRef.current.push(el);
-        }
-      };
+      // Fade-in effect removed
  
     return (
         <section id="growth" style={{
         padding: '60px 0',
         backgroundColor: '#f9fafb'
       }}>
+      <div style={{
+        maxWidth: '1280px',
+        margin: '0 auto',
+        padding: '0 24px'
+      }}>
         <div style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          padding: '0 24px'
-        }}>
-          <div ref={addToRefs} className={styles.fadeInUp} style={{
             textAlign: 'center',
             marginBottom: '32px'
           }}>
@@ -84,8 +55,8 @@ export const PersonalizedIntelligence_Section = () => {
         </div>
         
                 
-        {/* Swiper */}
-        <div ref={addToRefs} className={styles.fadeInUp}>
+  {/* Swiper */}
+  <div>
               <Swiper
                 spaceBetween={20}
                 slidesPerView={1.15}
