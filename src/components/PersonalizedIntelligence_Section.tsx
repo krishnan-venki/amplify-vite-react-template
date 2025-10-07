@@ -78,7 +78,7 @@ export const PersonalizedIntelligence_Section = () => {
               lineHeight: '1.6',
               textAlign: 'center'
             }}>
-              Beyond just a chat application —personalized recommendations tailored to your preferences, and life events, powered by linked sources of truth and evolving insights as your life unfolds, to guide you to the next best step, on time.
+              Intelligence that truly knows you — personalized recommendations tailored to your preferences, and life events, powered by linked sources of truth and evolving insights as your life unfolds, to guide you to the next best step, on time.
             </p>
           </div>
         </div>

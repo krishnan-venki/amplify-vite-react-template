@@ -6,7 +6,7 @@ export  const OnePlatform = () => {
     {
       icon: DollarSign,
       name: "Sagaa Money",
-      description: "AI-powered financial intelligence that transforms you from financial stress to confident wealth building.",
+      description: "AI-powered financial intelligence that transforms you from financial stress to confident wealth management.",
       gradient: "linear-gradient(135deg, #10b981 0%, #0d9488 100%)",
       link: "/money"
     },
