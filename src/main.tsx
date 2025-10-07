@@ -40,6 +40,7 @@ const router = createBrowserRouter([
       { path: 'chat', element: <Chat /> },
       { path: 'login', element: <Login /> },
       { path: 'healthcare', element: <SagaaHealthCarePage /> },
+      { path: 'sagaa-healthcare', element: <SagaaHealthCarePage /> },
     ],
   },
 ]);

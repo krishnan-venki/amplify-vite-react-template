@@ -4,6 +4,7 @@ import { fetchUserAttributes } from 'aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import sagaa48 from './assets/sagaa_48x48.png';
 import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const { user, signOut } = useAuthenticator();
@@ -70,6 +71,7 @@ function App() {
 
   return (
     <div className="app-shell">
+      <ScrollToTop />
       <div className="layout">
         <aside className="side-panel">
           <div className="side-inner">

@@ -18,6 +18,7 @@ import eveningInteraction from '../assets/Evening_Interactions.jpg';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import { ConnectedLife } from './ConnectedLife';
+import { OnePlatform } from './OnePlatform';
 
 const SagaaHomepage: React.FC = () => {
   const fadeInElementsRef = useRef<HTMLDivElement[]>([]);
@@ -330,7 +331,12 @@ const SagaaHomepage: React.FC = () => {
       {/* Community Wisdom Section */}
       <OneEcosystem />
       <div className={styles.sectionDivider}></div>
+      {/* One Platform Section */}
+      <OnePlatform />
+      <div className={styles.sectionDivider}></div>
       <PersonalizedIntelligence_Section />
+      <div className={styles.sectionDivider}></div>
+      <ConnectedLife />
       <div className={styles.sectionDivider}></div>
       {/* Proactive partner Section */}
       <section id="growth" style={{
@@ -1285,10 +1291,6 @@ const SagaaHomepage: React.FC = () => {
 
       {/* Community Wisdom Section */}
       <CommunityWisdomSection />
-
-      <div className={styles.sectionDivider}></div>
-
-      <ConnectedLife />
 
       <div className={styles.sectionDivider}></div>
 

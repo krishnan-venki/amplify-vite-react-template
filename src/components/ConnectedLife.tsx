@@ -134,7 +134,7 @@ export const ConnectedLife = () => {
                 border: '#7dd3fc'
                 },
                 { 
-                icon: '🧠', 
+                icon: '✨', 
                 title: 'Impact Analysis',
                 desc: 'Instantly calculates how changes affect all areas',
                 gradient: 'linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%)',
@@ -242,7 +242,7 @@ export const ConnectedLife = () => {
                         fontWeight: '600',
                         color: '#1d1d1f',
                         marginBottom: '20px'
-                    }}>Health Crisis meets Financial Reality</h3>
+                    }}>Health concern meets Financial Reality</h3>
                     
                     {/* Connected Domain Icons - Horizontal */}
                     <div style={{
@@ -600,7 +600,7 @@ export const ConnectedLife = () => {
                         lineHeight: '1.7',
                         fontSize: '15px',
                         marginBottom: '20px'
-                        }}>"I see you've engaged Sarah's AP Calculus tutor (Jake) and college counselor (Maria) through Sagaa's marketplace. This investment could unlock $40K+ in merit scholarships. Here's how we'll fund this 6-month commitment without derailing your other goals."</div>
+                        }}>"I see you've engaged Sarah's AP Calculus tutor (Jake) and college counselor (Maria) through Sagaa's marketplace. Great choice. Here's how we'll fund this 6-month commitment without derailing your other goals."</div>
                         
                         <div style={{
                         backgroundColor: '#eff6ff',
@@ -673,7 +673,7 @@ export const ConnectedLife = () => {
                     marginTop: 'auto',
                     paddingTop: '16px',
                     borderTop: '1px solid #ede9fe'
-                    }}>Why other apps miss this: Education platforms don't know your budget. Financial apps don't understand education ROI. Sagaa connects both—and found you verified providers.</div>
+                    }}>Why other apps miss this: Education platforms don't know your budget. Financial apps don't understand education needs. Sagaa connects both—and found you verified providers.</div>
                 </div>
                 </div>
             </SwiperSlide>
