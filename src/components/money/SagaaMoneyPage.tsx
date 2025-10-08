@@ -2,6 +2,10 @@ import React from 'react';
 import sagaaLogo from '../../assets/sagaa_48x48.png';
 import heroImage from '../../assets/Money_Hero_Image.png';
 import { FinanceCapabilities } from './SagaaMoneyCapabilities';
+import SmartExpenseTrackingSection from './SmartExpenseTrackingSection';
+import { PredictiveCashFlowDetail } from './PredictiveCashFlowDetail';
+import { UnifiedDashboardDetail } from './UnifiedDashboardDetail';
+
 
 const SagaaMoneyPage: React.FC = () => {
   return (
@@ -65,6 +69,10 @@ const SagaaMoneyPage: React.FC = () => {
         </div>
       </section>
       <FinanceCapabilities />
+      <PredictiveCashFlowDetail />
+      <UnifiedDashboardDetail />
+      <SmartExpenseTrackingSection />
+      
     </div>
   );
 };
