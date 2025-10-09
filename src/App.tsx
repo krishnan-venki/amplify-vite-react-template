@@ -4,7 +4,7 @@ import { fetchUserAttributes } from 'aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import sagaa48 from './assets/sagaa_48x48.png';
 import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import ScrollToTop from './components/ScrollToTop';
+import ScrollToTop from './components/homepage/ScrollToTop';
 
 function App() {
   const { user, signOut } = useAuthenticator();

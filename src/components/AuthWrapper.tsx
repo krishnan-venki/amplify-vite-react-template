@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import SagaaHomepage from '../components/SagaaHomepage';
+import SagaaHomepage from './homepage/SagaaHomepage';
 
 import { Outlet } from 'react-router-dom';
 

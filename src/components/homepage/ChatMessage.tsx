@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import sagaaIcon from '../assets/sagaa_48x48.png';
+import sagaaIcon from '../../assets/sagaa_48x48.png';
 
 interface ChatMessageProps {
   message: string;
   isUser: boolean;
   timestamp: string;
-  messageType?: 'reminder' | 'insight' | 'personalized_knowledge';
+  messageType?: 'reminder_Health' | 'insight' | 'reminder_Service';
 }
 
 export function ChatMessage({ message, isUser, timestamp, messageType }: ChatMessageProps) {
@@ -17,67 +17,8 @@ export function ChatMessage({ message, isUser, timestamp, messageType }: ChatMes
     return () => clearTimeout(timer);
   }, []);
 
-  // Function to parse and render numbered lists and bullet points
+  // Function to parse and render numbered lists
   const renderMessageContent = (text: string) => {
-    // Check for bullet point pattern
-    if (text.includes('• Stretch:') || text.includes('• Balanced:') || text.includes('• Time-Managed:')) {
-      const lines = text.split('\n');
-      const parts = [];
-      let currentSection = [];
-      
-      for (const line of lines) {
-        const trimmedLine = line.trim();
-        if (trimmedLine === '') {
-          if (currentSection.length > 0) {
-            parts.push(currentSection.join(' '));
-            currentSection = [];
-          }
-        } else {
-          currentSection.push(trimmedLine);
-        }
-      }
-      
-      if (currentSection.length > 0) {
-        parts.push(currentSection.join(' '));
-      }
-      
-      return (
-        <div>
-          {parts.map((part, index) => {
-            if (part.startsWith('•')) {
-              return (
-                <div 
-                  key={index}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '8px',
-                    marginBottom: index < parts.length - 1 ? '8px' : '0'
-                  }}
-                >
-                  <div style={{ color: '#007AFF', fontSize: '16px', marginTop: '1px' }}>•</div>
-                  <div style={{ flex: 1, lineHeight: '1.4' }}>
-                    {part.substring(1).trim()}
-                  </div>
-                </div>
-              );
-            } else {
-              return (
-                <div 
-                  key={index} 
-                  style={{ 
-                    marginBottom: index < parts.length - 1 ? '12px' : '0' 
-                  }}
-                >
-                  {part}
-                </div>
-              );
-            }
-          })}
-        </div>
-      );
-    }
-    
     // Check for specific technician message pattern
     if (text.includes('I found 3 trusted technicians')) {
       // Parse the technician message manually
@@ -98,38 +39,22 @@ export function ChatMessage({ message, isUser, timestamp, messageType }: ChatMes
             {intro}
           </div>
           
-          {/* List title */}
-          <div style={{ 
-            marginBottom: '8px',
-            fontWeight: '600',
-            fontSize: '15px',
-            color: isUser ? 'rgba(255, 255, 255, 0.9)' : '#333'
-          }}>
-            Available Technicians:
-          </div>
-          
-          {/* Numbered list with indent */}
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            gap: '10px', 
-            marginBottom: '12px',
-            marginLeft: '16px' // Indent the list
-          }}>
+          {/* Numbered list */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '12px' }}>
             {items.map((item, index) => (
               <div 
                 key={index}
                 style={{
                   display: 'flex',
                   alignItems: 'flex-start',
-                  gap: '10px'
+                  gap: '8px'
                 }}
               >
                 {/* Number badge */}
                 <div
                   style={{
-                    minWidth: '22px',
-                    height: '22px',
+                    minWidth: '20px',
+                    height: '20px',
                     borderRadius: '50%',
                     backgroundColor: isUser ? 'rgba(255, 255, 255, 0.2)' : '#007AFF',
                     color: 'white',
@@ -138,19 +63,14 @@ export function ChatMessage({ message, isUser, timestamp, messageType }: ChatMes
                     justifyContent: 'center',
                     fontSize: '12px',
                     fontWeight: '600',
-                    marginTop: '1px',
-                    flexShrink: 0
+                    marginTop: '1px'
                   }}
                 >
                   {index + 1}
                 </div>
                 
                 {/* Content */}
-                <div style={{ 
-                  flex: 1, 
-                  lineHeight: '1.4',
-                  paddingTop: '1px'
-                }}>
+                <div style={{ flex: 1, lineHeight: '1.4' }}>
                   {item}
                 </div>
               </div>
@@ -229,21 +149,7 @@ export function ChatMessage({ message, isUser, timestamp, messageType }: ChatMes
       }
     }
     
-    // Handle general line breaks for any other text
-    const lines = text.split('\n');
-    if (lines.length > 1) {
-      return (
-        <div>
-          {lines.map((line, index) => (
-            <div key={index} style={{ marginBottom: index < lines.length - 1 && line.trim() !== '' ? '8px' : '0' }}>
-              {line.trim() || '\u00A0'} {/* Non-breaking space for empty lines */}
-            </div>
-          ))}
-        </div>
-      );
-    }
-    
-    // Return normal text if no line breaks detected
+    // Return normal text if no numbered list detected
     return text;
   };
 
@@ -278,7 +184,7 @@ export function ChatMessage({ message, isUser, timestamp, messageType }: ChatMes
             display: 'block'
           }}
         >
-          {/* Message type icon at beginning of message */}
+          {/* Message type icon at beginning of message for bot messages */}
           {!isUser && messageType && (
             <span 
               style={{
@@ -289,33 +195,42 @@ export function ChatMessage({ message, isUser, timestamp, messageType }: ChatMes
                 verticalAlign: 'middle'
               }}
             >
+              {messageType === 'reminder_Health' && (
+                <div>
+                    <span style={{ 
+                      color: '#3b82f6',
+                      fontSize: '18px'
+                    }}>🔔</span>
+                    <span style={{ 
+                      color: '#3b82f6',
+                      fontSize: '18px'
+                    }}>❤️</span>
+                </div>
+              )}
+              {messageType === 'reminder_Service' && (
+                <div>
+                    <span style={{ 
+                      color: '#3b82f6',
+                      fontSize: '18px'
+                    }}>🔔</span>
+                    <span style={{ 
+                      color: '#3b82f6',
+                      fontSize: '18px'
+                    }}>🔧</span>
+                </div>
+              )}
               {messageType === 'insight' && (
                  <div>
                     <span style={{ 
                       color: '#f6863bff',
                       fontSize: '18px'
-                    }}>🧠</span>
-                    <span style={{ 
-                      color: '#f6863bff',
-                      fontSize: '18px'
-                    }}>✨</span>
+                    }}>🧑‍🤝‍🧑</span>
                  </div>
-              )}
-              {messageType === 'personalized_knowledge' && (
-                 <div>
-                    <span style={{ 
-                      color: '#f6863bff',
-                      fontSize: '18px'
-                    }}>🧠</span>
-                    <span style={{ 
-                      color: '#f6863bff',
-                      fontSize: '18px'
-                    }}>↔️</span>
-                 </div>
+                 
+
               )}
             </span>
           )}
-
           {renderMessageContent(message)}
         </div>
         <div
@@ -345,8 +260,6 @@ export function ChatMessage({ message, isUser, timestamp, messageType }: ChatMes
           }}
         />
       )}
-
-
     </div>
   );
 }

@@ -1,12 +1,12 @@
 import { useRef, useEffect } from 'react';
-import Title_Image  from '../assets/Connected_Life.jpg';
-import education_Finance_image  from '../assets/Education_to_Finance_Link.jpg';
-import homeCare_community_image  from '../assets/HomeCare_Community.jpg';
-import travel_insurance_image  from '../assets/Travel_Inurance.jpg';
-import health_finance_image  from '../assets/Health_Finance.jpg';
+import Title_Image  from '../../assets/Connected_Life.jpg';
+import education_Finance_image  from '../../assets/Education_to_Finance_Link.jpg';
+import homeCare_community_image  from '../../assets/HomeCare_Community.jpg';
+import travel_insurance_image  from '../../assets/Travel_Inurance.jpg';
+import health_finance_image  from '../../assets/Health_Finance.jpg';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
-import styles from './SagaaHomepage.module.css';
+import styles from '../SagaaHomepage.module.css';
 
 export const ConnectedLife = () => {
   const fadeInElementsRef = useRef<(HTMLDivElement | null)[]>([]);

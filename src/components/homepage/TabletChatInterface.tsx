@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { ChatMessage } from './TabletChatmessage';
 import { TypingIndicator } from './TypingIndicator';
 import { BottomNavMenu } from './BottomNavMenu';
-import sagaaIcon from '../assets/sagaa_48x48.png';
+import sagaaIcon from '../../assets/sagaa_48x48.png';
 
 interface Message {
   id: number;

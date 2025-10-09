@@ -1,4 +1,4 @@
-import styles from './SagaaHomepage.module.css';
+import styles from '../SagaaHomepage.module.css';
 import { useRef, useEffect, useState } from 'react';
 
 export const OneEcosystem = () => {
