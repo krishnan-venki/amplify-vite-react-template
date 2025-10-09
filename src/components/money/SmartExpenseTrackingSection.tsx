@@ -43,7 +43,7 @@ export const SmartExpenseTrackingSection: React.FC = () => {
             lineHeight: '1.2',
             fontSize: 'clamp(36px, 4vw, 56px)',
           }}>
-            <span style={{ color: '#1d1d1f' }}>Smart Expense Tracking.</span>{' '}
+            <span style={{ color: '#1d1d1f' }}>Expense Tracking.</span>{' '}
             <span style={{
               background: 'linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%)',
               WebkitBackgroundClip: 'text',

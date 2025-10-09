@@ -5,6 +5,8 @@ import { FinanceCapabilities } from './SagaaMoneyCapabilities';
 import SmartExpenseTrackingSection from './SmartExpenseTrackingSection';
 import { PredictiveCashFlowDetail } from './PredictiveCashFlowDetail';
 import { UnifiedDashboardDetail } from './UnifiedDashboardDetail';
+import { DynamicBudgetSection } from './DynamicBudget';
+import TaxOptimizationSection from './TaxPlanning';
 
 
 const SagaaMoneyPage: React.FC = () => {
@@ -68,10 +70,15 @@ const SagaaMoneyPage: React.FC = () => {
           </div>
         </div>
       </section>
+      
       <FinanceCapabilities />
-      <PredictiveCashFlowDetail />
       <UnifiedDashboardDetail />
       <SmartExpenseTrackingSection />
+      <DynamicBudgetSection />
+      <TaxOptimizationSection />
+      <PredictiveCashFlowDetail />
+      
+      
       
     </div>
   );
