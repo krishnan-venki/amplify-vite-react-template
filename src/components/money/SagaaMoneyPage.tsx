@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import sagaaLogo from '../../assets/sagaa_48x48.png';
 import heroImage from '../../assets/Money_Hero_Image.png';
 import { FinanceCapabilities } from './SagaaMoneyCapabilities';
@@ -8,9 +9,12 @@ import { DynamicBudgetSection } from './DynamicBudget';
 import TaxOptimizationSection from './TaxPlanning';
 import { AskSagaaSection } from './AskSagaaAboutFinance';
 import { LifeTimelineProjector } from './LifeTimelineProjector';
+import { FinanceProactiveGuardian } from './FinanceProactiveGuardian';
+
 
 
 const SagaaMoneyPage: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div style={{ width: '100vw', minHeight: '100vh', backgroundColor: 'white', position: 'absolute', top: 0, left: 0, zIndex: 9999 }}>
       {/* Top Navigation Bar */}
@@ -34,7 +38,12 @@ const SagaaMoneyPage: React.FC = () => {
               <div style={{ fontSize: '28px', fontWeight: '700', background: 'linear-gradient(135deg, #000000 0%, #333333 50%, #007AFF 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', letterSpacing: '-0.5px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>Sagaa Money</div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-              <button style={{ color: 'black', fontSize: '14px', fontWeight: '500', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease' }}>Home</button>
+              <button
+                style={{ color: 'black', fontSize: '14px', fontWeight: '500', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease' }}
+                onClick={() => navigate('/')}
+              >
+                Home
+              </button>
               <button style={{ color: 'black', fontSize: '14px', fontWeight: '500', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease' }}>Features</button>
               <button style={{ color: 'black', fontSize: '14px', fontWeight: '500', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease' }}>Contact</button>
             </div>
@@ -73,7 +82,9 @@ const SagaaMoneyPage: React.FC = () => {
       </section>
       
       <FinanceCapabilities />
+      
       <AskSagaaSection />
+      <FinanceProactiveGuardian />
       <UnifiedDashboardDetail />
       <SmartExpenseTrackingSection />
       <DynamicBudgetSection />

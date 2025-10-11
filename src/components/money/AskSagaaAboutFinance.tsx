@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { MessageCircle, Send, Sparkles, TrendingUp } from 'lucide-react';
 import sagaaIcon from '../../assets/sagaa_48x48.png';
+import FinanceMultiDeviceMockup from './FinanceMultiDeviceMockup';
 
 export const AskSagaaSection = () => {
   const [activeChatExample, setActiveChatExample] = useState(0);
@@ -379,7 +380,7 @@ export const AskSagaaSection = () => {
               Just ask Sagaa your financial questions and get personalized, context-aware guidance that connects all aspects of your money.
             </p>
 
-           
+            <FinanceMultiDeviceMockup />
           </div>
 
           <div style={{ 

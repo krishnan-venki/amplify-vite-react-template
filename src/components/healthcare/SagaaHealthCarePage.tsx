@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {HealthcareCapabilities} from './HealthcareCapabilities';
 import {SmartDeviceIntegration} from './SmartDeviceIntegration';
 import {MedicalRecordsIntegration} from './MedicalRecordsIntegration';
@@ -17,6 +18,7 @@ import { HealthcareProactiveGuardian } from './HealthcareProactiveGuardian';
 
 
 const SagaaHealthCarePage: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div style={{ width: '100vw', minHeight: '100vh', backgroundColor: 'white', position: 'absolute', top: 0, left: 0, zIndex: 9999 }}>
       {/* Top Navigation Bar */}
@@ -40,7 +42,12 @@ const SagaaHealthCarePage: React.FC = () => {
               <div style={{ fontSize: '28px', fontWeight: '700', background: 'linear-gradient(135deg, #000000 0%, #333333 50%, #007AFF 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', letterSpacing: '-0.5px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>Sagaa Healthcare</div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-              <button style={{ color: 'black', fontSize: '14px', fontWeight: '500', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease' }}>Home</button>
+              <button
+                style={{ color: 'black', fontSize: '14px', fontWeight: '500', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease' }}
+                onClick={() => navigate('/')}
+              >
+                Home
+              </button>
               <button style={{ color: 'black', fontSize: '14px', fontWeight: '500', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease' }}>Features</button>
               <button style={{ color: 'black', fontSize: '14px', fontWeight: '500', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease' }}>Contact</button>
             </div>
