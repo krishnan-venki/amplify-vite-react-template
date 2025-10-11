@@ -1,4 +1,4 @@
-import { Smartphone, Speaker, Watch, Monitor, Mail, Car, CheckCircle, Sparkles } from 'lucide-react';
+import { Smartphone, Speaker, Watch, Monitor, Mail, CheckCircle, Sparkles } from 'lucide-react';
 
 export const HealthcareProactiveGuardian = () => {
   const notifications = [
@@ -279,7 +279,7 @@ export const HealthcareProactiveGuardian = () => {
                   </span>
                 </div>
 
-                {/* Car */}
+
                 
               </div>
 
