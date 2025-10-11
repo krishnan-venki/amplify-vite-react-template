@@ -350,7 +350,7 @@ export const SmartDeviceIntegration = () => {
                     alt="Sagaa"
                     style={{ width: '28px', height: '28px', borderRadius: '50%' }}
                   />
-                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#6b7280' }}>Community Insights</div>
+                  <div style={{ fontSize: '14px', fontWeight: '600', color: '#6b7280' }}>Sagaa Insights</div>
                   <div style={{
                     marginLeft: 'auto',
                     fontSize: '11px',

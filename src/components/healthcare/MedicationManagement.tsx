@@ -53,7 +53,8 @@ export const MedicationManagement = () => {
             <div style={{ 
               display: 'flex', 
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
+              position: 'relative'
             }}>
               <img 
                 src={Medication_Image} 
@@ -62,29 +63,37 @@ export const MedicationManagement = () => {
                   width: '100%',
                   maxWidth: '450px',
                   height: 'auto',
-                  borderRadius: '24px',
-                  boxShadow: '0 8px 32px rgba(3,105,161,0.15)'
+                  borderRadius: '24px'
                 }}
               />
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: '70%',
+                background: 'linear-gradient(to right, transparent, #f8fafc)',
+                pointerEvents: 'none'
+              }} />
             </div>
           </div>
 
-          {/* Main Example */}
+          {/* Main Example - Updated with OTC Interaction */}
           <div style={{ background: 'white', borderRadius: '24px', padding: '40px', marginBottom: '48px', boxShadow: '0 8px 32px rgba(219,39,119,0.12)' }}>
             <div style={{ display: 'flex', alignItems: 'start', gap: '16px', marginBottom: '24px' }}>
-              <div style={{ width: '48px', height: '48px', background: 'linear-gradient(135deg, #db2777 0%, #f472b6 100%)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 }}>💊</div>
+              <div style={{ width: '48px', height: '48px', background: 'linear-gradient(135deg, #dc2626 0%, #ef4444 100%)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 }}>⚠️</div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: '14px', color: '#6e6e73', marginBottom: '8px' }}>7:15 AM • Context-Aware Reminder</div>
+                <div style={{ fontSize: '14px', color: '#6e6e73', marginBottom: '8px' }}>2:15 PM • Interaction Alert</div>
                 <p style={{ fontSize: '18px', color: '#1d1d1f', lineHeight: '1.6', margin: 0, fontStyle: 'italic' }}>
-                  "Good morning! Take your levothyroxine now—you have a 7:30 AM meeting so this ensures the 30-minute food gap. Your coffee is ready (I see your smart coffee maker just finished)."
+                  "I noticed a Walgreens purchase 20 minutes ago (receipt scan). If you bought ibuprofen or Advil, be cautious - you're on Lisinopril for blood pressure. NSAIDs can reduce its effectiveness and increase kidney strain. Check with Dr. Chen before taking. Want me to message him?"
                 </p>
               </div>
             </div>
             <div style={{ paddingLeft: '64px', borderLeft: '2px solid #fce7f3' }}>
-              <div style={{ fontSize: '14px', color: '#6e6e73', marginBottom: '12px', fontWeight: 600 }}>Context Used:</div>
+              <div style={{ fontSize: '14px', color: '#6e6e73', marginBottom: '12px', fontWeight: 600 }}>Intelligence Used:</div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {['📅 Calendar', '⏰ Timing Requirements', '🏠 Smart Home Devices', '💊 Medication Rules'].map(tag => (
-                  <span key={tag} style={{ background: '#fce7f3', color: '#db2777', padding: '6px 12px', borderRadius: '8px', fontSize: '13px' }}>{tag}</span>
+                {['🧾 Receipt Scanning', '💊 Prescription Records', '⚠️ Drug Interaction Database', '👨‍⚕️ Doctor Communication'].map(tag => (
+                  <span key={tag} style={{ background: '#fee2e2', color: '#dc2626', padding: '6px 12px', borderRadius: '8px', fontSize: '13px' }}>{tag}</span>
                 ))}
               </div>
             </div>
@@ -144,7 +153,7 @@ export const MedicationManagement = () => {
 
           {/* Detailed Scenario: Medication Effectiveness */}
           <div style={{ background: 'white', borderRadius: '24px', padding: '40px', marginBottom: '24px', boxShadow: '0 8px 32px rgba(219,39,119,0.12)' }}>
-            <h3 style={{ fontSize: '24px', fontWeight: 600, marginBottom: '24px', color: '#0369a1' }}>Example: Blood Pressure Medication Tracking</h3>
+            <h3 style={{ fontSize: '24px', fontWeight: 600, marginBottom: '24px', color: '#0369a1' }}>Blood Pressure Medication Tracking</h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
               <div style={{ padding: '20px', background: '#f9fafb', borderRadius: '12px' }}>
                 <div style={{ fontSize: '13px', color: '#6e6e73', marginBottom: '8px', fontWeight: 600 }}>WEEK 1 (Pre-Medication)</div>

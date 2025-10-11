@@ -9,6 +9,8 @@ import { PreventativeCare } from './PreventativeCare';
 import sagaaLogo from '../../assets/sagaa_48x48.png';
 import heroImage from '../../assets/Healthcare_Hero_Image.png';
 import { ChronicConditionManagement } from './ChronicContionManagement';
+import { AskSagaaHealthSection } from './AskSagaaABoutHealth';
+import { HealthcareProactiveGuardian } from './HealthcareProactiveGuardian';
 
 
 
@@ -77,6 +79,8 @@ const SagaaHealthCarePage: React.FC = () => {
       </section>
       
       <HealthcareCapabilities />
+      <AskSagaaHealthSection />
+      <HealthcareProactiveGuardian />
       <SmartDeviceIntegration />
       <MedicalRecordsIntegration />
       <MedicationManagement />

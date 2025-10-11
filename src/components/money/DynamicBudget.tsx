@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
-import { Target, TrendingUp, Zap } from 'lucide-react';
 
-export const DynamicBudgetSection: React.FC = () => {
-  const [selectedBudgetView, setSelectedBudgetView] = useState('current');
+import {  TrendingUp, Zap  } from 'lucide-react';
 
+export const DynamicBudgetSection = () => {
   const budgetCategories = [
     { 
       category: 'Groceries', 
       icon: '🛒',
       allocated: 700, 
       spent: 420, 
-      projected: 680,
+      percentage: 60,
       trend: 'on-track',
       color: '#10b981',
       insight: 'Meal prepping keeping you on track'
@@ -20,7 +18,7 @@ export const DynamicBudgetSection: React.FC = () => {
       icon: '🍽️',
       allocated: 250, 
       spent: 120, 
-      projected: 230,
+      percentage: 48,
       trend: 'under',
       color: '#3b82f6',
       insight: 'Under budget - reallocate $50?'
@@ -30,8 +28,8 @@ export const DynamicBudgetSection: React.FC = () => {
       icon: '🚗',
       allocated: 350, 
       spent: 280, 
-      projected: 365,
-      trend: 'over',
+      percentage: 80,
+      trend: 'watch',
       color: '#f59e0b',
       insight: 'Gas prices up 8% this month'
     },
@@ -40,7 +38,7 @@ export const DynamicBudgetSection: React.FC = () => {
       icon: '🎬',
       allocated: 150, 
       spent: 95, 
-      projected: 140,
+      percentage: 63,
       trend: 'on-track',
       color: '#8b5cf6',
       insight: 'Consistent with your habits'
@@ -132,8 +130,18 @@ export const DynamicBudgetSection: React.FC = () => {
             }}>Breathe With Life.</span>
           </h2>
 
+          <p style={{
+            fontSize: '1.15rem',
+            color: '#6b7280',
+            lineHeight: '1.7',
+            maxWidth: '800px',
+            margin: '0 auto 32px'
+          }}>
+            AI-powered budgets that adapt to life changes, learn from your patterns, and proactively suggest optimizations. Multiple methodologies supported with real-time monitoring and predictive adjustments.
+          </p>
+
           {/* Feature Pills */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center', marginTop: '32px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
             {[
               'AI-Powered Adjustments',
               'Multiple Methodologies',
@@ -158,508 +166,392 @@ export const DynamicBudgetSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Main Budget Tracking Section */}
+        {/* Budget Categories Overview */}
         <div style={{ marginBottom: '80px' }}>
+          <h3 style={{
+            fontSize: '1.8rem',
+            fontWeight: 600,
+            color: '#1e293b',
+            marginBottom: '32px',
+            textAlign: 'center'
+          }}>
+            Real-Time Budget Tracking
+          </h3>
+
           <div style={{ 
             display: 'grid',
-            gridTemplateColumns: '1fr 400px',
-            gap: '32px',
-            alignItems: 'start'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '20px'
           }}>
-            
-            {/* Left Side - Budget Categories Grid */}
-            <div>
-              {/* View Selector */}
-              <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
-                <button
-                  onClick={() => setSelectedBudgetView('current')}
-                  style={{
-                    flex: 1,
-                    background: selectedBudgetView === 'current' ? 'linear-gradient(135deg, #059669 0%, #10b981 100%)' : 'white',
-                    color: selectedBudgetView === 'current' ? 'white' : '#6b7280',
-                    border: 'none',
-                    padding: '12px 24px',
-                    borderRadius: '12px',
-                    fontSize: '0.95rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-                  }}
-                >
-                  Current Month
-                </button>
-                <button
-                  onClick={() => setSelectedBudgetView('projected')}
-                  style={{
-                    flex: 1,
-                    background: selectedBudgetView === 'projected' ? 'linear-gradient(135deg, #059669 0%, #10b981 100%)' : 'white',
-                    color: selectedBudgetView === 'projected' ? 'white' : '#6b7280',
-                    border: 'none',
-                    padding: '12px 24px',
-                    borderRadius: '12px',
-                    fontSize: '0.95rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-                  }}
-                >
-                  Projected
-                </button>
-              </div>
-
-              {/* Budget Categories */}
-              <div style={{ 
-                display: 'grid',
-                gap: '16px'
-              }}>
-                {budgetCategories.map((cat, idx) => {
-                  const percentage = selectedBudgetView === 'current' 
-                    ? (cat.spent / cat.allocated) * 100 
-                    : (cat.projected / cat.allocated) * 100;
-                  const amount = selectedBudgetView === 'current' ? cat.spent : cat.projected;
-                  
-                  return (
-                    <div key={idx} style={{
-                      background: 'white',
-                      borderRadius: '12px',
-                      padding: '16px',
-                      boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-                      border: `2px solid ${cat.color}20`,
-                      transition: 'all 0.3s ease',
-                      cursor: 'pointer'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.boxShadow = `0 4px 16px ${cat.color}30`;
-                      e.currentTarget.style.borderColor = cat.color;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
-                      e.currentTarget.style.borderColor = `${cat.color}20`;
-                    }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '12px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                          <div style={{
-                            width: '40px',
-                            height: '40px',
-                            borderRadius: '10px',
-                            background: `${cat.color}15`,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '20px'
-                          }}>
-                            {cat.icon}
-                          </div>
-                          <div>
-                            <div style={{ fontSize: '1rem', fontWeight: 600, color: '#1e293b' }}>
-                              {cat.category}
-                            </div>
-                            <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '2px' }}>
-                              {cat.insight}
-                            </div>
-                          </div>
-                        </div>
-                        <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontSize: '1.1rem', fontWeight: 700, color: cat.color }}>
-                            ${amount}
-                          </div>
-                          <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                            of ${cat.allocated}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Progress Bar */}
-                      <div style={{
-                        width: '100%',
-                        height: '8px',
-                        background: '#e2e8f0',
-                        borderRadius: '4px',
-                        overflow: 'hidden',
-                        marginBottom: '10px'
-                      }}>
-                        <div style={{
-                          width: `${Math.min(percentage, 100)}%`,
-                          height: '100%',
-                          background: percentage > 100 ? '#ef4444' : percentage > 90 ? '#f59e0b' : cat.color,
-                          borderRadius: '4px',
-                          transition: 'width 0.5s ease'
-                        }} />
-                      </div>
-
-                      {/* Status Badge */}
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{
-                          fontSize: '0.75rem',
-                          fontWeight: 600,
-                          color: percentage > 100 ? '#ef4444' : percentage > 90 ? '#f59e0b' : cat.color,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.5px'
-                        }}>
-                          {Math.round(percentage)}% {selectedBudgetView === 'current' ? 'Spent' : 'Projected'}
-                        </span>
-                        {cat.trend === 'under' && (
-                          <span style={{
-                            fontSize: '0.7rem',
-                            padding: '3px 10px',
-                            borderRadius: '10px',
-                            background: '#dcfce7',
-                            color: '#166534',
-                            fontWeight: 600
-                          }}>
-                            Under Budget
-                          </span>
-                        )}
-                        {cat.trend === 'over' && (
-                          <span style={{
-                            fontSize: '0.7rem',
-                            padding: '3px 10px',
-                            borderRadius: '10px',
-                            background: '#fee2e2',
-                            color: '#991b1b',
-                            fontWeight: 600
-                          }}>
-                            Over Budget
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Right Side - Title, Description, and Age of Money Card */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              <div>
-                <div style={{
-                  display: 'inline-block',
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  letterSpacing: '1.5px',
-                  color: '#059669',
-                  marginBottom: '16px',
-                  textTransform: 'uppercase'
-                }}>
-                  ADAPTIVE INTELLIGENCE
-                </div>
-                
-                <p style={{
-                  fontSize: '1.05rem',
-                  color: '#6b7280',
-                  lineHeight: '1.7',
-                  margin: 0
-                }}>
-                  AI-powered budgets that adapt to life changes, learn from your patterns, and proactively suggest optimizations. Multiple methodologies supported with real-time monitoring and predictive adjustments.
-                </p>
-              </div>
-
-              {/* Age of Money Card */}
-              <div style={{
+            {budgetCategories.map((cat, idx) => (
+              <div key={idx} style={{
                 background: 'white',
-                borderRadius: '12px',
-                padding: '20px',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
-                border: '2px solid #10b981'
+                borderRadius: '16px',
+                padding: '24px',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+                border: `2px solid ${cat.color}20`,
+                transition: 'all 0.3s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-4px)';
+                e.currentTarget.style.boxShadow = `0 8px 24px ${cat.color}30`;
+                e.currentTarget.style.borderColor = cat.color;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
+                e.currentTarget.style.borderColor = `${cat.color}20`;
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-                  <Target size={20} color="#10b981" />
-                  <h4 style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0, color: '#374151' }}>
-                    Age of Money
-                  </h4>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '12px',
+                    background: `${cat.color}15`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '24px'
+                  }}>
+                    {cat.icon}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 600, color: '#1e293b' }}>
+                      {cat.category}
+                    </div>
+                    <div style={{ fontSize: '0.85rem', color: '#64748b' }}>
+                      ${cat.spent} of ${cat.allocated}
+                    </div>
+                  </div>
                 </div>
 
+                {/* Progress Bar */}
                 <div style={{
-                  background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
-                  borderRadius: '10px',
-                  padding: '16px',
-                  marginBottom: '14px',
-                  border: '1px solid #10b981'
+                  width: '100%',
+                  height: '10px',
+                  background: '#e2e8f0',
+                  borderRadius: '5px',
+                  overflow: 'hidden',
+                  marginBottom: '12px'
                 }}>
-                  <div style={{ fontSize: '0.75rem', color: '#047857', fontWeight: 700, letterSpacing: '0.5px', marginBottom: '6px' }}>
-                    CURRENT STATUS
-                  </div>
-                  <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#065f46', marginBottom: '4px', lineHeight: '1' }}>
-                    23
-                  </div>
-                  <div style={{ fontSize: '0.9rem', color: '#059669', fontWeight: 600 }}>
-                    days
-                  </div>
+                  <div style={{
+                    width: `${Math.min(cat.percentage, 100)}%`,
+                    height: '100%',
+                    background: cat.percentage > 90 ? '#ef4444' : cat.color,
+                    borderRadius: '5px',
+                    transition: 'width 0.5s ease'
+                  }} />
+                </div>
+
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  marginBottom: '8px'
+                }}>
+                  <span style={{
+                    fontSize: '0.95rem',
+                    fontWeight: 600,
+                    color: cat.color
+                  }}>
+                    {cat.percentage}% Used
+                  </span>
+                  {cat.trend === 'under' && (
+                    <span style={{
+                      fontSize: '0.75rem',
+                      padding: '4px 12px',
+                      borderRadius: '12px',
+                      background: '#dcfce7',
+                      color: '#166534',
+                      fontWeight: 600
+                    }}>
+                      Under Budget
+                    </span>
+                  )}
+                  {cat.trend === 'watch' && (
+                    <span style={{
+                      fontSize: '0.75rem',
+                      padding: '4px 12px',
+                      borderRadius: '12px',
+                      background: '#fef3c7',
+                      color: '#92400e',
+                      fontWeight: 600
+                    }}>
+                      Monitor
+                    </span>
+                  )}
                 </div>
 
                 <div style={{
+                  fontSize: '0.85rem',
+                  color: '#64748b',
+                  fontStyle: 'italic',
                   display: 'flex',
-                  alignItems: 'start',
-                  gap: '10px',
-                  background: '#fef3c7',
-                  padding: '12px',
-                  borderRadius: '8px',
-                  borderLeft: '3px solid #f59e0b'
+                  alignItems: 'center',
+                  gap: '6px'
                 }}>
-                  <TrendingUp size={16} color="#f59e0b" style={{ flexShrink: 0, marginTop: '2px' }} />
-                  <div>
-                    <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#92400e', marginBottom: '4px' }}>
-                      Great Progress!
-                    </div>
-                    <div style={{ fontSize: '0.8rem', color: '#78350f', lineHeight: 1.5 }}>
-                      Up from 12 days three months ago. You're living less paycheck-to-paycheck.
-                    </div>
-                  </div>
+                  <TrendingUp size={14} color={cat.color} />
+                  {cat.insight}
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
 
         {/* Budget Methodologies Section */}
         <div style={{ marginBottom: '80px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <h3 style={{
+              fontSize: '1.8rem',
+              fontWeight: 600,
+              color: '#1e293b',
+              marginBottom: '16px'
+            }}>
+              Choose Your Budgeting Philosophy
+            </h3>
+            <p style={{
+              fontSize: '1.05rem',
+              color: '#6b7280',
+              lineHeight: '1.7',
+              maxWidth: '700px',
+              margin: '0 auto'
+            }}>
+              Zero-based, envelope, 50/30/20, or pay yourself first—Sagaa supports what works for you and adapts as your life changes.
+            </p>
+          </div>
+
           <div style={{ 
             display: 'grid',
-            gridTemplateColumns: '400px 1fr',
-            gap: '32px',
-            alignItems: 'start'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: '20px'
           }}>
-            
-            {/* Left Side - Title and Description */}
-            <div>
-              <div style={{
-                display: 'inline-block',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                letterSpacing: '1.5px',
-                color: '#059669',
-                marginBottom: '16px',
-                textTransform: 'uppercase'
-              }}>
-                YOUR WAY, YOUR METHOD
-              </div>
-              
-              <p style={{
-                fontSize: '1.05rem',
-                color: '#6b7280',
-                lineHeight: '1.7',
-                margin: 0,
-                marginBottom: '16px'
-              }}>
-                Choose the budgeting methodology that fits your psychology. Zero-based, envelope, 50/30/20, or pay yourself first—Sagaa supports what works for you and adapts as your life changes.
-              </p>
-
-              <div style={{
+            {budgetingMethods.map((method, idx) => (
+              <div key={idx} style={{
                 background: 'white',
-                borderRadius: '12px',
-                padding: '16px',
-                border: '2px solid #10b98120',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+                borderRadius: '16px',
+                padding: '24px',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+                border: `2px solid ${method.color}20`,
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                textAlign: 'center'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-6px)';
+                e.currentTarget.style.boxShadow = `0 8px 24px ${method.color}30`;
+                e.currentTarget.style.borderColor = method.color;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
+                e.currentTarget.style.borderColor = `${method.color}20`;
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '20px' }}>✨</span>
-                  <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#059669' }}>
-                    AI-Powered Recommendation
-                  </span>
-                </div>
-                <p style={{ fontSize: '0.9rem', color: '#64748b', lineHeight: 1.5, margin: 0 }}>
-                  Not sure which method suits you? Sagaa analyzes your spending patterns, financial goals, and behavioral psychology to recommend the approach most likely to succeed for your situation.
-                </p>
-              </div>
-            </div>
-
-            {/* Right Side - Method Cards */}
-            <div style={{ 
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '16px'
-            }}>
-              {budgetingMethods.map((method, idx) => (
-                <div key={idx} style={{
-                  background: 'white',
-                  borderRadius: '12px',
-                  padding: '18px',
-                  boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-                  border: `2px solid ${method.color}20`,
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = `0 6px 20px ${method.color}30`;
-                  e.currentTarget.style.borderColor = method.color;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
-                  e.currentTarget.style.borderColor = `${method.color}20`;
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '16px',
+                  background: `${method.color}15`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '32px',
+                  margin: '0 auto 16px'
                 }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '12px',
-                    background: `${method.color}15`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '24px',
-                    marginBottom: '12px'
-                  }}>
-                    {method.icon}
-                  </div>
-                  <h4 style={{ fontSize: '1rem', fontWeight: 600, color: '#1e293b', marginBottom: '6px' }}>
-                    {method.method}
-                  </h4>
-                  <p style={{ fontSize: '0.85rem', color: '#64748b', lineHeight: 1.4, marginBottom: '10px' }}>
-                    {method.desc}
-                  </p>
-                  <div style={{ fontSize: '0.75rem', color: method.color, fontWeight: 600 }}>
-                    {method.users}
-                  </div>
+                  {method.icon}
                 </div>
-              ))}
-            </div>
+                <h4 style={{ 
+                  fontSize: '1.1rem', 
+                  fontWeight: 600, 
+                  color: '#1e293b', 
+                  marginBottom: '8px' 
+                }}>
+                  {method.method}
+                </h4>
+                <p style={{ 
+                  fontSize: '0.9rem', 
+                  color: '#64748b', 
+                  lineHeight: 1.5, 
+                  marginBottom: '12px' 
+                }}>
+                  {method.desc}
+                </p>
+                <div style={{ 
+                  fontSize: '0.8rem', 
+                  color: method.color, 
+                  fontWeight: 600 
+                }}>
+                  {method.users}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Adaptive Intelligence Section */}
         <div>
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <h3 style={{
+              fontSize: '1.8rem',
+              fontWeight: 600,
+              color: '#1e293b',
+              marginBottom: '16px'
+            }}>
+              Life-Aware Budget Adjustments
+            </h3>
+            <p style={{
+              fontSize: '1.05rem',
+              color: '#6b7280',
+              lineHeight: '1.7',
+              maxWidth: '800px',
+              margin: '0 auto'
+            }}>
+              Sagaa continuously monitors your life context and automatically suggests budget adjustments when patterns change. New baby? Job change? Moving? Your budget adapts proactively.
+            </p>
+          </div>
+
           <div style={{ 
             display: 'grid',
-            gridTemplateColumns: '1fr 400px',
-            gap: '32px',
-            alignItems: 'start'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '20px'
           }}>
-            
-            {/* Left Side - Adaptive Insights Cards */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {adaptiveInsights.map((insight, idx) => (
-                <div key={idx} style={{
-                  background: 'white',
-                  borderRadius: '12px',
-                  padding: '18px',
-                  boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-                  border: `2px solid ${insight.color}20`,
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateX(4px)';
-                  e.currentTarget.style.boxShadow = `0 4px 16px ${insight.color}30`;
-                  e.currentTarget.style.borderColor = insight.color;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateX(0)';
-                  e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
-                  e.currentTarget.style.borderColor = `${insight.color}20`;
-                }}>
-                  <div style={{ display: 'flex', gap: '16px' }}>
+            {adaptiveInsights.map((insight, idx) => (
+              <div key={idx} style={{
+                background: 'white',
+                borderRadius: '16px',
+                padding: '24px',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+                border: `2px solid ${insight.color}20`,
+                transition: 'all 0.3s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateX(4px)';
+                e.currentTarget.style.boxShadow = `0 4px 16px ${insight.color}30`;
+                e.currentTarget.style.borderColor = insight.color;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateX(0)';
+                e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
+                e.currentTarget.style.borderColor = `${insight.color}20`;
+              }}>
+                <div style={{ display: 'flex', gap: '16px' }}>
+                  <div style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '14px',
+                    background: `${insight.color}15`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '28px',
+                    flexShrink: 0
+                  }}>
+                    {insight.icon}
+                  </div>
+                  <div style={{ flex: 1 }}>
                     <div style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '12px',
-                      background: `${insight.color}15`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '24px',
-                      flexShrink: 0
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.5px',
+                      color: insight.color,
+                      marginBottom: '8px',
+                      textTransform: 'uppercase'
                     }}>
-                      {insight.icon}
+                      {insight.trigger}
                     </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{
-                        fontSize: '0.7rem',
+                    <div style={{ 
+                      fontSize: '1.05rem', 
+                      fontWeight: 600, 
+                      color: '#1e293b', 
+                      marginBottom: '6px' 
+                    }}>
+                      {insight.change}
+                    </div>
+                    <div style={{ 
+                      fontSize: '0.9rem', 
+                      color: '#64748b', 
+                      marginBottom: '14px',
+                      lineHeight: 1.5
+                    }}>
+                      {insight.action}
+                    </div>
+                    <div style={{ 
+                      display: 'flex', 
+                      justifyContent: 'space-between', 
+                      alignItems: 'center' 
+                    }}>
+                      <span style={{
+                        fontSize: '1.2rem',
                         fontWeight: 700,
-                        letterSpacing: '0.5px',
-                        color: insight.color,
-                        marginBottom: '6px',
-                        textTransform: 'uppercase'
+                        color: insight.color
                       }}>
-                        {insight.trigger}
-                      </div>
-                      <div style={{ fontSize: '0.95rem', fontWeight: 600, color: '#1e293b', marginBottom: '4px' }}>
-                        {insight.change}
-                      </div>
-                      <div style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '10px' }}>
-                        {insight.action}
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{
-                          fontSize: '1.1rem',
-                          fontWeight: 700,
-                          color: insight.color
-                        }}>
-                          {insight.adjustment}
-                        </span>
-                        <button style={{
-                          background: insight.color,
-                          color: 'white',
-                          border: 'none',
-                          padding: '6px 16px',
-                          borderRadius: '8px',
-                          fontSize: '0.8rem',
-                          fontWeight: 600,
-                          cursor: 'pointer',
-                          transition: 'all 0.2s ease'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = 'scale(1.05)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = 'scale(1)';
-                        }}>
-                          Apply Adjustment
-                        </button>
-                      </div>
+                        {insight.adjustment}
+                      </span>
+                      <button style={{
+                        background: insight.color,
+                        color: 'white',
+                        border: 'none',
+                        padding: '8px 18px',
+                        borderRadius: '10px',
+                        fontSize: '0.85rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.05)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                      }}>
+                        Apply
+                      </button>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-
-            {/* Right Side - Title and Description */}
-            <div>
-              <div style={{
-                display: 'inline-block',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                letterSpacing: '1.5px',
-                color: '#059669',
-                marginBottom: '16px',
-                textTransform: 'uppercase'
-              }}>
-                LIFE-AWARE BUDGETING
               </div>
-              
-              <p style={{
-                fontSize: '1.05rem',
-                color: '#6b7280',
-                lineHeight: '1.7',
-                margin: 0,
-                marginBottom: '24px'
-              }}>
-                Sagaa continuously monitors your life context and automatically suggests budget adjustments when patterns change. New baby? Job change? Moving? Your budget adapts proactively.
-              </p>
+            ))}
+          </div>
 
-              {/* Smart Reallocation Example Card */}
-              <div style={{
-                background: 'white',
-                borderRadius: '12px',
-                padding: '18px',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
-                border: '2px solid #10b98120'
+          {/* Smart Reallocation Example */}
+          <div style={{
+            marginTop: '40px',
+            background: 'white',
+            borderRadius: '16px',
+            padding: '32px',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+            border: '2px solid #10b98120'
+          }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '12px', 
+              marginBottom: '16px' 
+            }}>
+              <Zap size={24} color="#10b981" />
+              <h4 style={{ 
+                fontSize: '1.2rem', 
+                fontWeight: 600, 
+                margin: 0, 
+                color: '#374151' 
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Zap size={20} color="#10b981" />
-                  <h4 style={{ fontSize: '1rem', fontWeight: 600, margin: 0, color: '#374151' }}>
-                    Smart Reallocation
-                  </h4>
-                </div>
-                <p style={{ fontSize: '0.9rem', color: '#64748b', lineHeight: 1.5, fontStyle: 'italic', margin: 0 }}>
-                  "Your grocery spending ($420) is 30% over budget, but dining out is $120 under. I see you've been meal prepping (detected via Sunday grocery trips + reduced weekday restaurant visits). Should I reallocate $50/month from dining to groceries to reflect your new healthy habit?"
-                </p>
-              </div>
+                Smart Reallocation in Action
+              </h4>
             </div>
+            <p style={{ 
+              fontSize: '1rem', 
+              color: '#64748b', 
+              lineHeight: 1.6, 
+              fontStyle: 'italic', 
+              margin: 0,
+              padding: '16px',
+              background: '#f0fdf4',
+              borderRadius: '12px',
+              borderLeft: '4px solid #10b981'
+            }}>
+              "Your grocery spending ($420) is 30% over budget, but dining out is $120 under. I see you've been meal prepping (detected via Sunday grocery trips + reduced weekday restaurant visits). Should I reallocate $50/month from dining to groceries to reflect your new healthy habit?"
+            </p>
           </div>
         </div>
 

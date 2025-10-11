@@ -3,10 +3,11 @@ import sagaaLogo from '../../assets/sagaa_48x48.png';
 import heroImage from '../../assets/Money_Hero_Image.png';
 import { FinanceCapabilities } from './SagaaMoneyCapabilities';
 import SmartExpenseTrackingSection from './SmartExpenseTrackingSection';
-import { PredictiveCashFlowDetail } from './PredictiveCashFlowDetail';
 import { UnifiedDashboardDetail } from './UnifiedDashboardDetail';
 import { DynamicBudgetSection } from './DynamicBudget';
 import TaxOptimizationSection from './TaxPlanning';
+import { AskSagaaSection } from './AskSagaaAboutFinance';
+import { LifeTimelineProjector } from './LifeTimelineProjector';
 
 
 const SagaaMoneyPage: React.FC = () => {
@@ -72,11 +73,12 @@ const SagaaMoneyPage: React.FC = () => {
       </section>
       
       <FinanceCapabilities />
+      <AskSagaaSection />
       <UnifiedDashboardDetail />
       <SmartExpenseTrackingSection />
       <DynamicBudgetSection />
       <TaxOptimizationSection />
-      <PredictiveCashFlowDetail />
+      <LifeTimelineProjector />
       
       
       

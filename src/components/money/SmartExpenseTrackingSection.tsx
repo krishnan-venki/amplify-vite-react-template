@@ -1,13 +1,13 @@
 import React from 'react';
 import { TrendingUp, Tag, Zap } from 'lucide-react';
 
-export const SmartExpenseTrackingSection: React.FC = () => {
+const SmartExpenseTrackingSection: React.FC = () => {
 
   const spendingData = [
-    { month: 'Jan', amount: 280, stress: 'low' },
-    { month: 'Feb', amount: 320, stress: 'medium' },
-    { month: 'Mar', amount: 340, stress: 'high' },
-    { month: 'Apr', amount: 290, stress: 'low' }
+    { month: 'Jan', amount: 2280, stress: 'low' },
+    { month: 'Feb', amount: 2520, stress: 'medium' },
+    { month: 'Mar', amount: 2840, stress: 'high' },
+    { month: 'Apr', amount: 2390, stress: 'low' }
   ];
 
   const categoryBreakdown = [
@@ -55,7 +55,7 @@ export const SmartExpenseTrackingSection: React.FC = () => {
         </div>
 
         {/* Main Dashboard Section - Redesigned with Overlapping Cards */}
-        <div style={{ marginBottom: '40px' }}>
+        <div style={{ marginBottom: '140px' }}>
           <div style={{ 
             display: 'grid',
             gridTemplateColumns: '400px 1fr',
@@ -110,7 +110,7 @@ export const SmartExpenseTrackingSection: React.FC = () => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
                   <TrendingUp size={22} color="#f59e0b" />
                   <h4 style={{ fontSize: '1.1rem', fontWeight: 600, margin: 0, color: '#374151' }}>
-                    Spending Patterns
+                    Monthly Spending Trends
                   </h4>
                 </div>
                 
@@ -119,7 +119,7 @@ export const SmartExpenseTrackingSection: React.FC = () => {
                     <div key={idx} style={{ marginBottom: '16px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                         <span style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 500 }}>{data.month}</span>
-                        <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1f2937' }}>${data.amount}</span>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1f2937' }}>${data.amount.toLocaleString()}</span>
                       </div>
                       <div style={{
                         width: '100%',
@@ -129,7 +129,7 @@ export const SmartExpenseTrackingSection: React.FC = () => {
                         overflow: 'hidden'
                       }}>
                         <div style={{
-                          width: `${(data.amount / 400) * 100}%`,
+                          width: `${(data.amount / 3000) * 100}%`,
                           height: '100%',
                           background: data.stress === 'high' ? '#ef4444' : data.stress === 'medium' ? '#f59e0b' : '#10b981',
                           borderRadius: '4px',
@@ -153,7 +153,7 @@ export const SmartExpenseTrackingSection: React.FC = () => {
                         Pattern Detected
                       </strong>
                       <p style={{ margin: 0, fontSize: '0.85rem', color: '#78350f', lineHeight: 1.6 }}>
-                        80% of dining overspending occurs on high-stress workdays near your office
+                        March spending increased 13% due to dining overspending on high-stress workdays near your office
                       </p>
                     </div>
                   </div>
@@ -163,7 +163,7 @@ export const SmartExpenseTrackingSection: React.FC = () => {
               {/* Category Breakdown Card - In Front, overlapping slightly */}
               <div style={{
                 position: 'absolute',
-                top: '50px',
+                top: '120px',
                 left: '380px',
                 width: '400px',
                 background: 'white',
@@ -176,7 +176,7 @@ export const SmartExpenseTrackingSection: React.FC = () => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
                   <Tag size={22} color="#8b5cf6" />
                   <h4 style={{ fontSize: '1.1rem', fontWeight: 600, margin: 0, color: '#374151' }}>
-                    Category Breakdown
+                    Category Breakdown - March
                   </h4>
                 </div>
 
@@ -295,7 +295,7 @@ export const SmartExpenseTrackingSection: React.FC = () => {
 
             {/* Right Side - Title and Description */}
             <div>
-             <div style={{
+              <div style={{
                 display: 'inline-block',
                 fontSize: '0.75rem',
                 fontWeight: 700,
@@ -304,7 +304,7 @@ export const SmartExpenseTrackingSection: React.FC = () => {
                 marginBottom: '16px',
                 textTransform: 'uppercase'
               }}>
-                Advanced Features
+                Advance Features
               </div>
               <p style={{
                 fontSize: '1.05rem',
