@@ -27,7 +27,7 @@ export  const OnePlatform = () => {
     {
       icon: Home,
       name: "Sagaa Life Essentials",
-      description: "Seamless home and asset management with trusted community services - everything maintained, nothing forgotten.",
+      description: "Intelligent Properties, assets, and household management with predictive maintenance and trusted community services—everything optimized, nothing overlooked.",
       gradient: "linear-gradient(135deg, #f59e0b 0%, #f97316 100%)",
       link: "/life-essentials"
     }

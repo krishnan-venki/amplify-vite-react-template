@@ -93,15 +93,15 @@ export function StudentChatDemo() {
       if (script.isUser) {
         // User messages show typing in input field first
         await new Promise(resolve => setTimeout(resolve, 800));
-        await typeUserMessage(script.message, 60);
+            await typeUserMessage(script.message, 15); // Twice as fast for user
         addMessage(script.message, true);
       } else {
         // Bot messages show typing indicator first
         setShowTyping(true);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+            // No delay before Sagaa's message
         
         // Type the message while keeping typing indicator visible
-        await typeMessage(script.message, 30);
+            await typeMessage(script.message, 8); // Twice as fast for Sagaa
         setShowTyping(false);
         addMessage(script.message, false, script.messageType);
       }
