@@ -3,7 +3,7 @@ import "./App.css";
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import sagaa48 from './assets/sagaa_48x48.png';
-import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import ScrollToTop from './components/homepage/ScrollToTop';
 
 function App() {
@@ -92,36 +92,84 @@ function App() {
           <div className="side-inner">
             <div className="brand">
               <h1 className="title"><img src={sagaa48} alt="" aria-hidden="true" className="brand-icon" />Sagaa</h1>
-              <p className="subtitle">Your AI companion</p>
+              <p className="subtitle">Your AI Ecosystem</p>
             </div>
             <nav className="side-nav" aria-label="Main">
-              <NavLink to="/home" end>
-                <svg className="nav-icon home-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fill="currentColor" d="M3 10.5l9-7.5 9 7.5V20a2 2 0 01-2 2h-5v-6h-4v6H5a2 2 0 01-2-2v-9.5z" />
+              {/* Dashboard */}
+              <NavLink to="/dashboard" end>
+                <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
                 </svg>
-                <span>Home</span>
+                <span>Dashboard</span>
               </NavLink>
-              <button type="button" className="side-nav-btn new-chat-btn" onClick={onNewChat}>
-                <svg className="nc-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="2" />
-                  <path d="M12 8v8M8 12h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+
+              {/* Divider */}
+              <div style={{ height: '1px', background: '#e5e7eb', margin: '12px 0' }} />
+
+              {/* Money Vertical */}
+              <NavLink to="/money/dashboard">
+                <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
+                  <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="M12 6v12M9 9c0-1.1.9-2 2-2h2a2 2 0 110 4h-2a2 2 0 100 4h2c1.1 0 2-.9 2-2" />
                 </svg>
-                <span>New Chat</span>
+                <span>Money</span>
+              </NavLink>
+
+              {/* Healthcare Vertical */}
+              <NavLink to="/healthcare/dashboard">
+                <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+                <span>Healthcare</span>
+              </NavLink>
+
+              {/* Education Vertical */}
+              <NavLink to="/education/dashboard" style={{ opacity: 0.5, pointerEvents: 'none' }}>
+                <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z" />
+                </svg>
+                <span>Education</span>
+              </NavLink>
+
+              {/* Life Essentials Vertical */}
+              <NavLink to="/life/dashboard" style={{ opacity: 0.5, pointerEvents: 'none' }}>
+                <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+                <span>Life Essentials</span>
+              </NavLink>
+
+              {/* Divider */}
+              <div style={{ height: '1px', background: '#e5e7eb', margin: '12px 0' }} />
+
+              {/* Chat */}
+              <button type="button" className="side-nav-btn" onClick={onNewChat}>
+                <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
+                </svg>
+                <span>Chat with Sagaa</span>
               </button>
-              <Link to="#">
-                <svg className="nav-icon chat-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fill="currentColor" d="M4 5h16a2 2 0 012 2v7a2 2 0 01-2 2H9l-4 3v-3H4a2 2 0 01-2-2V7a2 2 0 012-2zm3 4a1 1 0 100 2h10a1 1 0 100-2H7zm0 4a1 1 0 100 2h6a1 1 0 100-2H7z" />
+
+              {/* Community */}
+              <NavLink to="/community">
+                <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
                 </svg>
-                <span>Chats</span>
-              </Link>
+                <span>Community</span>
+              </NavLink>
+
+              {/* Divider */}
+              <div style={{ height: '1px', background: '#e5e7eb', margin: '12px 0' }} />
+
+              {/* Notifications */}
               <button
                 type="button"
-                className={`side-nav-btn notif-btn ${hasNotifs ? 'has-notifs' : ''}`}
+                className={`side-nav-btn ${hasNotifs ? 'has-notifs' : ''}`}
                 title="Notifications"
               >
                 <span className="icon-wrap">
-                  <svg className="bell" viewBox="0 0 24 24" aria-hidden="true">
-                    <path fill="currentColor" d="M12 2a6 6 0 00-6 6v2.1c0 .8-.32 1.57-.88 2.13l-.73.73A1.75 1.75 0 005 16.75h14a1.75 1.75 0 001.6-2.45l-.73-.73A3 3 0 0118 10.1V8a6 6 0 00-6-6zm0 20a3 3 0 01-2.995-2.824L9 19h6a3 3 0 01-2.824 2.995L12 22z"/>
+                  <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill="currentColor" d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z" />
                   </svg>
                   {hasNotifs && <span className="dot" aria-hidden="true" />}
                 </span>

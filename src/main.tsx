@@ -8,6 +8,7 @@ import { Amplify } from "aws-amplify";
 import outputs from "../amplify_outputs.json";
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
 import Chat from './pages/Chat';
 import Login from './pages/Login';
 import SignIn from './pages/SignIn';
@@ -40,13 +41,16 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="home" replace /> },
       { path: 'home', element: <Home /> },
+      { path: 'dashboard', element: <Dashboard /> },
       { path: 'chat', element: <Chat /> },
       { path: 'login', element: <Login /> },
       { path: 'signin', element: <SignIn /> },
       { path: 'signup', element: <SignUp /> },
       { path: 'healthcare', element: <SagaaHealthCarePage /> },
       { path: 'sagaa-healthcare', element: <SagaaHealthCarePage /> },
+      { path: 'healthcare/dashboard', element: <SagaaHealthCarePage /> },
       { path: 'money', element: <SagaaMoneyPage /> },
+      { path: 'money/dashboard', element: <SagaaMoneyPage /> },
     ],
   },
 ]);

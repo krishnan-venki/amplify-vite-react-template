@@ -1,5 +1,3 @@
-
-
 import UpcomingEvents from "../components/UpcomingEvents";
 import FutureEvents from "../components/FutureEvents";
 import { useAuthenticator } from '@aws-amplify/ui-react';
@@ -12,9 +10,6 @@ import SagaaHomepage from '../components/homepage/SagaaHomepage';
 
 export default function Home() {
   const { user } = useAuthenticator((context) => [context.user]);
-  
-
-  
   const [activeSection, setActiveSection] = useState('Events');
   const sections = ['Events', 'Insights', 'Health', 'Finance', 'News'];
   const [fullName, setFullName] = useState('');

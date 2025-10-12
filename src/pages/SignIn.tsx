@@ -60,7 +60,7 @@ export default function SignIn() {
           // ignore malformed
         }
       }
-      window.location.href = '/home';
+      window.location.href = '/dashboard';
     } catch (err: any) {
       if (err.name === 'UserNotConfirmedException') {
         setError('Please verify your email before signing in. Check your inbox for the verification code.');
