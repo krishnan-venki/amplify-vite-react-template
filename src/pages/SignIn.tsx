@@ -1,12 +1,11 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { signIn } from 'aws-amplify/auth';
-import { useNavigate, Link, useLocation, useSearchParams } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import sagaa48 from '../assets/sagaa_48x48.png';
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [searchParams] = useSearchParams();
   const { user } = useAuthenticator(context => [context.user]);
   const [formData, setFormData] = useState({
