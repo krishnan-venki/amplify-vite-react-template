@@ -217,9 +217,9 @@ const SagaaHomepage: React.FC = () => {
             alignItems: 'center'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <img 
-                src={sagaaLogo} 
-                alt="Sagaa Stylist Logo" 
+              <img
+                src={sagaaLogo}
+                alt="Sagaa Stylist Logo"
                 style={{
                   width: '32px',
                   height: '32px'
@@ -239,7 +239,9 @@ const SagaaHomepage: React.FC = () => {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '32px'
+              gap: '32px',
+              flex: 1,
+              justifyContent: 'flex-end'
             }}>
               <button onClick={() => scrollToSection('ambient')} style={{
                 color: 'black',
@@ -306,8 +308,21 @@ const SagaaHomepage: React.FC = () => {
               }} onMouseLeave={(e) => {
                 e.currentTarget.style.color = 'black';
               }}>Connected</button>
-              <button onClick={() => navigate('/login')} style={{
-                backgroundColor: 'black',
+              <button onClick={() => navigate('/signin')} style={{
+                color: 'black',
+                fontSize: '14px',
+                fontWeight: '500',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'color 0.3s ease'
+              }} onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#6b7280';
+              }} onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'black';
+              }}>Sign In</button>
+              <button onClick={() => navigate('/signup')} style={{
+                background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
                 color: 'white',
                 padding: '8px 24px',
                 borderRadius: '50px',
@@ -315,12 +330,12 @@ const SagaaHomepage: React.FC = () => {
                 fontWeight: '500',
                 border: 'none',
                 cursor: 'pointer',
-                transition: 'background-color 0.3s ease'
+                transition: 'all 0.3s ease'
               }} onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#374151';
+                e.currentTarget.style.background = 'linear-gradient(135deg, #0a3a54 0%, #025a7f 50%, #0269a1 100%)';
               }} onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'black';
-              }}>Join Ecosystem</button>
+                e.currentTarget.style.background = 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)';
+              }}>Sign Up</button>
             </div>
           </div>
         </div>
@@ -1964,7 +1979,7 @@ const SagaaHomepage: React.FC = () => {
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <button onClick={() => navigate('/login')} style={{
+              <button onClick={() => navigate('/signup')} style={{
                 backgroundColor: 'white',
                 color: 'black',
                 padding: '16px 48px',

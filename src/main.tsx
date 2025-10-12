@@ -10,6 +10,8 @@ import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import Login from './pages/Login';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 import SagaaHealthCarePage from './components/healthcare/SagaaHealthCarePage.tsx';
 import SagaaMoneyPage from './components/money/SagaaMoneyPage';
 
@@ -40,9 +42,11 @@ const router = createBrowserRouter([
       { path: 'home', element: <Home /> },
       { path: 'chat', element: <Chat /> },
       { path: 'login', element: <Login /> },
-  { path: 'healthcare', element: <SagaaHealthCarePage /> },
-  { path: 'sagaa-healthcare', element: <SagaaHealthCarePage /> },
-  { path: 'money', element: <SagaaMoneyPage /> },
+      { path: 'signin', element: <SignIn /> },
+      { path: 'signup', element: <SignUp /> },
+      { path: 'healthcare', element: <SagaaHealthCarePage /> },
+      { path: 'sagaa-healthcare', element: <SagaaHealthCarePage /> },
+      { path: 'money', element: <SagaaMoneyPage /> },
     ],
   },
 ]);

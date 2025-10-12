@@ -69,6 +69,21 @@ function App() {
     navigate('/chat');
   };
 
+  // Check if current route is an auth page (should not show sidebar)
+  const isAuthPage = location.pathname === '/signin' ||
+                     location.pathname === '/signup' ||
+                     location.pathname === '/login';
+
+  // If it's an auth page, render without layout
+  if (isAuthPage) {
+    return (
+      <>
+        <ScrollToTop />
+        <Outlet />
+      </>
+    );
+  }
+
   return (
     <div className="app-shell">
       <ScrollToTop />
@@ -115,7 +130,7 @@ function App() {
             </nav>
             {!user && (
               <div className="side-bottom">
-                <button type="button" className="side-nav-btn login-btn" onClick={() => navigate('/login')}>
+                <button type="button" className="side-nav-btn login-btn" onClick={() => navigate('/signin')}>
                   <svg className="nav-icon login-icon" viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="10" cy="8" r="3" fill="currentColor" />
                     <path fill="currentColor" d="M2 19a8 8 0 0116 0v1H2v-1z" />
