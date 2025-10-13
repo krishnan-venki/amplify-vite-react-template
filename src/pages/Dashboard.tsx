@@ -2,12 +2,116 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { fetchUserAttributes } from 'aws-amplify/auth';
-import { DollarSign, Heart, GraduationCap, Home as HomeIcon, ArrowRight, TrendingUp, Bell, Calendar, Activity } from 'lucide-react';
+import { DollarSign, Heart, GraduationCap, Home as HomeIcon, ArrowRight, TrendingUp, Bell, Calendar, Activity, CreditCard, Target, Wallet, TrendingDown, Footprints, Moon, Droplet } from 'lucide-react';
+
+// Mini Metric Card Component for vertical cards
+interface MiniMetricProps {
+  icon: any;
+  label: string;
+  value: string;
+  trend?: string;
+  trendUp?: boolean;
+  color: string;
+  progress?: number;
+  delay: number;
+}
+
+const MiniMetric: React.FC<MiniMetricProps> = ({ icon: Icon, label, value, trend, trendUp, color, progress, delay }) => {
+  const [show, setShow] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setShow(true), delay);
+  }, [delay]);
+
+  return (
+    <div 
+      style={{
+        padding: '10px',
+        background: `linear-gradient(135deg, ${color}08 0%, #fff 100%)`,
+        borderRadius: '8px',
+        border: `1px solid ${color}20`,
+        transform: show ? 'translateY(0)' : 'translateY(10px)',
+        opacity: show ? 1 : 0,
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+        <div style={{
+          width: '28px',
+          height: '28px',
+          borderRadius: '8px',
+          background: `linear-gradient(135deg, ${color}20 0%, ${color}10 100%)`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'all 0.3s ease',
+          transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
+          boxShadow: isHovered ? `0 4px 12px ${color}30` : 'none'
+        }}>
+          <Icon size={14} style={{ color }} />
+        </div>
+        <span style={{ fontSize: '11px', fontWeight: '500', color: '#6b7280' }}>{label}</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', marginBottom: progress !== undefined ? '6px' : '0' }}>
+        <div style={{ fontSize: '16px', fontWeight: '700', color: '#111827' }}>
+          {value}
+        </div>
+        {trend && (
+          <div style={{
+            fontSize: '10px',
+            color: trendUp ? '#10b981' : '#ef4444',
+            fontWeight: '600',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '2px'
+          }}>
+            {trendUp ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
+            {trend}
+          </div>
+        )}
+      </div>
+      {progress !== undefined && (
+        <div style={{
+          width: '100%',
+          height: '3px',
+          background: '#e5e7eb',
+          borderRadius: '2px',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            width: `${progress}%`,
+            height: '100%',
+            background: color,
+            borderRadius: '2px',
+            transition: 'width 1s ease-out',
+          }} />
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default function Dashboard() {
   const { user } = useAuthenticator((context) => [context.user]);
   const navigate = useNavigate();
   const [fullName, setFullName] = useState('');
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
+  const handleAskSagaa = (verticalId: string, verticalName: string, gradient: string) => {
+    // Navigate to chat page with context
+    navigate('/chat', { 
+      state: { 
+        context: {
+          id: verticalId,
+          name: verticalName,
+          gradient: gradient
+        }
+      } 
+    });
+  };
 
   useEffect(() => {
     async function getName() {
@@ -35,11 +139,19 @@ export default function Dashboard() {
       bgGradient: 'linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%)',
       route: '/money/dashboard',
       metrics: {
-        label: 'Total Balance',
-        value: '$24,580',
+        label: 'Net Worth',
+        value: '$127.3K',
         change: '+12.5%'
       },
-      alerts: 2
+      alerts: 0,
+      detailedMetrics: [
+        { icon: Wallet, label: 'Liquid Cash', value: '$24.6K', trend: 'Available', trendUp: true, color: '#10b981' },
+        { icon: CreditCard, label: 'Monthly Expense', value: '$4.2K', trend: 'Till date', trendUp: false, color: '#ef4444', progress: 58 },
+        { icon: TrendingUp, label: 'Investments', value: '+8.4%', trend: 'YTD', trendUp: true, color: '#8b5cf6' },
+        { icon: Target, label: 'Budget', value: '65%', trend: 'Used', color: '#f59e0b', progress: 65 },
+        { icon: Bell, label: 'Pending Bills', value: '$1.8K', trend: 'Due soon', trendUp: false, color: '#ef4444' },
+        { icon: Target, label: 'Vacation Fund', value: '$7.2K/$10K', trend: '72%', trendUp: true, color: '#10b981', progress: 72 }
+      ]
     },
     {
       id: 'healthcare',
@@ -49,11 +161,19 @@ export default function Dashboard() {
       bgGradient: 'linear-gradient(135deg, #fef2f2 0%, #fdf2f8 100%)',
       route: '/healthcare/dashboard',
       metrics: {
-        label: 'Next Appointment',
+        label: 'Next Checkup',
         value: 'Dec 15',
         change: '3 days'
       },
-      alerts: 1
+      alerts: 0,
+      detailedMetrics: [
+        { icon: Calendar, label: 'Checkups Due', value: '2', trend: 'Schedule now', trendUp: false, color: '#f59e0b' },
+        { icon: Droplet, label: 'Blood Pressure', value: '120/78', trend: '2 hrs ago', trendUp: true, color: '#06b6d4' },
+        { icon: Activity, label: 'Blood Sugar', value: '98 mg/dL', trend: '4 hrs ago', trendUp: true, color: '#8b5cf6' },
+        { icon: Footprints, label: 'Steps Today', value: '8,420', trend: '+12%', trendUp: true, color: '#10b981' },
+        { icon: Moon, label: 'Sleep Score', value: '85%', trend: 'Good', color: '#3b82f6', progress: 85 },
+        { icon: Target, label: 'Weight Loss', value: '8.5/10 lbs', trend: '85%', trendUp: true, color: '#10b981', progress: 85 }
+      ]
     },
     {
       id: 'education',
@@ -189,19 +309,20 @@ export default function Dashboard() {
             return (
               <div
                 key={vertical.id}
-                onClick={() => vertical.metrics.value !== 'Q1 2025' && navigate(vertical.route)}
+                onClick={() => vertical.metrics.value !== 'Q1 2026' && navigate(vertical.route)}
                 style={{
                   background: vertical.bgGradient,
                   borderRadius: 'clamp(16px, 2vw, 20px)',
                   padding: 'clamp(20px, 3vw, 28px)',
-                  cursor: vertical.metrics.value !== 'Q1 2025' ? 'pointer' : 'not-allowed',
+                  cursor: vertical.metrics.value !== 'Q1 2026' ? 'pointer' : 'not-allowed',
                   transition: 'all 0.3s',
                   border: '1px solid rgba(0,0,0,0.05)',
                   position: 'relative',
-                  opacity: vertical.metrics.value === 'Q1 2025' ? 0.6 : 1
+                  opacity: vertical.metrics.value === 'Q1 2026' ? 0.6 : 1,
+                  minHeight: vertical.detailedMetrics ? '440px' : 'auto'
                 }}
                 onMouseEnter={(e) => {
-                  if (vertical.metrics.value !== 'Q1 2025') {
+                  if (vertical.metrics.value !== 'Q1 2026') {
                     e.currentTarget.style.transform = 'translateY(-4px)';
                     e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.1)';
                   }
@@ -211,6 +332,99 @@ export default function Dashboard() {
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
+                {/* Ask Sagaa Icon - Top Right */}
+                {vertical.metrics.value !== 'Q1 2026' && (
+                  <div style={{ position: 'relative' }}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAskSagaa(vertical.id, vertical.name, vertical.gradient);
+                      }}
+                      style={{
+                        position: 'absolute',
+                        top: '16px',
+                        right: vertical.alerts > 0 ? '52px' : '16px',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '10px',
+                        background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)',
+                        border: '1px solid rgba(59, 130, 246, 0.25)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        zIndex: 10,
+                        padding: '0'
+                      }}
+                      onMouseEnter={(e) => {
+                        setHoveredCard(vertical.id);
+                        e.currentTarget.style.transform = 'scale(1.1) rotate(5deg)';
+                        e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(99, 102, 241, 0.25) 100%)';
+                        e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.4)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)';
+                      }}
+                      onMouseLeave={(e) => {
+                        setHoveredCard(null);
+                        e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+                        e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)';
+                        e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.25)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                    >
+                      {/* Sparkles Icon */}
+                      <svg 
+                        width="18" 
+                        height="18" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="#2563eb" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                        style={{ pointerEvents: 'none' }}
+                      >
+                        <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z"/>
+                        <path d="M5 3v4"/>
+                        <path d="M19 17v4"/>
+                        <path d="M3 5h4"/>
+                        <path d="M17 19h4"/>
+                      </svg>
+                    </button>
+                    
+                    {/* Custom Tooltip */}
+                    {hoveredCard === vertical.id && (
+                      <div style={{
+                        position: 'absolute',
+                        top: '58px',
+                        right: vertical.alerts > 0 ? '52px' : '16px',
+                        background: '#1f2937',
+                        color: 'white',
+                        padding: '6px 12px',
+                        borderRadius: '6px',
+                        fontSize: '13px',
+                        fontWeight: '500',
+                        whiteSpace: 'nowrap',
+                        zIndex: 20,
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                        pointerEvents: 'none'
+                      }}>
+                        Ask Sagaa about {vertical.name}
+                        {/* Tooltip arrow */}
+                        <div style={{
+                          position: 'absolute',
+                          top: '-4px',
+                          right: '10px',
+                          width: '8px',
+                          height: '8px',
+                          background: '#1f2937',
+                          transform: 'rotate(45deg)'
+                        }} />
+                      </div>
+                    )}
+                  </div>
+                )}
+                
                 {vertical.alerts > 0 && (
                   <div style={{
                     position: 'absolute',
@@ -263,7 +477,8 @@ export default function Dashboard() {
                   color: '#111827',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px'
+                  gap: '8px',
+                  marginBottom: vertical.detailedMetrics ? '16px' : '0'
                 }}>
                   {vertical.metrics.value}
                   {vertical.metrics.change && (
@@ -276,6 +491,36 @@ export default function Dashboard() {
                     </span>
                   )}
                 </div>
+
+                {/* Detailed Metrics Grid - Only for cards with detailedMetrics */}
+                {vertical.detailedMetrics && (
+                  <>
+                    <div style={{
+                      height: '1px',
+                      background: 'linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent)',
+                      marginBottom: '16px'
+                    }} />
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(2, 1fr)',
+                      gap: '10px'
+                    }}>
+                      {vertical.detailedMetrics.map((metric, idx) => (
+                        <MiniMetric
+                          key={idx}
+                          icon={metric.icon}
+                          label={metric.label}
+                          value={metric.value}
+                          trend={metric.trend}
+                          trendUp={metric.trendUp}
+                          color={metric.color}
+                          progress={metric.progress}
+                          delay={idx * 100}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             );
           })}
