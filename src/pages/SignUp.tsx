@@ -65,7 +65,7 @@ export default function SignUp() {
         confirmationCode
       };
       await confirmSignUp(confirmSignUpInput);
-      navigate('/login?verified=true');
+      navigate('/signin?verified=true');
     } catch (err: any) {
       setError(err.message || 'Failed to confirm sign up');
     } finally {

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { fetchUserAttributes } from 'aws-amplify/auth';
-import { DollarSign, Heart, GraduationCap, Home as HomeIcon, ArrowRight, TrendingUp, Bell, Calendar, Activity, CreditCard, Target, Wallet, TrendingDown, Footprints, Moon, Droplet } from 'lucide-react';
+import { DollarSign, Heart, GraduationCap, Home as HomeIcon, ArrowRight, TrendingUp, Bell, Calendar, Activity, CreditCard, Target, Wallet, TrendingDown, Footprints, Moon, Droplet, ChevronDown, MessageCircle } from 'lucide-react';
 
 // Mini Metric Card Component for vertical cards
 interface MiniMetricProps {
@@ -99,6 +99,18 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [fullName, setFullName] = useState('');
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [expandedSections, setExpandedSections] = useState({
+    ecosystem: true,
+    insights: true,
+    activity: true
+  });
+
+  const toggleSection = (section: 'ecosystem' | 'insights' | 'activity') => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
 
   const handleAskSagaa = (verticalId: string, verticalName: string, gradient: string) => {
     // Navigate to chat page with context
@@ -291,18 +303,42 @@ export default function Dashboard() {
 
       {/* Ecosystem Overview Cards */}
       <div style={{ marginBottom: 'clamp(24px, 4vw, 40px)' }}>
-        <h2 style={{
-          fontSize: 'clamp(20px, 3vw, 24px)',
-          fontWeight: '600',
-          marginBottom: 'clamp(16px, 2vw, 20px)',
-          color: '#111827'
-        }}>
-          Your Ecosystem
-        </h2>
+        <div 
+          onClick={() => toggleSection('ecosystem')}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            cursor: 'pointer',
+            marginBottom: 'clamp(16px, 2vw, 20px)',
+            userSelect: 'none'
+          }}
+        >
+          <h2 style={{
+            fontSize: 'clamp(20px, 3vw, 24px)',
+            fontWeight: '600',
+            margin: 0,
+            color: '#111827'
+          }}>
+            Your Ecosystem
+          </h2>
+          <ChevronDown 
+            size={20} 
+            style={{
+              color: '#6b7280',
+              transition: 'transform 0.3s ease',
+              transform: expandedSections.ecosystem ? 'rotate(0deg)' : 'rotate(-90deg)'
+            }}
+          />
+        </div>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))',
-          gap: 'clamp(12px, 2vw, 20px)'
+          gap: 'clamp(12px, 2vw, 20px)',
+          overflow: 'hidden',
+          maxHeight: expandedSections.ecosystem ? '10000px' : '0',
+          transition: 'max-height 0.5s ease-in-out, opacity 0.3s ease-in-out',
+          opacity: expandedSections.ecosystem ? 1 : 0
         }}>
           {verticals.map((vertical) => {
             const Icon = vertical.icon;
@@ -372,24 +408,13 @@ export default function Dashboard() {
                         e.currentTarget.style.boxShadow = 'none';
                       }}
                     >
-                      {/* Sparkles Icon */}
-                      <svg 
-                        width="18" 
-                        height="18" 
-                        viewBox="0 0 24 24" 
-                        fill="none" 
-                        stroke="#2563eb" 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round"
+                      {/* Message/Chat Icon */}
+                      <MessageCircle 
+                        size={18} 
+                        color="#2563eb" 
+                        strokeWidth={2}
                         style={{ pointerEvents: 'none' }}
-                      >
-                        <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z"/>
-                        <path d="M5 3v4"/>
-                        <path d="M19 17v4"/>
-                        <path d="M3 5h4"/>
-                        <path d="M17 19h4"/>
-                      </svg>
+                      />
                     </button>
                     
                     {/* Custom Tooltip */}
@@ -398,7 +423,7 @@ export default function Dashboard() {
                         position: 'absolute',
                         top: '58px',
                         right: vertical.alerts > 0 ? '52px' : '16px',
-                        background: '#1f2937',
+                        background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
                         color: 'white',
                         padding: '6px 12px',
                         borderRadius: '6px',
@@ -529,18 +554,42 @@ export default function Dashboard() {
 
       {/* Proactive Insights */}
       <div style={{ marginBottom: 'clamp(24px, 4vw, 40px)' }}>
-        <h2 style={{
-          fontSize: 'clamp(20px, 3vw, 24px)',
-          fontWeight: '600',
-          marginBottom: 'clamp(16px, 2vw, 20px)',
-          color: '#111827'
-        }}>
-          Proactive Insights
-        </h2>
+        <div 
+          onClick={() => toggleSection('insights')}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            cursor: 'pointer',
+            marginBottom: 'clamp(16px, 2vw, 20px)',
+            userSelect: 'none'
+          }}
+        >
+          <h2 style={{
+            fontSize: 'clamp(20px, 3vw, 24px)',
+            fontWeight: '600',
+            margin: 0,
+            color: '#111827'
+          }}>
+            Proactive Insights
+          </h2>
+          <ChevronDown 
+            size={20} 
+            style={{
+              color: '#6b7280',
+              transition: 'transform 0.3s ease',
+              transform: expandedSections.insights ? 'rotate(0deg)' : 'rotate(-90deg)'
+            }}
+          />
+        </div>
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 'clamp(12px, 2vw, 16px)'
+          gap: 'clamp(12px, 2vw, 16px)',
+          overflow: 'hidden',
+          maxHeight: expandedSections.insights ? '10000px' : '0',
+          transition: 'max-height 0.5s ease-in-out, opacity 0.3s ease-in-out',
+          opacity: expandedSections.insights ? 1 : 0
         }}>
           {proactiveInsights.map((insight) => {
             const Icon = insight.icon;
@@ -628,19 +677,42 @@ export default function Dashboard() {
 
       {/* Recent Activity */}
       <div>
-        <h2 style={{
-          fontSize: '24px',
-          fontWeight: '600',
-          marginBottom: '20px',
-          color: '#111827'
-        }}>
-          Recent Activity
-        </h2>
+        <div 
+          onClick={() => toggleSection('activity')}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            cursor: 'pointer',
+            marginBottom: '20px',
+            userSelect: 'none'
+          }}
+        >
+          <h2 style={{
+            fontSize: '24px',
+            fontWeight: '600',
+            margin: 0,
+            color: '#111827'
+          }}>
+            Recent Activity
+          </h2>
+          <ChevronDown 
+            size={20} 
+            style={{
+              color: '#6b7280',
+              transition: 'transform 0.3s ease',
+              transform: expandedSections.activity ? 'rotate(0deg)' : 'rotate(-90deg)'
+            }}
+          />
+        </div>
         <div style={{
           background: 'white',
           borderRadius: '16px',
           border: '1px solid #e5e7eb',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          maxHeight: expandedSections.activity ? '10000px' : '0',
+          transition: 'max-height 0.5s ease-in-out, opacity 0.3s ease-in-out',
+          opacity: expandedSections.activity ? 1 : 0
         }}>
           {recentActivity.map((activity, index) => {
             const Icon = activity.icon;

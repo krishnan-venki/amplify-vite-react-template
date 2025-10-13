@@ -34,7 +34,7 @@ export default function SignIn() {
           // ignore malformed
         }
       }
-      navigate('/home', { replace: true });
+      navigate('/dashboard', { replace: true });
     }
   }, [user, navigate, searchParams]);
 

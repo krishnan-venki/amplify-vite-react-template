@@ -21,6 +21,7 @@ import { ConnectedLife } from './ConnectedLife';
 import { OnePlatform } from './OnePlatform';
 
 const SagaaHomepage: React.FC = () => {
+  // Remove authentication checks from this component - it should only be a public homepage
   const fadeInElementsRef = useRef<HTMLDivElement[]>([]);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
   const [isScrolled, setIsScrolled] = useState(false);

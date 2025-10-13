@@ -81,29 +81,31 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
             width: '32px',
             height: '32px',
             borderRadius: '8px',
-            background: 'white',
-            border: '1px solid #e5e7eb',
+            background: '#ff9900',
+            border: 'none',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
             zIndex: 10,
             transition: 'all 0.2s',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+            boxShadow: '0 2px 8px rgba(255, 153, 0, 0.3)',
             padding: '0'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#f3f4f6';
-            e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+            e.currentTarget.style.background = '#e68a00';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 153, 0, 0.4)';
+            e.currentTarget.style.transform = 'scale(1.05)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'white';
-            e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+            e.currentTarget.style.background = '#ff9900';
+            e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 153, 0, 0.3)';
+            e.currentTarget.style.transform = 'scale(1)';
           }}
           title="Collapse panel"
         >
           {/* Right arrow for collapse */}
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M9 18l6-6-6-6"/>
           </svg>
         </button>
@@ -119,10 +121,12 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
             height: '100%'
           }}
         >
-          {/* Header */}
+          {/* Header - Simplified on gradient background */}
           <div
             style={{
               background: context.gradient,
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
               borderRadius: '12px',
               padding: '16px',
               marginBottom: '16px',
@@ -239,8 +243,8 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
             style={{
               width: '100%',
               padding: '12px',
-              background: 'white',
-              border: '1px solid #e5e7eb',
+              background: '#ff9900',
+              border: 'none',
               borderRadius: '8px',
               display: 'flex',
               alignItems: 'center',
@@ -249,18 +253,19 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
               cursor: 'pointer',
               fontSize: '13px',
               fontWeight: '600',
-              color: '#374151',
-              transition: 'all 0.2s'
+              color: '#111',
+              transition: 'all 0.2s',
+              boxShadow: '0 2px 8px rgba(255, 153, 0, 0.25)'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#f9fafb';
-              e.currentTarget.style.borderColor = '#3b82f6';
-              e.currentTarget.style.color = '#3b82f6';
+              e.currentTarget.style.background = '#e68a00';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 153, 0, 0.35)';
+              e.currentTarget.style.transform = 'translateY(-1px)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'white';
-              e.currentTarget.style.borderColor = '#e5e7eb';
-              e.currentTarget.style.color = '#374151';
+              e.currentTarget.style.background = '#ff9900';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 153, 0, 0.25)';
+              e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
             <span>View Full Dashboard</span>

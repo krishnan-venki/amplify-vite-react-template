@@ -96,7 +96,11 @@ function App() {
   // Check if current route is an auth page (should not show sidebar)
   const isAuthPage = location.pathname === '/signin' ||
                      location.pathname === '/signup' ||
-                     location.pathname === '/login';
+                     location.pathname === '/login' ||
+                     location.pathname === '/home' ||
+                     location.pathname === '/';
+
+  console.log('App.tsx - Current path:', location.pathname, 'isAuthPage:', isAuthPage, 'user:', !!user);
 
   // If it's an auth page, render without layout
   if (isAuthPage) {

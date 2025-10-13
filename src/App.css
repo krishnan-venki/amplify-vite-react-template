@@ -994,7 +994,7 @@
 /* --- Panel 4: Fixed input dock --- */
 .input-dock {
   position: fixed;
-  left: 0;
+  left: 220px; /* Increased to account for sidebar max-content width + padding */
   right: 0;
   bottom: 0;
   z-index: 200;
@@ -1073,6 +1073,7 @@
   .header-inner { padding: 8px 12px; }
   .nav { padding: 6px 12px; }
   .response-panel { padding: 12px; }
+  .input-dock { left: 0; } /* Full width on smaller screens */
   .input-dock .prompt-form { padding: 12px; max-width: 100%; }
 }
 

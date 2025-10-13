@@ -52,7 +52,7 @@ export default function Chat() {
   useEffect(() => {
     if (!user) {
       const from = encodeURIComponent(location.pathname + location.search);
-      navigate(`/login?from=${from}`, { replace: true });
+      navigate(`/signin?from=${from}`, { replace: true });
       return;
     }
     (async () => {
@@ -193,24 +193,26 @@ export default function Chat() {
                           type="button"
                           style={{
                             padding: '8px 14px',
-                            background: chatContext.gradient,
-                            border: 'none',
+                            background: 'white',
+                            border: '1px solid #e5e7eb',
                             borderRadius: '20px',
                             fontSize: '13px',
-                            color: 'white',
+                            color: '#374151',
                             cursor: 'pointer',
                             transition: 'all 0.2s',
                             fontWeight: '500'
                           }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.transform = 'translateY(-2px)';
-                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-                            e.currentTarget.style.opacity = '0.9';
+                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                            e.currentTarget.style.background = '#f9fafb';
+                            e.currentTarget.style.borderColor = '#d1d5db';
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.transform = 'translateY(0)';
                             e.currentTarget.style.boxShadow = 'none';
-                            e.currentTarget.style.opacity = '1';
+                            e.currentTarget.style.background = 'white';
+                            e.currentTarget.style.borderColor = '#e5e7eb';
                           }}
                         >
                           {prompt}
@@ -272,7 +274,7 @@ export default function Chat() {
                   className="prompt-input"
                   id="Prompt"
                   name="Prompt"
-                  placeholder={chatContext ? `Ask about ${chatContext.name}...` : "Continue your conversation with Sagaa"}
+                  placeholder={chatContext ? `Ask about your ${chatContext.name}...` : "Continue your conversation with Sagaa"}
                   autoComplete="on"
                 />
                 <button type="submit" className="submit-btn inside" disabled={loading}>
