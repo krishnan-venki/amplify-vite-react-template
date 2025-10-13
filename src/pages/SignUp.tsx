@@ -1,7 +1,8 @@
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { signUp, confirmSignUp, type ConfirmSignUpInput } from 'aws-amplify/auth';
 import { useNavigate, Link } from 'react-router-dom';
 import sagaa48 from '../assets/sagaa_48x48.png';
+import ReviewCarousel from '../components/ReviewCarousel';
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -16,6 +17,16 @@ export default function SignUp() {
   const [confirmationCode, setConfirmationCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleSignUp = async (e: FormEvent) => {
     e.preventDefault();
@@ -77,77 +88,84 @@ export default function SignUp() {
     <div style={{
       minHeight: '100vh',
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
-      padding: '24px'
+      flexDirection: isMobile ? 'column' : 'row'
     }}>
+      {/* Left Side - Sign Up Form */}
       <div style={{
-        width: '100%',
-        maxWidth: '480px',
-        backgroundColor: 'white',
-        borderRadius: '16px',
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-        overflow: 'hidden'
+        flex: '1',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
+        padding: '24px',
+        minHeight: isMobile ? 'auto' : '100vh'
       }}>
-        {/* Header */}
         <div style={{
-          padding: '32px 32px 24px',
-          textAlign: 'center',
-          borderBottom: '1px solid #e5e7eb'
+          width: '100%',
+          maxWidth: '480px',
+          backgroundColor: 'white',
+          borderRadius: '16px',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+          overflow: 'hidden'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px' }}>
-            <img src={sagaa48} alt="Sagaa Logo" width={40} height={40} />
-            <span style={{ fontSize: '28px', fontWeight: '700' }}>Sagaa</span>
-          </div>
-          <h2 style={{ margin: '0 0 8px', fontSize: '24px', fontWeight: '600', color: '#111827' }}>
-            {step === 'signup' ? 'Create your account' : 'Verify your email'}
-          </h2>
-          <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
-            {step === 'signup'
-              ? 'Join Sagaa to start building your personal ecosystem'
-              : `We sent a verification code to ${formData.email}`}
-          </p>
-        </div>
-
-        {/* Form */}
-        <div style={{ padding: '32px' }}>
-          {error && (
-            <div style={{
-              padding: '12px 16px',
-              backgroundColor: '#fef2f2',
-              color: '#991b1b',
-              borderRadius: '8px',
-              marginBottom: '16px',
-              fontSize: '14px',
-              border: '1px solid #fecaca'
-            }}>
-              {error}
+          {/* Header */}
+          <div style={{
+            padding: '32px 32px 24px',
+            textAlign: 'center',
+            borderBottom: '1px solid #e5e7eb'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px' }}>
+              <img src={sagaa48} alt="Sagaa Logo" width={40} height={40} />
+              <span style={{ fontSize: '28px', fontWeight: '700' }}>Sagaa</span>
             </div>
-          )}
+            <h2 style={{ margin: '0 0 8px', fontSize: '24px', fontWeight: '600', color: '#111827' }}>
+              {step === 'signup' ? 'Create your account' : 'Verify your email'}
+            </h2>
+            <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
+              {step === 'signup'
+                ? 'Join Sagaa to start building your personal ecosystem'
+                : `We sent a verification code to ${formData.email}`}
+            </p>
+          </div>
 
-          {step === 'signup' ? (
-            <form onSubmit={handleSignUp} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500', color: '#374151' }}>
-                    First name
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.firstName}
-                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                    placeholder="Ada"
-                    style={{
-                      width: '100%',
-                      padding: '10px 12px',
-                      border: '1px solid #d1d5db',
-                      borderRadius: '8px',
-                      fontSize: '14px',
-                      outline: 'none',
-                      transition: 'border-color 0.2s'
-                    }}
+          {/* Form */}
+          <div style={{ padding: '32px' }}>
+            {error && (
+              <div style={{
+                padding: '12px 16px',
+                backgroundColor: '#fef2f2',
+                color: '#991b1b',
+                borderRadius: '8px',
+                marginBottom: '16px',
+                fontSize: '14px',
+                border: '1px solid #fecaca'
+              }}>
+                {error}
+              </div>
+            )}
+
+            {step === 'signup' ? (
+              <form onSubmit={handleSignUp} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+                      First name
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.firstName}
+                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                      placeholder="Ada"
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        outline: 'none',
+                        transition: 'border-color 0.2s'
+                      }}
                     onFocus={(e) => e.target.style.borderColor = '#0284c7'}
                     onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                   />
@@ -355,6 +373,21 @@ export default function SignUp() {
           </Link>
         </div>
       </div>
+    </div>
+
+      {/* Right Side - Reviews Carousel */}
+      {!isMobile && (
+        <div style={{
+          flex: '1',
+          backgroundColor: 'white',
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <ReviewCarousel />
+        </div>
+      )}
     </div>
   );
 }

@@ -435,16 +435,6 @@ export default function Dashboard() {
                         pointerEvents: 'none'
                       }}>
                         Ask Sagaa about {vertical.name}
-                        {/* Tooltip arrow */}
-                        <div style={{
-                          position: 'absolute',
-                          top: '-4px',
-                          right: '10px',
-                          width: '8px',
-                          height: '8px',
-                          background: '#1f2937',
-                          transform: 'rotate(45deg)'
-                        }} />
                       </div>
                     )}
                   </div>
