@@ -560,15 +560,34 @@
 }
 /* icon size for nav items */
 .side-nav .nav-icon { width: 18px; height: 18px; color: #23362d; flex: 0 0 auto; }
-/* specific icon colors */
-.side-nav .home-icon { color: #22a06b; }
-.side-nav .chat-icon { color: #0b57d0; width: 20px; height: 20px; }
 
-/* optional: keep icon color stable on hover/active while background changes */
-.side-nav a:hover .home-icon,
-.side-nav a[aria-current="page"] .home-icon { color: #1a8a5c; }
+/* specific icon colors for each vertical */
+.side-nav .dashboard-icon { color: #6b7280; }
+.side-nav .money-icon { color: #10b981; }
+.side-nav .healthcare-icon { color: #f43f5e; }
+.side-nav .education-icon { color: #3b82f6; }
+.side-nav .life-icon { color: #f59e0b; }
+.side-nav .chat-icon { color: #0b57d0; width: 20px; height: 20px; }
+.side-nav .community-icon { color: #8b5cf6; }
+.side-nav .notification-icon { color: #f59e0b; }
+
+/* hover and active states */
+.side-nav a:hover .dashboard-icon,
+.side-nav a[aria-current="page"] .dashboard-icon { color: #4b5563; }
+.side-nav a:hover .money-icon,
+.side-nav a[aria-current="page"] .money-icon { color: #059669; }
+.side-nav a:hover .healthcare-icon,
+.side-nav a[aria-current="page"] .healthcare-icon { color: #e11d48; }
+.side-nav a:hover .education-icon,
+.side-nav a[aria-current="page"] .education-icon { color: #2563eb; }
+.side-nav a:hover .life-icon,
+.side-nav a[aria-current="page"] .life-icon { color: #d97706; }
 .side-nav a:hover .chat-icon,
+.side-nav button:hover .chat-icon,
 .side-nav a[aria-current="page"] .chat-icon { color: #0a49b2; }
+.side-nav a:hover .community-icon,
+.side-nav a[aria-current="page"] .community-icon { color: #7c3aed; }
+.side-nav button:hover .notification-icon { color: #d97706; }
 .side-nav .notif-btn {
   position: relative;
   display: inline-flex;
@@ -616,7 +635,31 @@
   box-shadow: 0 0 0 2px #fff;
 }
 .side-nav a, .side-nav-btn, .brand .title, .brand .subtitle { white-space: nowrap; }
-.side-nav a[aria-current="page"], .side-nav a:hover, .side-nav-btn:hover { background: rgba(26, 42, 36, 0.06); }
+.side-nav a, .side-nav-btn { position: relative; }
+.side-nav a:hover::before, .side-nav-btn:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
+  opacity: 0.12;
+  border-radius: 8px;
+  z-index: -1;
+}
+.side-nav a[aria-current="page"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
+  opacity: 0.18;
+  border-radius: 8px;
+  z-index: -1;
+}
 .side-nav-btn { appearance: none; background: transparent; border: 1px solid transparent; text-align: left; cursor: pointer; }
 .side-nav .new-chat-btn { display: inline-flex; align-items: center; gap: 8px; }
 .side-nav .new-chat-btn .nc-icon { width: 18px; height: 18px; color: var(--amazon-orange); }
@@ -628,6 +671,39 @@
 .side-bottom .nav-icon { width: 20px; height: 20px; }
 .side-bottom .login-icon { color: #0b57d0; }
 .side-bottom .login-btn:hover .login-icon { color: #0a49b2; }
+
+/* User menu in sidebar */
+.side-bottom .user-menu { width: 100%; position: relative; }
+.side-bottom .side-user-menu-btn { 
+  width: 100%; 
+  background: transparent;
+  border: none;
+  padding: 8px 10px;
+  justify-content: center;
+  gap: 8px;
+}
+.side-bottom .side-user-menu-btn:hover { background: transparent; }
+
+/* Rotate caret upward for sidebar menu */
+.side-bottom .side-user-menu-btn .caret {
+  transform: rotate(180deg);
+}
+.side-bottom .side-user-menu-btn[aria-expanded="true"] .caret {
+  transform: rotate(0deg);
+}
+
+.user-initials-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
 
 /* Username placed at the top-right of the main area */
 .main-user {
@@ -675,6 +751,14 @@
   box-shadow: 0 2px 8px rgba(16, 24, 40, 0.08);
   padding: 6px;
   z-index: 99999;
+}
+
+/* Override for sidebar menu list - must appear above the button */
+.side-bottom .user-menu-list {
+  top: auto !important;
+  bottom: calc(100% + 6px) !important;
+  right: auto !important;
+  left: 0 !important;
 }
 
 .user-menu-item {

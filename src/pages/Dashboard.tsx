@@ -64,7 +64,7 @@ export default function Dashboard() {
       route: '/education/dashboard',
       metrics: {
         label: 'Coming Soon',
-        value: 'Q1 2025',
+        value: 'Q1 2026',
         change: ''
       },
       alerts: 0
@@ -78,7 +78,7 @@ export default function Dashboard() {
       route: '/life/dashboard',
       metrics: {
         label: 'Coming Soon',
-        value: 'Q1 2025',
+        value: 'Q1 2026',
         change: ''
       },
       alerts: 0
@@ -126,18 +126,17 @@ export default function Dashboard() {
   ];
 
   return (
-    <main className="response-panel" style={{ padding: 'clamp(16px, 3vw, 32px)' }}>
-      {/* Hero Section */}
+    <>
+      {/* Hero Section - Full Width */}
       <div style={{
         background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
-        borderRadius: 'clamp(16px, 3vw, 24px)',
         padding: 'clamp(24px, 5vw, 48px) clamp(20px, 4vw, 40px)',
-        marginBottom: 'clamp(20px, 3vw, 32px)',
+        marginBottom: 0,
         color: 'white',
         position: 'relative',
         overflow: 'hidden'
       }}>
-        <div style={{ position: 'relative', zIndex: 1 }}>
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto' }}>
           <h1 style={{
             fontSize: 'clamp(24px, 5vw, 48px)',
             fontWeight: '300',
@@ -151,29 +150,8 @@ export default function Dashboard() {
             color: '#d1d5db',
             marginBottom: 'clamp(16px, 3vw, 24px)'
           }}>
-            Your personal ecosystem is ready. Here's what needs your attention.
+            Your personal dashboard is ready with insights and updates across your connected ecosystems.
           </p>
-          <button
-            onClick={() => navigate('/chat')}
-            style={{
-              background: 'white',
-              color: '#0369a1',
-              padding: 'clamp(10px, 2vw, 12px) clamp(20px, 4vw, 32px)',
-              borderRadius: '50px',
-              border: 'none',
-              fontSize: 'clamp(14px, 2vw, 16px)',
-              fontWeight: '600',
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              transition: 'transform 0.2s',
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-          >
-            Ask Sagaa <ArrowRight size={18} />
-          </button>
         </div>
         {/* Decorative background pattern - hide on mobile */}
         <div style={{
@@ -188,6 +166,8 @@ export default function Dashboard() {
           display: window.innerWidth < 768 ? 'none' : 'block'
         }} />
       </div>
+
+      <main className="response-panel" style={{ padding: 'clamp(16px, 3vw, 32px)', paddingTop: 'clamp(20px, 3vw, 32px)' }}>
 
       {/* Ecosystem Overview Cards */}
       <div style={{ marginBottom: 'clamp(24px, 4vw, 40px)' }}>
@@ -469,5 +449,6 @@ export default function Dashboard() {
         </div>
       </div>
     </main>
+    </>
   );
 }
