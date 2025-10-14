@@ -98,7 +98,6 @@ export default function Dashboard() {
   const { user } = useAuthenticator((context) => [context.user]);
   const navigate = useNavigate();
   const [fullName, setFullName] = useState('');
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [expandedSections, setExpandedSections] = useState({
     ecosystem: true,
     insights: true,
@@ -378,9 +377,8 @@ export default function Dashboard() {
                       }}
                       style={{
                         position: 'absolute',
-                        top: '16px',
-                        right: vertical.alerts > 0 ? '52px' : '16px',
-                        width: '36px',
+                        top: '-2px',
+                        right: vertical.alerts > 0 ? '48px' : '0px',
                         height: '36px',
                         borderRadius: '10px',
                         background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)',
@@ -388,21 +386,21 @@ export default function Dashboard() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        gap: '6px',
+                        paddingLeft: '12px',
+                        paddingRight: '12px',
                         cursor: 'pointer',
                         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                         zIndex: 10,
-                        padding: '0'
                       }}
                       onMouseEnter={(e) => {
-                        setHoveredCard(vertical.id);
-                        e.currentTarget.style.transform = 'scale(1.1) rotate(5deg)';
+                        e.currentTarget.style.transform = 'scale(1.05)';
                         e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(99, 102, 241, 0.25) 100%)';
                         e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.4)';
                         e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)';
                       }}
                       onMouseLeave={(e) => {
-                        setHoveredCard(null);
-                        e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+                        e.currentTarget.style.transform = 'scale(1)';
                         e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)';
                         e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.25)';
                         e.currentTarget.style.boxShadow = 'none';
@@ -415,28 +413,16 @@ export default function Dashboard() {
                         strokeWidth={2}
                         style={{ pointerEvents: 'none' }}
                       />
-                    </button>
-                    
-                    {/* Custom Tooltip */}
-                    {hoveredCard === vertical.id && (
-                      <div style={{
-                        position: 'absolute',
-                        top: '58px',
-                        right: vertical.alerts > 0 ? '52px' : '16px',
-                        background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
-                        color: 'white',
-                        padding: '6px 12px',
-                        borderRadius: '6px',
+                      <span style={{
                         fontSize: '13px',
-                        fontWeight: '500',
-                        whiteSpace: 'nowrap',
-                        zIndex: 20,
-                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-                        pointerEvents: 'none'
+                        fontWeight: '600',
+                        color: '#2563eb',
+                        pointerEvents: 'none',
+                        whiteSpace: 'nowrap'
                       }}>
-                        Ask Sagaa about {vertical.name}
-                      </div>
-                    )}
+                        Ask Sagaa
+                      </span>
+                    </button>
                   </div>
                 )}
                 
@@ -561,7 +547,7 @@ export default function Dashboard() {
             margin: 0,
             color: '#111827'
           }}>
-            Proactive Insights
+            Reminders and Insights
           </h2>
           <ChevronDown 
             size={20} 

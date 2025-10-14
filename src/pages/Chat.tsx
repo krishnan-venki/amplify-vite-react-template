@@ -44,6 +44,7 @@ export default function Chat() {
   const responseBoxRef = useRef<HTMLDivElement>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   // Get context from navigation state
   const chatContext = location.state?.context as { id: string; name: string; gradient: string } | undefined;
@@ -149,6 +150,75 @@ export default function Chat() {
     }
   };
 
+  const handleCopyResponse = (text: string, index: number) => {
+    navigator.clipboard.writeText(text).then(() => {
+      // Show checkmark for 5 seconds
+      setCopiedIndex(index);
+      setTimeout(() => {
+        setCopiedIndex(null);
+      }, 5000);
+    }).catch(err => {
+      console.error('Failed to copy:', err);
+    });
+  };
+
+  const handleDeleteMessage = (index: number) => {
+    // Delete both the user question (index-1) and the sagaa response (index)
+    setConversation(prev => {
+      const newConv = [...prev];
+      // Find the corresponding user message before this response
+      const userMsgIndex = index - 1;
+      if (userMsgIndex >= 0 && newConv[userMsgIndex]?.role === 'user') {
+        // Remove both user question and sagaa response
+        newConv.splice(userMsgIndex, 2);
+      } else {
+        // Just remove the response if we can't find the question
+        newConv.splice(index, 1);
+      }
+      return newConv;
+    });
+  };
+
+  const handleExportResponse = (text: string, userQuestion: string, format: 'pdf' | 'markdown' | 'docx') => {
+    if (format === 'markdown') {
+      const blob = new Blob([`# Question\n\n${userQuestion}\n\n# Response\n\n${text}`], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `sagaa-response-${Date.now()}.md`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } else if (format === 'docx') {
+      // For DOCX, we'll create a simple HTML version that can be opened in Word
+      const htmlContent = `<html><body><h1>Question</h1><p>${userQuestion}</p><h1>Response</h1><p>${text.replace(/\n/g, '<br>')}</p></body></html>`;
+      const blob = new Blob([htmlContent], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `sagaa-response-${Date.now()}.docx`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } else if (format === 'pdf') {
+      // For PDF, open print dialog
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.write(`
+          <html>
+            <head><title>Sagaa Response</title></head>
+            <body>
+              <h1>Question</h1>
+              <p>${userQuestion}</p>
+              <h1>Response</h1>
+              <p>${text.replace(/\n/g, '<br>')}</p>
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+        printWindow.print();
+      }
+    }
+  };
+
   const quickPrompts = chatContext ? CONTEXT_PROMPTS[chatContext.id] || [] : [];
 
   return (
@@ -161,66 +231,235 @@ export default function Chat() {
               <div className="response-box" role="status" aria-live="polite" ref={responseBoxRef}>
                 {conversation.map((m, i) => (
                   m.role === 'user' ? (
-                    <p className="question-text" key={i}><strong>{displayName ?? 'You'}</strong>: {m.text}</p>
+                    <p className="question-text" key={i} style={{ fontSize: '1.5rem', fontWeight: '500' }}>{m.text}</p>
                   ) : (
-                    <p className="response-text message-with-icon" key={i}>
-                      <img src={sagaaIconUrl} alt="Sagaa" className="message-icon" />
-                      {m.text}
-                    </p>
+                    <div key={i}>
+                      <p className="response-text message-with-icon">
+                        <img src={sagaaIconUrl} alt="Sagaa" className="message-icon" />
+                        {m.text}
+                      </p>
+
+                      {/* Quick Prompts - Show only for the first message (greeting) with context */}
+                      {i === 0 && chatContext && quickPrompts.length > 0 && (
+                        <div style={{ 
+                          marginTop: '20px', 
+                          padding: '16px', 
+                          background: `linear-gradient(135deg, ${chatContext.gradient.match(/linear-gradient\(135deg, ([^,]+)/)?.[1] || '#10b981'}15, ${chatContext.gradient.match(/100%, ([^)]+)/)?.[1] || '#0d9488'}08)`,
+                          borderRadius: '12px',
+                          border: `1px solid ${chatContext.gradient.match(/linear-gradient\(135deg, ([^,]+)/)?.[1] || '#10b981'}30`
+                        }}>
+                          <div style={{ fontSize: '14px', fontWeight: '600', color: '#374151', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span>💡</span>
+                            <span>Quick questions about {chatContext.name}:</span>
+                          </div>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                            {quickPrompts.map((prompt, idx) => (
+                              <button
+                                key={idx}
+                                onClick={() => handleQuickPrompt(prompt)}
+                                type="button"
+                                style={{
+                                  padding: '8px 14px',
+                                  background: 'white',
+                                  border: '1px solid #e5e7eb',
+                                  borderRadius: '20px',
+                                  fontSize: '13px',
+                                  color: '#374151',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s',
+                                  fontWeight: '500'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.transform = 'translateY(-2px)';
+                                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                                  e.currentTarget.style.background = '#f9fafb';
+                                  e.currentTarget.style.borderColor = '#d1d5db';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.transform = 'translateY(0)';
+                                  e.currentTarget.style.boxShadow = 'none';
+                                  e.currentTarget.style.background = 'white';
+                                  e.currentTarget.style.borderColor = '#e5e7eb';
+                                }}
+                              >
+                                {prompt}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                        
+                        {/* Action buttons - only show if there's a user question before this response */}
+                        {i > 0 && conversation[i-1]?.role === 'user' && (
+                          <div 
+                            style={{ 
+                              display: 'flex', 
+                              gap: '24px', 
+                              marginTop: '12px',
+                              marginBottom: '12px',
+                              alignItems: 'center'
+                            }}
+                          >
+                          {/* Export dropdown */}
+                          <div style={{ position: 'relative', display: 'inline-block' }}>
+                            <span
+                              onClick={(e) => {
+                                const menu = e.currentTarget.nextElementSibling as HTMLElement;
+                                if (menu) {
+                                  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+                                }
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = '#f3f4f6';
+                                e.currentTarget.style.borderRadius = '8px';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'transparent';
+                                e.currentTarget.style.borderRadius = '0';
+                              }}
+                              style={{
+                                fontSize: '11px',
+                                color: '#6b7280',
+                                cursor: 'pointer',
+                                textDecoration: 'none',
+                                userSelect: 'none',
+                                padding: '6px 12px',
+                                display: 'inline-block'
+                              }}
+                            >
+                              📤 Export
+                            </span>
+                          <div 
+                            style={{
+                              display: 'none',
+                              position: 'absolute',
+                              top: '100%',
+                              left: 0,
+                              marginTop: '4px',
+                              background: 'white',
+                              border: '1px solid #d1d5db',
+                              borderRadius: '6px',
+                              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                              zIndex: 1000,
+                              minWidth: '140px'
+                            }}
+                            onMouseLeave={(e) => {
+                              (e.currentTarget as HTMLElement).style.display = 'none';
+                            }}
+                          >
+                            <div
+                              onClick={() => {
+                                const userQuestion = i > 0 && conversation[i-1]?.role === 'user' ? conversation[i-1].text : 'N/A';
+                                handleExportResponse(m.text, userQuestion, 'pdf');
+                              }}
+                              style={{
+                                width: '100%',
+                                padding: '8px 12px',
+                                cursor: 'pointer',
+                                fontSize: '11px',
+                                color: '#374151',
+                                borderBottom: '1px solid #f3f4f6'
+                              }}
+                            >
+                              PDF
+                            </div>
+                            <div
+                              onClick={() => {
+                                const userQuestion = i > 0 && conversation[i-1]?.role === 'user' ? conversation[i-1].text : 'N/A';
+                                handleExportResponse(m.text, userQuestion, 'markdown');
+                              }}
+                              style={{
+                                width: '100%',
+                                padding: '8px 12px',
+                                cursor: 'pointer',
+                                fontSize: '11px',
+                                color: '#374151',
+                                borderBottom: '1px solid #f3f4f6'
+                              }}
+                            >
+                              Markdown
+                            </div>
+                            <div
+                              onClick={() => {
+                                const userQuestion = i > 0 && conversation[i-1]?.role === 'user' ? conversation[i-1].text : 'N/A';
+                                handleExportResponse(m.text, userQuestion, 'docx');
+                              }}
+                              style={{
+                                width: '100%',
+                                padding: '8px 12px',
+                                cursor: 'pointer',
+                                fontSize: '11px',
+                                color: '#374151'
+                              }}
+                            >
+                              DOCX
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Copy button */}
+                        <span
+                          onClick={() => handleCopyResponse(m.text, i)}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#f3f4f6';
+                            e.currentTarget.style.borderRadius = '8px';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.borderRadius = '0';
+                          }}
+                          style={{
+                            fontSize: '11px',
+                            color: '#6b7280',
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            userSelect: 'none',
+                            padding: '6px 12px',
+                            display: 'inline-block'
+                          }}
+                        >
+                          {copiedIndex === i ? '✓ Copied' : '📋 Copy'}
+                        </span>
+
+                        {/* Delete button */}
+                        <span
+                          onClick={() => handleDeleteMessage(i)}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#fee2e2';
+                            e.currentTarget.style.borderRadius = '8px';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.borderRadius = '0';
+                          }}
+                          style={{
+                            fontSize: '11px',
+                            color: '#dc2626',
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            userSelect: 'none',
+                            padding: '6px 12px',
+                            display: 'inline-block'
+                          }}
+                        >
+                          🗑️ Delete
+                        </span>
+                      </div>
+                        )}
+                      
+                      {i < conversation.length - 1 && (
+                        <hr style={{ 
+                          margin: '24px 0', 
+                          border: 'none', 
+                          borderTop: '2px solid #d1d5db',
+                          width: '100%'
+                        }} />
+                      )}
+                    </div>
                   )
                 ))}
                 {loading && <p className="muted">Sagaa is getting you the response...</p>}
                 {error && !loading && <p className="error-text">{error}</p>}
-
-                {/* Quick Prompts - Show only when conversation has just started with context */}
-                {chatContext && conversation.length === 1 && quickPrompts.length > 0 && (
-                  <div style={{ 
-                    marginTop: '20px', 
-                    padding: '16px', 
-                    background: `linear-gradient(135deg, ${chatContext.gradient.match(/linear-gradient\(135deg, ([^,]+)/)?.[1] || '#10b981'}15, ${chatContext.gradient.match(/100%, ([^)]+)/)?.[1] || '#0d9488'}08)`,
-                    borderRadius: '12px',
-                    border: `1px solid ${chatContext.gradient.match(/linear-gradient\(135deg, ([^,]+)/)?.[1] || '#10b981'}30`
-                  }}>
-                    <div style={{ fontSize: '14px', fontWeight: '600', color: '#374151', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span>💡</span>
-                      <span>Quick questions about {chatContext.name}:</span>
-                    </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                      {quickPrompts.map((prompt, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => handleQuickPrompt(prompt)}
-                          type="button"
-                          style={{
-                            padding: '8px 14px',
-                            background: 'white',
-                            border: '1px solid #e5e7eb',
-                            borderRadius: '20px',
-                            fontSize: '13px',
-                            color: '#374151',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s',
-                            fontWeight: '500'
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                            e.currentTarget.style.background = '#f9fafb';
-                            e.currentTarget.style.borderColor = '#d1d5db';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.boxShadow = 'none';
-                            e.currentTarget.style.background = 'white';
-                            e.currentTarget.style.borderColor = '#e5e7eb';
-                          }}
-                        >
-                          {prompt}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             ) : (
               <div className="center-input">
