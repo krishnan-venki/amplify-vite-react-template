@@ -15,6 +15,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import SagaaHealthCarePage from './components/healthcare/SagaaHealthCarePage.tsx';
 import SagaaMoneyPage from './components/money/SagaaMoneyPage';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 Amplify.configure(outputs);
 
@@ -41,8 +42,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="home" replace /> },
       { path: 'home', element: <Home /> },
-      { path: 'dashboard', element: <Dashboard /> },
-      { path: 'chat', element: <Chat /> },
+      { path: 'dashboard', element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
+      { path: 'chat', element: <ProtectedRoute><Chat /></ProtectedRoute> },
       { path: 'login', element: <Login /> },
       { path: 'signin', element: <SignIn /> },
       { path: 'signup', element: <SignUp /> },

@@ -9,14 +9,20 @@ import ScrollToTop from './components/homepage/ScrollToTop';
 function App() {
   const { user, signOut } = useAuthenticator();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [learnMoreOpen, setLearnMoreOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
   const [initials, setInitials] = useState<string>('');
   const [nameLoaded, setNameLoaded] = useState(false);
   const [hasNotifs] = useState(true);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleLearnMoreClick = () => {
+    setLearnMoreOpen(!learnMoreOpen);
+  };
 
   const onLogout = async () => {
     setMenuOpen(false);
@@ -40,7 +46,13 @@ function App() {
       }
     }
     function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') setMenuOpen(false);
+      if (e.key === 'Escape') {
+        if (learnMoreOpen) {
+          setLearnMoreOpen(false);
+        } else {
+          setMenuOpen(false);
+        }
+      }
     }
     document.addEventListener('click', onDocClick);
     document.addEventListener('keydown', onKey);
@@ -54,9 +66,10 @@ function App() {
     let active = true;
     async function loadName() {
       try {
-        if (!user) { if (active) { setDisplayName(null); setInitials(''); setNameLoaded(false); } return; }
+        if (!user) { if (active) { setDisplayName(null); setEmail(null); setInitials(''); setNameLoaded(false); } return; }
         const attrs = await fetchUserAttributes();
         const full = [attrs.given_name, attrs.family_name].filter(Boolean).join(' ') || attrs.name || '';
+        const userEmail = attrs.email || '';
         
         // Calculate initials
         let userInitials = '';
@@ -75,9 +88,9 @@ function App() {
           userInitials = user.username.substring(0, 2).toUpperCase();
         }
         
-        if (active) { setDisplayName(full || null); setInitials(userInitials); setNameLoaded(true); }
+        if (active) { setDisplayName(full || null); setEmail(userEmail); setInitials(userInitials); setNameLoaded(true); }
       } catch {
-        if (active) { setDisplayName(null); setInitials(''); setNameLoaded(true); }
+        if (active) { setDisplayName(null); setEmail(null); setInitials(''); setNameLoaded(true); }
       }
     }
     loadName();
@@ -87,7 +100,15 @@ function App() {
   // Ensure menu is collapsed on auth or route changes
   useEffect(() => {
     setMenuOpen(false);
+    setLearnMoreOpen(false);
   }, [user, location.pathname]);
+
+  // Close submenu when main menu closes
+  useEffect(() => {
+    if (!menuOpen) {
+      setLearnMoreOpen(false);
+    }
+  }, [menuOpen]);
 
   const onNewChat = () => {
     navigate('/chat');
@@ -235,27 +256,56 @@ function App() {
                   </button>
                   {menuOpen && (
                     <div className="user-menu-list side-user-menu-list" role="menu" aria-label="User menu">
+                      <div className="user-menu-header">
+                        <div className="user-menu-avatar-large">{initials}</div>
+                        <div className="user-menu-info">
+                          {displayName && <div className="user-menu-name">{displayName}</div>}
+                          {email && <div className="user-menu-email">{email}</div>}
+                        </div>
+                      </div>
+                      <div className="user-menu-separator"></div>
                       <button className="user-menu-item" role="menuitem" onClick={() => setMenuOpen(false)}>
-                        <svg className="menu-icon knowme-icon" viewBox="0 0 24 24" aria-hidden="true">
-                          <path fill="currentColor" d="M4 5h7a2 2 0 012 2v11a3 3 0 00-3-3H4V5zm16 0h-7a2 2 0 00-2 2v11a3 3 0 013-3h6V5z" />
-                          <path d="M14.5 9.5l4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                          <path fill="currentColor" d="M13 14l1.2-3.2 2.5 2.5L13 14z" />
-                        </svg>
-                        <span>About me</span>
+                        <span>Settings </span>
                       </button>
                       <button className="user-menu-item" role="menuitem" onClick={() => setMenuOpen(false)}>
-                        <svg className="menu-icon pref-icon" viewBox="0 0 24 24" aria-hidden="true">
-                          <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
-                          <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="2" />
-                          <path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5 5l2.1 2.1M19 19l-2.1-2.1M5 19l2.1-2.1M19 5l-2.1 2.1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                        </svg>
-                        <span>Configure Chat</span>
+                        <span>Get Help</span>
                       </button>
+                      <div className="user-menu-item-wrapper">
+                        <button 
+                          className="user-menu-item user-menu-item-expandable" 
+                          role="menuitem" 
+                          aria-expanded={learnMoreOpen}
+                          onClick={handleLearnMoreClick}
+                        >
+                          <span>Learn more</span>
+                          <svg className="submenu-arrow" viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+                            <path fill="currentColor" fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L10.94 10 7.23 6.29a.75.75 0 111.04-1.08l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                        {learnMoreOpen && (
+                          <div className="user-submenu-popup">
+                            <button className="user-menu-item user-submenu-item" role="menuitem" onClick={() => setMenuOpen(false)}>
+                              <span>About Sagaa</span>
+                            </button>
+                             <div className="user-menu-separator"></div>
+                            <button className="user-menu-item user-submenu-item" role="menuitem" onClick={() => setMenuOpen(false)}>
+                              <span>Usage policy</span>
+                            </button>
+                             <div className="user-menu-separator"></div>
+                            <button className="user-menu-item user-submenu-item" role="menuitem" onClick={() => setMenuOpen(false)}>
+                              <span>Privacy policy</span>
+                            </button>
+                            <button className="user-menu-item user-submenu-item" role="menuitem" onClick={() => setMenuOpen(false)}>
+                              <span>Privacy Choices</span>
+                            </button>
+                             <div className="user-menu-separator"></div>
+                            <button className="user-menu-item user-submenu-item" role="menuitem" onClick={() => setMenuOpen(false)}>
+                              <span>Compliances</span>
+                            </button>
+                          </div>
+                        )}
+                      </div>
                       <button className="user-menu-item" role="menuitem" onClick={onLogout}>
-                        <svg className="menu-icon logout-icon" viewBox="0 0 24 24" aria-hidden="true">
-                          <path fill="currentColor" d="M10 7l-1.41 1.41L11.17 11H3v2h8.17l-2.58 2.59L10 17l5-5-5-5z" />
-                          <path fill="currentColor" d="M4 5h6v2H6v10h4v2H4a2 2 0 01-2-2V7a2 2 0 012-2z" />
-                        </svg>
                         <span>Sign Out</span>
                       </button>
                     </div>
