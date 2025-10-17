@@ -231,11 +231,173 @@ export default function Chat() {
               <div className="response-box" role="status" aria-live="polite" ref={responseBoxRef}>
                 {conversation.map((m, i) => (
                   m.role === 'user' ? (
-                    <p className="question-text" key={i} style={{ fontSize: '1.5rem', fontWeight: '500' }}>{m.text}</p>
+                    <div key={i}>
+                      <p className="question-text" style={{ fontSize: '1.5rem', fontWeight: '500' }}>{m.text}</p>
+                      
+                      {/* Options below user prompt */}
+                      <div 
+                        style={{ 
+                          display: 'flex', 
+                          gap: '24px', 
+                          marginTop: '12px',
+                          marginBottom: '12px',
+                          alignItems: 'center'
+                        }}
+                      >
+                        {/* Answer - Show as selected if there's a response after this question */}
+                        <span
+                          onClick={() => {
+                            // Scroll to the corresponding response
+                            const responseIndex = i + 1;
+                            if (responseIndex < conversation.length) {
+                              responseBoxRef.current?.scrollTo({ 
+                                top: responseBoxRef.current.scrollHeight, 
+                                behavior: 'smooth' 
+                              });
+                            }
+                          }}
+                          onMouseEnter={(e) => {
+                            const hasResponse = i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa';
+                            if (!hasResponse) {
+                              e.currentTarget.style.background = '#f3f4f6';
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            const hasResponse = i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa';
+                            if (!hasResponse) {
+                              e.currentTarget.style.background = 'transparent';
+                            }
+                          }}
+                          style={{
+                            fontSize: '14px',
+                            color: i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa' ? '#2563eb' : '#6b7280',
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            userSelect: 'none',
+                            padding: '6px 12px',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            background: i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa' ? '#dbeafe' : 'transparent',
+                            borderRadius: '8px',
+                            fontWeight: i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa' ? '600' : 'normal'
+                          }}
+                        >
+                          <img src={sagaaIconUrl} alt="" style={{ width: '16px', height: '16px' }} />
+                          Answer
+                        </span>
+
+                        {/* Insights */}
+                        <span
+                          onClick={() => {
+                            console.log('Insights clicked for question:', m.text);
+                            // TODO: Implement insights functionality
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#f3f4f6';
+                            e.currentTarget.style.borderRadius = '8px';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.borderRadius = '0';
+                          }}
+                          style={{
+                            fontSize: '14px',
+                            color: '#6b7280',
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            userSelect: 'none',
+                            padding: '6px 12px',
+                            display: 'inline-block'
+                          }}
+                        >
+                          💡 Insights
+                        </span>
+
+                        {/* Dashboard */}
+                        <span
+                          onClick={() => {
+                            navigate('/dashboard');
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#f3f4f6';
+                            e.currentTarget.style.borderRadius = '8px';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.borderRadius = '0';
+                          }}
+                          style={{
+                            fontSize: '14px',
+                            color: '#6b7280',
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            userSelect: 'none',
+                            padding: '6px 12px',
+                            display: 'inline-block'
+                          }}
+                        >
+                          📊 Dashboard
+                        </span>
+
+                        {/* Images */}
+                        <span
+                          onClick={() => {
+                            console.log('Images clicked for question:', m.text);
+                            // TODO: Implement images functionality
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#f3f4f6';
+                            e.currentTarget.style.borderRadius = '8px';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.borderRadius = '0';
+                          }}
+                          style={{
+                            fontSize: '14px',
+                            color: '#6b7280',
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            userSelect: 'none',
+                            padding: '6px 12px',
+                            display: 'inline-block'
+                          }}
+                        >
+                          🖼️ Images
+                        </span>
+
+                        {/* Sources */}
+                        <span
+                          onClick={() => {
+                            console.log('Sources clicked for question:', m.text);
+                            // TODO: Implement sources functionality
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#f3f4f6';
+                            e.currentTarget.style.borderRadius = '8px';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.borderRadius = '0';
+                          }}
+                          style={{
+                            fontSize: '14px',
+                            color: '#6b7280',
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            userSelect: 'none',
+                            padding: '6px 12px',
+                            display: 'inline-block'
+                          }}
+                        >
+                          📚 Sources
+                        </span>
+                      </div>
+                    </div>
                   ) : (
                     <div key={i}>
-                      <p className="response-text message-with-icon">
-                        <img src={sagaaIconUrl} alt="Sagaa" className="message-icon" />
+                      <p className="response-text">
                         {m.text}
                       </p>
 
@@ -297,7 +459,8 @@ export default function Chat() {
                               gap: '24px', 
                               marginTop: '12px',
                               marginBottom: '12px',
-                              alignItems: 'center'
+                              alignItems: 'center',
+                              justifyContent: 'flex-end'
                             }}
                           >
                           {/* Export dropdown */}
