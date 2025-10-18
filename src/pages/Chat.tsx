@@ -7,6 +7,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import ContextualSidePanel from '../components/ContextualSidePanel';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import ChartVisualization from '../components/ChartVisualization';
+import { ConversationMessage, SagaaResponse } from '../types/chat';
 
 // Context-specific quick prompts
 const CONTEXT_PROMPTS: Record<string, string[]> = {
@@ -42,11 +44,14 @@ export default function Chat() {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [conversation, setConversation] = useState<Array<{ role: 'user' | 'sagaa'; text: string }>>([]);
+  const [conversation, setConversation] = useState<ConversationMessage[]>([]);
   const responseBoxRef = useRef<HTMLDivElement>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  
+  // Track selected tab for each message: { messageIndex: 'answer' | 'insights' | 'dashboard' | 'images' | 'sources' }
+  const [selectedTabs, setSelectedTabs] = useState<Record<number, 'answer' | 'insights' | 'dashboard' | 'images' | 'sources'>>({});
 
   // Get context from navigation state
   const chatContext = location.state?.context as { id: string; name: string; gradient: string } | undefined;
@@ -129,7 +134,7 @@ export default function Chat() {
         throw new Error('API request failed');
       }
 
-      const data = await res.json();
+      const data: SagaaResponse = await res.json();
       const text = typeof data.response === 'string' ? data.response : JSON.stringify(data);
       const normalize = (s: string) => s
         .replace(/\r\n/g, '\n')
@@ -137,7 +142,20 @@ export default function Chat() {
         .replace(/\n{3,}/g, '\n\n')
         .trim();
       const normalized = normalize(text);
-      setConversation(prev => [...prev, { role: 'sagaa', text: normalized }]);
+      
+      // Add response with all optional data if available
+      setConversation(prev => [...prev, { 
+        role: 'sagaa', 
+        text: normalized,
+        chartable: data.chartable,
+        chartData: data.chartData,
+        hasInsights: data.hasInsights,
+        insightsData: data.insightsData,
+        hasImages: data.hasImages,
+        imagesData: data.imagesData,
+        hasSources: data.hasSources,
+        sourcesData: data.sourcesData
+      }]);
     } catch (err: any) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -246,164 +264,212 @@ export default function Chat() {
                           alignItems: 'center'
                         }}
                       >
-                        {/* Answer - Show as selected if there's a response after this question */}
-                        <span
-                          onClick={() => {
-                            // Scroll to the corresponding response
-                            const responseIndex = i + 1;
-                            if (responseIndex < conversation.length) {
-                              responseBoxRef.current?.scrollTo({ 
-                                top: responseBoxRef.current.scrollHeight, 
-                                behavior: 'smooth' 
-                              });
-                            }
-                          }}
-                          onMouseEnter={(e) => {
-                            const hasResponse = i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa';
-                            if (!hasResponse) {
-                              e.currentTarget.style.background = '#f3f4f6';
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            const hasResponse = i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa';
-                            if (!hasResponse) {
-                              e.currentTarget.style.background = 'transparent';
-                            }
-                          }}
-                          style={{
-                            fontSize: '14px',
-                            color: i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa' ? '#2563eb' : '#6b7280',
-                            cursor: 'pointer',
-                            textDecoration: 'none',
-                            userSelect: 'none',
-                            padding: '6px 12px',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '6px',
-                            background: i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa' ? '#dbeafe' : 'transparent',
-                            borderRadius: '8px',
-                            fontWeight: i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa' ? '600' : 'normal'
-                          }}
-                        >
-                          <img src={sagaaIconUrl} alt="" style={{ width: '16px', height: '16px' }} />
-                          Answer
-                        </span>
+                        {/* Answer - Only show if there's a response after this question */}
+                        {i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa' && (
+                          <span
+                            onClick={() => {
+                              const responseIndex = i + 1;
+                              setSelectedTabs(prev => ({ ...prev, [responseIndex]: 'answer' }));
+                            }}
+                            onMouseEnter={(e) => {
+                              const isSelected = selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1];
+                              if (!isSelected) {
+                                e.currentTarget.style.background = '#f3f4f6';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              const isSelected = selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1];
+                              if (!isSelected) {
+                                e.currentTarget.style.background = 'transparent';
+                              }
+                            }}
+                            style={{
+                              fontSize: '14px',
+                              color: (selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1]) ? '#2563eb' : '#6b7280',
+                              cursor: 'pointer',
+                              textDecoration: 'none',
+                              userSelect: 'none',
+                              padding: '6px 12px',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              background: (selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1]) ? '#dbeafe' : 'transparent',
+                              borderRadius: '8px',
+                              fontWeight: (selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1]) ? '600' : 'normal'
+                            }}
+                          >
+                            <img src={sagaaIconUrl} alt="" style={{ width: '16px', height: '16px' }} />
+                            Answer
+                          </span>
+                        )}
 
-                        {/* Insights */}
-                        <span
-                          onClick={() => {
-                            console.log('Insights clicked for question:', m.text);
-                            // TODO: Implement insights functionality
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#f3f4f6';
-                            e.currentTarget.style.borderRadius = '8px';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'transparent';
-                            e.currentTarget.style.borderRadius = '0';
-                          }}
-                          style={{
-                            fontSize: '14px',
-                            color: '#6b7280',
-                            cursor: 'pointer',
-                            textDecoration: 'none',
-                            userSelect: 'none',
-                            padding: '6px 12px',
-                            display: 'inline-block'
-                          }}
-                        >
-                          💡 Insights
-                        </span>
+                        {/* Insights - Only show if next message has insights */}
+                        {i + 1 < conversation.length && conversation[i + 1]?.hasInsights && (
+                          <span
+                            onClick={() => {
+                              const responseIndex = i + 1;
+                              setSelectedTabs(prev => ({ ...prev, [responseIndex]: 'insights' }));
+                              console.log('Insights clicked for question:', m.text);
+                              // TODO: Implement insights functionality
+                            }}
+                            onMouseEnter={(e) => {
+                              if (selectedTabs[i + 1] !== 'insights') {
+                                e.currentTarget.style.background = '#f3f4f6';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (selectedTabs[i + 1] !== 'insights') {
+                                e.currentTarget.style.background = 'transparent';
+                              }
+                            }}
+                            style={{
+                              fontSize: '14px',
+                              color: selectedTabs[i + 1] === 'insights' ? '#2563eb' : '#6b7280',
+                              cursor: 'pointer',
+                              textDecoration: 'none',
+                              userSelect: 'none',
+                              padding: '6px 12px',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              background: selectedTabs[i + 1] === 'insights' ? '#dbeafe' : 'transparent',
+                              borderRadius: '8px',
+                              fontWeight: selectedTabs[i + 1] === 'insights' ? '600' : 'normal'
+                            }}
+                          >
+                            💡 Insights
+                          </span>
+                        )}
 
-                        {/* Dashboard */}
-                        <span
-                          onClick={() => {
-                            navigate('/dashboard');
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#f3f4f6';
-                            e.currentTarget.style.borderRadius = '8px';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'transparent';
-                            e.currentTarget.style.borderRadius = '0';
-                          }}
-                          style={{
-                            fontSize: '14px',
-                            color: '#6b7280',
-                            cursor: 'pointer',
-                            textDecoration: 'none',
-                            userSelect: 'none',
-                            padding: '6px 12px',
-                            display: 'inline-block'
-                          }}
-                        >
-                          📊 Dashboard
-                        </span>
+                        {/* Dashboard - Only show if next message is chartable */}
+                        {i + 1 < conversation.length && conversation[i + 1]?.chartable && (
+                          <span
+                            onClick={() => {
+                              const responseIndex = i + 1;
+                              setSelectedTabs(prev => ({ ...prev, [responseIndex]: 'dashboard' }));
+                            }}
+                            onMouseEnter={(e) => {
+                              if (selectedTabs[i + 1] !== 'dashboard') {
+                                e.currentTarget.style.background = '#f3f4f6';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (selectedTabs[i + 1] !== 'dashboard') {
+                                e.currentTarget.style.background = 'transparent';
+                              }
+                            }}
+                            style={{
+                              fontSize: '14px',
+                              color: selectedTabs[i + 1] === 'dashboard' ? '#2563eb' : '#6b7280',
+                              cursor: 'pointer',
+                              textDecoration: 'none',
+                              userSelect: 'none',
+                              padding: '6px 12px',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              background: selectedTabs[i + 1] === 'dashboard' ? '#dbeafe' : 'transparent',
+                              borderRadius: '8px',
+                              fontWeight: selectedTabs[i + 1] === 'dashboard' ? '600' : 'normal'
+                            }}
+                          >
+                            📊 Dashboard
+                          </span>
+                        )}
 
-                        {/* Images */}
-                        <span
-                          onClick={() => {
-                            console.log('Images clicked for question:', m.text);
-                            // TODO: Implement images functionality
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#f3f4f6';
-                            e.currentTarget.style.borderRadius = '8px';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'transparent';
-                            e.currentTarget.style.borderRadius = '0';
-                          }}
-                          style={{
-                            fontSize: '14px',
-                            color: '#6b7280',
-                            cursor: 'pointer',
-                            textDecoration: 'none',
-                            userSelect: 'none',
-                            padding: '6px 12px',
-                            display: 'inline-block'
-                          }}
-                        >
-                          🖼️ Images
-                        </span>
+                        {/* Images - Only show if next message has images */}
+                        {i + 1 < conversation.length && conversation[i + 1]?.hasImages && (
+                          <span
+                            onClick={() => {
+                              const responseIndex = i + 1;
+                              setSelectedTabs(prev => ({ ...prev, [responseIndex]: 'images' }));
+                              console.log('Images clicked for question:', m.text);
+                              // TODO: Implement images functionality
+                            }}
+                            onMouseEnter={(e) => {
+                              if (selectedTabs[i + 1] !== 'images') {
+                                e.currentTarget.style.background = '#f3f4f6';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (selectedTabs[i + 1] !== 'images') {
+                                e.currentTarget.style.background = 'transparent';
+                              }
+                            }}
+                            style={{
+                              fontSize: '14px',
+                              color: selectedTabs[i + 1] === 'images' ? '#2563eb' : '#6b7280',
+                              cursor: 'pointer',
+                              textDecoration: 'none',
+                              userSelect: 'none',
+                              padding: '6px 12px',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              background: selectedTabs[i + 1] === 'images' ? '#dbeafe' : 'transparent',
+                              borderRadius: '8px',
+                              fontWeight: selectedTabs[i + 1] === 'images' ? '600' : 'normal'
+                            }}
+                          >
+                            🖼️ Images
+                          </span>
+                        )}
 
-                        {/* Sources */}
-                        <span
-                          onClick={() => {
-                            console.log('Sources clicked for question:', m.text);
-                            // TODO: Implement sources functionality
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#f3f4f6';
-                            e.currentTarget.style.borderRadius = '8px';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'transparent';
-                            e.currentTarget.style.borderRadius = '0';
-                          }}
-                          style={{
-                            fontSize: '14px',
-                            color: '#6b7280',
-                            cursor: 'pointer',
-                            textDecoration: 'none',
-                            userSelect: 'none',
-                            padding: '6px 12px',
-                            display: 'inline-block'
-                          }}
-                        >
-                          📚 Sources
-                        </span>
+                        {/* Sources - Only show if next message has sources */}
+                        {i + 1 < conversation.length && conversation[i + 1]?.hasSources && (
+                          <span
+                            onClick={() => {
+                              const responseIndex = i + 1;
+                              setSelectedTabs(prev => ({ ...prev, [responseIndex]: 'sources' }));
+                              console.log('Sources clicked for question:', m.text);
+                              // TODO: Implement sources functionality
+                            }}
+                            onMouseEnter={(e) => {
+                              if (selectedTabs[i + 1] !== 'sources') {
+                                e.currentTarget.style.background = '#f3f4f6';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (selectedTabs[i + 1] !== 'sources') {
+                                e.currentTarget.style.background = 'transparent';
+                              }
+                            }}
+                            style={{
+                              fontSize: '14px',
+                              color: selectedTabs[i + 1] === 'sources' ? '#2563eb' : '#6b7280',
+                              cursor: 'pointer',
+                              textDecoration: 'none',
+                              userSelect: 'none',
+                              padding: '6px 12px',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              background: selectedTabs[i + 1] === 'sources' ? '#dbeafe' : 'transparent',
+                              borderRadius: '8px',
+                              fontWeight: selectedTabs[i + 1] === 'sources' ? '600' : 'normal'
+                            }}
+                          >
+                            📚 Sources
+                          </span>
+                        )}
                       </div>
                     </div>
                   ) : (
                     <div key={i}>
-                      <div className="response-text">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                          {m.text}
-                        </ReactMarkdown>
-                      </div>
+                      {/* Show chart if Dashboard tab is selected and chart data exists */}
+                      {selectedTabs[i] === 'dashboard' && m.chartData ? (
+                        <ChartVisualization 
+                          chartData={m.chartData} 
+                          contextGradient={chatContext?.gradient}
+                        />
+                      ) : (
+                        /* Show text response by default */
+                        <div className="response-text">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {m.text}
+                          </ReactMarkdown>
+                        </div>
+                      )}
 
                       {/* Quick Prompts - Show only for the first message (greeting) with context */}
                       {i === 0 && chatContext && quickPrompts.length > 0 && (
