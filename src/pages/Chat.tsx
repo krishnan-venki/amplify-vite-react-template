@@ -5,6 +5,8 @@ import { fetchAuthSession, fetchUserAttributes } from 'aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ContextualSidePanel from '../components/ContextualSidePanel';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 // Context-specific quick prompts
 const CONTEXT_PROMPTS: Record<string, string[]> = {
@@ -397,9 +399,11 @@ export default function Chat() {
                     </div>
                   ) : (
                     <div key={i}>
-                      <p className="response-text">
-                        {m.text}
-                      </p>
+                      <div className="response-text">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {m.text}
+                        </ReactMarkdown>
+                      </div>
 
                       {/* Quick Prompts - Show only for the first message (greeting) with context */}
                       {i === 0 && chatContext && quickPrompts.length > 0 && (
