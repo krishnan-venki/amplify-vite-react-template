@@ -1269,12 +1269,16 @@
     #fff 60%
   );
   border-top: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .input-dock .prompt-form {
   max-width: 900px;
   margin: 0 auto;
   padding: 12px 16px;
+  width: 100%;
 }
 
 .input-row {
@@ -1299,9 +1303,12 @@
   width: 100%;
   padding: 14px;
   border-radius: 14px;
-  border: 1px solid var(--border-sage);
+  border: 2px solid #d1d5db;
   background: #fff;
   font-size: 1rem;
+  font-family: inherit;
+  line-height: 1.5;
+  transition: height 0.1s ease-out;
 }
 
 .prompt-input:focus {

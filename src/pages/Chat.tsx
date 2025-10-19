@@ -48,7 +48,7 @@ export default function Chat() {
   const [conversation, setConversation] = useState<ConversationMessage[]>([]);
   const responseBoxRef = useRef<HTMLDivElement>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   
   // Track selected tab for each message: { messageIndex: 'answer' | 'insights' | 'dashboard' | 'images' | 'sources' }
@@ -100,6 +100,28 @@ export default function Chat() {
     if (el) el.scrollTop = el.scrollHeight;
   }, [conversation, loading]);
 
+  // Auto-resize textarea
+  const autoResizeTextarea = (textarea: HTMLTextAreaElement) => {
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+  };
+
+  // Handle textarea input
+  const handleTextareaInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    autoResizeTextarea(event.target);
+  };
+
+  // Handle Enter key - submit on Enter, new line on Shift+Enter
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      const form = event.currentTarget.form;
+      if (form) {
+        form.requestSubmit();
+      }
+    }
+  };
+
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
@@ -111,6 +133,11 @@ export default function Chat() {
     if (!message) { setLoading(false); return; }
     setConversation(prev => [...prev, { role: 'user', text: message }]);
     event.currentTarget.reset();
+    
+    // Reset textarea height after submission
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto';
+    }
 
     try {
       // Use the centralized API config
@@ -698,30 +725,303 @@ export default function Chat() {
               </div>
             ) : (
               <div className="center-input">
-                <form onSubmit={onSubmit} className="prompt-form" aria-busy={loading}>
-                  <div className="brand">
-                    <h1 className="title"><img src={sagaa48} alt="" aria-hidden="true" className="brand-icon" />
-                      {`Hello${displayName ? `, ${displayName}` : ''}.`}
-                    </h1>
-                  </div>
-                  <div className="input-row">
-                    <label htmlFor="Prompt" className="sr-only">Ask Sagaa</label>
-                    <div className="input-wrap">
-                      <input
-                        type="text"
-                        className="prompt-input"
-                        id="Prompt"
-                        name="Prompt"
-                        placeholder="How can Sagaa help you today?"
-                        autoComplete="on"
-                      />
-                      <button type="submit" className="submit-btn inside" disabled={loading}>
-                        <span className="arrow">→</span>
-                      </button>
+                <div style={{ width: 'min(600px, 100%)', margin: '0 auto' }}>
+                  <form onSubmit={onSubmit} className="prompt-form" aria-busy={loading}>
+                    <div className="brand">
+                      <h1 className="title"><img src={sagaa48} alt="" aria-hidden="true" className="brand-icon" />
+                        {`Hello${displayName ? `, ${displayName}` : ''}.`}
+                      </h1>
                     </div>
+                    <div className="input-row">
+                      <label htmlFor="Prompt" className="sr-only">Ask Sagaa</label>
+                      <div className="input-wrap" style={{ position: 'relative' }}>
+                        <textarea
+                          className="prompt-input"
+                          id="Prompt"
+                          name="Prompt"
+                          placeholder="How can Sagaa help you today?"
+                          autoComplete="on"
+                          rows={1}
+                          onInput={handleTextareaInput}
+                          onKeyDown={handleKeyDown}
+                          style={{ 
+                            resize: 'none', 
+                            overflow: 'hidden',
+                            minHeight: '80px',
+                            maxHeight: '200px',
+                            lineHeight: '1.5',
+                            paddingBottom: '48px',
+                            paddingLeft: '12px'
+                          }}
+                        />
+                        
+                        {/* Action Icons - Bottom Left */}
+                        <div style={{
+                          position: 'absolute',
+                          bottom: '12px',
+                          left: '12px',
+                          display: 'flex',
+                          gap: '6px',
+                          alignItems: 'center',
+                          zIndex: 10
+                        }}>
+                          {/* Attach File Icon */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              console.log('Attach file clicked');
+                              // TODO: Implement file attachment
+                            }}
+                            style={{
+                              background: 'white',
+                              border: '1px solid #d1d5db',
+                              cursor: 'pointer',
+                              padding: '6px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              borderRadius: '6px',
+                              transition: 'all 0.2s',
+                              width: '28px',
+                              height: '28px'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = '#f9fafb';
+                              e.currentTarget.style.borderColor = '#9ca3af';
+                              e.currentTarget.style.transform = 'scale(1.05)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'white';
+                              e.currentTarget.style.borderColor = '#d1d5db';
+                              e.currentTarget.style.transform = 'scale(1)';
+                            }}
+                            title="Attach file"
+                          >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#6b7280' }}>
+                              <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                            </svg>
+                          </button>
+
+                          {/* Voice Mode Icon */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              console.log('Voice mode clicked');
+                              // TODO: Implement voice mode
+                            }}
+                            style={{
+                              background: 'white',
+                              border: '1px solid #d1d5db',
+                              cursor: 'pointer',
+                              padding: '6px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              borderRadius: '6px',
+                              transition: 'all 0.2s',
+                              width: '28px',
+                              height: '28px'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = '#f9fafb';
+                              e.currentTarget.style.borderColor = '#9ca3af';
+                              e.currentTarget.style.transform = 'scale(1.05)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'white';
+                              e.currentTarget.style.borderColor = '#d1d5db';
+                              e.currentTarget.style.transform = 'scale(1)';
+                            }}
+                            title="Voice mode"
+                          >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#6b7280' }}>
+                              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                              <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                              <line x1="12" x2="12" y1="19" y2="22" />
+                            </svg>
+                          </button>
+                        </div>
+
+                        <button type="submit" className="submit-btn inside" disabled={loading}>
+                          <span className="arrow">→</span>
+                        </button>
+                      </div>
+                    </div>
+                    {error && <p className="error-text">{error}</p>}
+                  </form>
+
+                  {/* Vertical Cards */}
+                  <div style={{
+                    display: 'flex',
+                    gap: '12px',
+                    marginTop: '8px',
+                    width: '100%'
+                  }}>
+                    {/* Sagaa Money Card */}
+                  <div
+                    onClick={() => {
+                      navigate('/chat', {
+                        state: {
+                          context: {
+                            id: 'money',
+                            name: 'Money',
+                            gradient: 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)'
+                          }
+                        }
+                      });
+                    }}
+                    style={{
+                      flex: 1,
+                      background: 'white',
+                      borderRadius: '12px',
+                      padding: '12px 16px',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      border: '2px solid #e5e7eb',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                      e.currentTarget.style.boxShadow = '0 8px 20px rgba(16, 185, 129, 0.15)';
+                      e.currentTarget.style.borderColor = '#10b981';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+                      e.currentTarget.style.borderColor = '#e5e7eb';
+                    }}
+                  >
+                    <span style={{ fontSize: '18px' }}>💰</span>
+                    <h3 style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      margin: 0,
+                      color: '#6b7280'
+                    }}>
+                      Sagaa Money
+                    </h3>
                   </div>
-                  {error && <p className="error-text">{error}</p>}
-                </form>
+
+                  {/* Sagaa Health Card - ACTIVE */}
+                  <div
+                    onClick={() => {
+                      navigate('/chat', {
+                        state: {
+                          context: {
+                            id: 'healthcare',
+                            name: 'Healthcare',
+                            gradient: 'linear-gradient(135deg, #f43f5e 0%, #ec4899 100%)'
+                          }
+                        }
+                      });
+                    }}
+                    style={{
+                      flex: 1,
+                      background: 'white',
+                      borderRadius: '12px',
+                      padding: '12px 16px',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      border: '2px solid #e5e7eb',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                      e.currentTarget.style.boxShadow = '0 8px 20px rgba(244, 63, 94, 0.15)';
+                      e.currentTarget.style.borderColor = '#f43f5e';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+                      e.currentTarget.style.borderColor = '#e5e7eb';
+                    }}
+                  >
+                    <span style={{ fontSize: '18px' }}>❤️</span>
+                    <h3 style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      margin: 0,
+                      color: '#6b7280'
+                    }}>
+                      Sagaa Health
+                    </h3>
+                  </div>
+
+                  {/* Sagaa Education Card - DISABLED */}
+                  <div
+                    style={{
+                      flex: 1,
+                      background: 'white',
+                      borderRadius: '12px',
+                      padding: '12px 16px',
+                      cursor: 'not-allowed',
+                      transition: 'all 0.3s ease',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      border: '2px solid #f3f4f6',
+                      boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+                      opacity: 0.5
+                    }}
+                  >
+                    <span style={{ fontSize: '18px', opacity: 0.6 }}>🎓</span>
+                    <h3 style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      margin: 0,
+                      color: '#9ca3af'
+                    }}>
+                      Sagaa Education
+                    </h3>
+                  </div>
+
+                  {/* Sagaa Life Essentials Card - DISABLED */}
+                  <div
+                    style={{
+                      flex: 1,
+                      background: 'white',
+                      borderRadius: '12px',
+                      padding: '12px 16px',
+                      cursor: 'not-allowed',
+                      transition: 'all 0.3s ease',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      border: '2px solid #f3f4f6',
+                      boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+                      opacity: 0.5
+                    }}
+                  >
+                    <span style={{ fontSize: '18px', opacity: 0.6 }}>🏠</span>
+                    <h3 style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      margin: 0,
+                      color: '#9ca3af'
+                    }}>
+                      Sagaa Life Essentials
+                    </h3>
+                  </div>
+                </div>
+                </div>
               </div>
             )}
           </section>
@@ -737,20 +1037,119 @@ export default function Chat() {
       </div>
 
       {(conversation.length > 0 || loading || !!error) && (
-        <div className="input-dock" role="group" aria-label="Ask Sagaa">
+        <div className="input-dock" role="group" aria-label="Ask Sagaa" style={{ bottom: 0 }}>
           <form onSubmit={onSubmit} className="prompt-form" aria-busy={loading}>
             <div className="input-row">
               <label htmlFor="Prompt" className="sr-only">Ask Sagaa</label>
-              <div className="input-wrap">
-                <input
+              <div className="input-wrap" style={{ position: 'relative' }}>
+                <textarea
                   ref={inputRef}
-                  type="text"
                   className="prompt-input"
                   id="Prompt"
                   name="Prompt"
                   placeholder={chatContext ? `Ask about your ${chatContext.name}...` : "Continue your conversation with Sagaa"}
                   autoComplete="on"
+                  rows={1}
+                  onInput={handleTextareaInput}
+                  onKeyDown={handleKeyDown}
+                  style={{ 
+                    resize: 'none', 
+                    overflow: 'hidden',
+                    minHeight: '80px',
+                    maxHeight: '200px',
+                    lineHeight: '1.5',
+                    paddingRight: '50px',
+                    paddingBottom: '40px'
+                  }}
                 />
+                
+                {/* Action Icons - Bottom Left */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '12px',
+                  left: '12px',
+                  display: 'flex',
+                  gap: '6px',
+                  alignItems: 'center',
+                  zIndex: 10
+                }}>
+                  {/* Attach File Icon */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      console.log('Attach file clicked');
+                      // TODO: Implement file attachment
+                    }}
+                    style={{
+                      background: 'white',
+                      border: '1px solid #d1d5db',
+                      cursor: 'pointer',
+                      padding: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: '6px',
+                      transition: 'all 0.2s',
+                      width: '28px',
+                      height: '28px'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#f9fafb';
+                      e.currentTarget.style.borderColor = '#9ca3af';
+                      e.currentTarget.style.transform = 'scale(1.05)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'white';
+                      e.currentTarget.style.borderColor = '#d1d5db';
+                      e.currentTarget.style.transform = 'scale(1)';
+                    }}
+                    title="Attach file"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#6b7280' }}>
+                      <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                    </svg>
+                  </button>
+
+                  {/* Voice Mode Icon */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      console.log('Voice mode clicked');
+                      // TODO: Implement voice mode
+                    }}
+                    style={{
+                      background: 'white',
+                      border: '1px solid #d1d5db',
+                      cursor: 'pointer',
+                      padding: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: '6px',
+                      transition: 'all 0.2s',
+                      width: '28px',
+                      height: '28px'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#f9fafb';
+                      e.currentTarget.style.borderColor = '#9ca3af';
+                      e.currentTarget.style.transform = 'scale(1.05)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'white';
+                      e.currentTarget.style.borderColor = '#d1d5db';
+                      e.currentTarget.style.transform = 'scale(1)';
+                    }}
+                    title="Voice mode"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#6b7280' }}>
+                      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                      <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                      <line x1="12" x2="12" y1="19" y2="22" />
+                    </svg>
+                  </button>
+                </div>
+
                 <button type="submit" className="submit-btn inside" disabled={loading}>
                   <span className="arrow">→</span>
                 </button>
