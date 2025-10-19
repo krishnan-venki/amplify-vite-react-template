@@ -9,6 +9,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import ChartVisualization from '../components/ChartVisualization';
 import { ConversationMessage, SagaaResponse } from '../types/chat';
+import API_ENDPOINTS from '../config/api';
 
 // Context-specific quick prompts
 const CONTEXT_PROMPTS: Record<string, string[]> = {
@@ -112,7 +113,8 @@ export default function Chat() {
     event.currentTarget.reset();
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://63z70erbsb.execute-api.us-west-2.amazonaws.com/dev/prompt';
+      // Use the centralized API config
+      const apiUrl = API_ENDPOINTS.PROMPT;
       const { tokens } = await fetchAuthSession();
       const idToken = tokens?.idToken?.toString();
       const res = await fetch(apiUrl, {
