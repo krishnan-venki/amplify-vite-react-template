@@ -112,7 +112,7 @@ export default function Chat() {
     event.currentTarget.reset();
 
     try {
-      const apiUrl = 'https://63z70erbsb.execute-api.us-west-2.amazonaws.com/dev/prompt';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://63z70erbsb.execute-api.us-west-2.amazonaws.com/dev/prompt';
       const { tokens } = await fetchAuthSession();
       const idToken = tokens?.idToken?.toString();
       const res = await fetch(apiUrl, {
