@@ -140,7 +140,7 @@ export default function Insights() {
             color: '#d1d5db',
             marginBottom: 'clamp(16px, 3vw, 24px)'
           }}>
-            Personalized recommendations and insights to help you make better decisions across your life.
+            Stay informed with personalized insights and upcoming reminders to help you make better decisions across your life verticals.
           </p>
         </div>
         {/* Decorative background pattern - hide on mobile */}
@@ -182,7 +182,19 @@ export default function Insights() {
                 : '0 4px 24px rgba(80, 80, 160, 0.10)',
               padding: '28px',
               transition: 'all 0.3s ease',
-              border: expandedCard === insight.id ? '2px solid #7c3aed' : '2px solid transparent'
+              border: expandedCard === insight.id ? '2px solid #7c3aed' : '1px solid #e5e7eb'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 12px 40px rgba(80, 80, 160, 0.15)';
+              e.currentTarget.style.borderColor = expandedCard === insight.id ? '#7c3aed' : '#d1d5db';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = expandedCard === insight.id 
+                ? '0 8px 32px rgba(124, 58, 237, 0.20)' 
+                : '0 4px 24px rgba(80, 80, 160, 0.10)';
+              e.currentTarget.style.borderColor = expandedCard === insight.id ? '#7c3aed' : '#e5e7eb';
             }}
           >
             {/* Card Header - Always Visible */}
