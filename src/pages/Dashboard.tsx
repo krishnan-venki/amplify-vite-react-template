@@ -261,7 +261,7 @@ export default function Dashboard() {
       {/* Hero Section - Full Width */}
       <div style={{
         background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
-        padding: 'clamp(24px, 5vw, 48px) clamp(20px, 4vw, 40px)',
+        padding: 'clamp(6px, 1.25vw, 12px) clamp(20px, 4vw, 40px)',
         marginBottom: 0,
         color: 'white',
         position: 'relative',
@@ -269,10 +269,14 @@ export default function Dashboard() {
       }}>
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto' }}>
           <h1 style={{
-            fontSize: 'clamp(24px, 5vw, 48px)',
-            fontWeight: '300',
+            fontSize: 'clamp(48px, 5vw, 72px)',
+            fontWeight: '100',
             marginBottom: '12px',
-            lineHeight: '1.2'
+            lineHeight: '1.2',
+            background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
           }}>
             Welcome back, <span style={{ fontWeight: '600' }}>{fullName}</span>
           </h1>
@@ -630,17 +634,20 @@ export default function Dashboard() {
                     }}>
                       {insight.time}
                     </span>
-                    <button style={{
-                      background: 'transparent',
-                      border: 'none',
-                      color: '#0369a1',
-                      fontWeight: '600',
-                      fontSize: '14px',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}>
+                    <button 
+                      onClick={() => navigate('/insights', { state: { insightId: insight.id.toString() } })}
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        color: '#0369a1',
+                        fontWeight: '600',
+                        fontSize: '14px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                    >
                       {insight.action} <ArrowRight size={14} />
                     </button>
                   </div>

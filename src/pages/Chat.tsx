@@ -283,54 +283,61 @@ export default function Chat() {
                     <div key={i}>
                       <p className="question-text" style={{ fontSize: '1.5rem', fontWeight: '500' }}>{m.text}</p>
                       
-                      {/* Options below user prompt */}
-                      <div 
-                        style={{ 
-                          display: 'flex', 
-                          gap: '24px', 
-                          marginTop: '12px',
-                          marginBottom: '12px',
-                          alignItems: 'center'
-                        }}
-                      >
-                        {/* Answer - Only show if there's a response after this question */}
-                        {i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa' && (
-                          <span
-                            onClick={() => {
-                              const responseIndex = i + 1;
-                              setSelectedTabs(prev => ({ ...prev, [responseIndex]: 'answer' }));
-                            }}
-                            onMouseEnter={(e) => {
-                              const isSelected = selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1];
-                              if (!isSelected) {
-                                e.currentTarget.style.background = '#f3f4f6';
-                              }
-                            }}
-                            onMouseLeave={(e) => {
-                              const isSelected = selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1];
-                              if (!isSelected) {
-                                e.currentTarget.style.background = 'transparent';
-                              }
-                            }}
-                            style={{
-                              fontSize: '14px',
-                              color: (selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1]) ? '#2563eb' : '#6b7280',
-                              cursor: 'pointer',
-                              textDecoration: 'none',
-                              userSelect: 'none',
-                              padding: '6px 12px',
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '6px',
-                              background: (selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1]) ? '#dbeafe' : 'transparent',
-                              borderRadius: '8px',
-                              fontWeight: (selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1]) ? '600' : 'normal'
+                      {/* Options below user prompt - Only show if there are multiple options */}
+                      {i + 1 < conversation.length && conversation[i + 1]?.role === 'sagaa' && (() => {
+                        const nextMessage = conversation[i + 1];
+                        const hasMultipleOptions = (nextMessage?.hasInsights || nextMessage?.chartable || nextMessage?.hasImages || nextMessage?.hasSources) ?? false;
+                        
+                        if (!hasMultipleOptions) {
+                          return null; // Don't show tabs if only "Answer" is available
+                        }
+                        
+                        return (
+                          <div 
+                            style={{ 
+                              display: 'flex', 
+                              gap: '24px', 
+                              marginTop: '12px',
+                              marginBottom: '12px',
+                              alignItems: 'center'
                             }}
                           >
-                            <img src={sagaaIconUrl} alt="" style={{ width: '16px', height: '16px' }} />
-                            Answer
-                          </span>
-                        )}
+                            {/* Answer */}
+                            <span
+                              onClick={() => {
+                                const responseIndex = i + 1;
+                                setSelectedTabs(prev => ({ ...prev, [responseIndex]: 'answer' }));
+                              }}
+                              onMouseEnter={(e) => {
+                                const isSelected = selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1];
+                                if (!isSelected) {
+                                  e.currentTarget.style.background = '#f3f4f6';
+                                }
+                              }}
+                              onMouseLeave={(e) => {
+                                const isSelected = selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1];
+                                if (!isSelected) {
+                                  e.currentTarget.style.background = 'transparent';
+                                }
+                              }}
+                              style={{
+                                fontSize: '14px',
+                                color: (selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1]) ? '#2563eb' : '#6b7280',
+                                cursor: 'pointer',
+                                textDecoration: 'none',
+                                userSelect: 'none',
+                                padding: '6px 12px',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                background: (selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1]) ? '#dbeafe' : 'transparent',
+                                borderRadius: '8px',
+                                fontWeight: (selectedTabs[i + 1] === 'answer' || !selectedTabs[i + 1]) ? '600' : 'normal'
+                              }}
+                            >
+                              <img src={sagaaIconUrl} alt="" style={{ width: '16px', height: '16px' }} />
+                              Answer
+                            </span>
 
                         {/* Insights - Only show if next message has insights */}
                         {i + 1 < conversation.length && conversation[i + 1]?.hasInsights && (
@@ -481,7 +488,9 @@ export default function Chat() {
                             📚 Sources
                           </span>
                         )}
-                      </div>
+                          </div>
+                        );
+                      })()}
                     </div>
                   ) : (
                     <div key={i}>

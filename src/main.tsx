@@ -13,6 +13,7 @@ import Chat from './pages/Chat';
 import Login from './pages/Login';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import Insights from './pages/Insights';
 import SagaaHealthCarePage from './components/healthcare/SagaaHealthCarePage.tsx';
 import SagaaMoneyPage from './components/money/SagaaMoneyPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
       { path: 'home', element: <Home /> },
       { path: 'dashboard', element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
       { path: 'chat', element: <ProtectedRoute><Chat /></ProtectedRoute> },
+      { path: 'insights', element: <ProtectedRoute><Insights /></ProtectedRoute> },
       { path: 'login', element: <Login /> },
       { path: 'signin', element: <SignIn /> },
       { path: 'signup', element: <SignUp /> },

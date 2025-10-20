@@ -208,6 +208,14 @@ function App() {
                 <span>Community</span>
               </NavLink>
 
+              {/* Insights */}
+              <NavLink to="/insights">
+                <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true" style={{ color: '#f59e0b' }}>
+                  <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                </svg>
+                <span>Insights</span>
+              </NavLink>
+
               {/* Divider */}
               <div style={{ height: '1px', background: '#e5e7eb', margin: '12px 0' }} />
 
