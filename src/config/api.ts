@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
   CHAT: `${API_BASE_URL}/chat`,
   ANALYTICS: `${API_BASE_URL}/analytics`,
   USER_PROFILE: `${API_BASE_URL}/user/profile`,
+  INSIGHTS: `${API_BASE_URL}/insights`,
   // Add more endpoints as needed
 } as const;
 

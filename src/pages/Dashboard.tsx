@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { fetchUserAttributes } from 'aws-amplify/auth';
-import { DollarSign, Heart, GraduationCap, Home as HomeIcon, ArrowRight, TrendingUp, Bell, Calendar, Activity, CreditCard, Target, Wallet, TrendingDown, Footprints, Moon, Droplet, ChevronDown, MessageCircle } from 'lucide-react';
+import { DollarSign, Heart, GraduationCap, Home as HomeIcon, TrendingUp, Bell, Calendar, Activity, CreditCard, Target, Wallet, TrendingDown, Footprints, Moon, Droplet, ChevronDown, MessageCircle } from 'lucide-react';
+import { useInsights } from '../hooks/useInsights';
+import { aggregateInsightsByVertical } from '../utils/aggregateInsights';
+import { VerticalInsightCard } from '../components/VerticalInsightCard';
 
 // Mini Metric Card Component for vertical cards
 interface MiniMetricProps {
@@ -103,6 +106,9 @@ export default function Dashboard() {
     insights: true,
     activity: true
   });
+
+  // Fetch insights using React Query
+  const { data: insights = [], isLoading: insightsLoading, isError: insightsError, refetch: refetchInsights } = useInsights();
 
   const toggleSection = (section: 'ecosystem' | 'insights' | 'activity') => {
     setExpandedSections(prev => ({
@@ -213,39 +219,6 @@ export default function Dashboard() {
         change: ''
       },
       alerts: 0
-    }
-  ];
-
-  const proactiveInsights = [
-    {
-      id: 1,
-      vertical: 'money',
-      icon: DollarSign,
-      gradient: 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)',
-      title: 'Optimize your tax deductions',
-      description: 'Based on your spending patterns, you could save $1,200 by maximizing healthcare deductions.',
-      action: 'Review Now',
-      time: '2 hours ago'
-    },
-    {
-      id: 2,
-      vertical: 'healthcare',
-      icon: Heart,
-      gradient: 'linear-gradient(135deg, #f43f5e 0%, #ec4899 100%)',
-      title: 'Annual checkup reminder',
-      description: 'Your last physical was 11 months ago. Schedule your annual checkup to stay on track.',
-      action: 'Schedule',
-      time: '1 day ago'
-    },
-    {
-      id: 3,
-      vertical: 'money',
-      icon: TrendingUp,
-      gradient: 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)',
-      title: 'Investment opportunity',
-      description: 'Your emergency fund is healthy. Consider diversifying $5,000 into index funds.',
-      action: 'Learn More',
-      time: '2 days ago'
     }
   ];
 
@@ -563,99 +536,136 @@ export default function Dashboard() {
           />
         </div>
         <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 'clamp(12px, 2vw, 16px)',
           overflow: 'hidden',
           maxHeight: expandedSections.insights ? '10000px' : '0',
           transition: 'max-height 0.5s ease-in-out, opacity 0.3s ease-in-out',
           opacity: expandedSections.insights ? 1 : 0
         }}>
-          {proactiveInsights.map((insight) => {
-            const Icon = insight.icon;
-            return (
-              <div
-                key={insight.id}
+          {/* Loading State */}
+          {insightsLoading && (
+            <div style={{
+              background: 'white',
+              borderRadius: '16px',
+              padding: '32px',
+              textAlign: 'center',
+              color: '#6b7280'
+            }}>
+              <div style={{
+                display: 'inline-block',
+                width: '40px',
+                height: '40px',
+                border: '4px solid #e5e7eb',
+                borderTopColor: '#0369a1',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite'
+              }} />
+              <p style={{ marginTop: '16px', fontSize: '14px' }}>Loading insights...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {insightsError && (
+            <div style={{
+              background: '#fef2f2',
+              borderRadius: '16px',
+              padding: '24px',
+              border: '1px solid #fecaca',
+              textAlign: 'center'
+            }}>
+              <p style={{ color: '#991b1b', marginBottom: '12px' }}>
+                Unable to load insights. Please try again.
+              </p>
+              <button
+                onClick={() => refetchInsights()}
                 style={{
-                  background: 'white',
-                  borderRadius: 'clamp(12px, 2vw, 16px)',
-                  padding: 'clamp(16px, 3vw, 24px)',
-                  border: '1px solid #e5e7eb',
-                  display: 'flex',
-                  flexDirection: window.innerWidth < 640 ? 'column' : 'row',
-                  gap: 'clamp(12px, 2vw, 20px)',
-                  alignItems: 'start',
-                  transition: 'all 0.2s'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = 'none';
+                  background: '#dc2626',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '8px 16px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '600'
                 }}
               >
-                <div style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
-                  background: insight.gradient,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}>
-                  <Icon size={24} color="white" />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <h3 style={{
-                    fontSize: 'clamp(16px, 2vw, 18px)',
-                    fontWeight: '600',
-                    marginBottom: '8px',
-                    color: '#111827'
-                  }}>
-                    {insight.title}
-                  </h3>
-                  <p style={{
-                    fontSize: 'clamp(13px, 1.5vw, 14px)',
-                    color: '#6b7280',
-                    marginBottom: '12px',
-                    lineHeight: '1.5'
-                  }}>
-                    {insight.description}
-                  </p>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}>
-                    <span style={{
-                      fontSize: '13px',
-                      color: '#9ca3af'
-                    }}>
-                      {insight.time}
-                    </span>
-                    <button 
-                      onClick={() => navigate('/insights', { state: { insightId: insight.id.toString() } })}
-                      style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: '#0369a1',
-                        fontWeight: '600',
-                        fontSize: '14px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px'
-                      }}
-                    >
-                      {insight.action} <ArrowRight size={14} />
-                    </button>
-                  </div>
-                </div>
+                Retry
+              </button>
+            </div>
+          )}
+
+          {/* Vertical Insight Aggregation Cards */}
+          {!insightsLoading && !insightsError && insights.length > 0 && (() => {
+            const aggregated = aggregateInsightsByVertical(insights);
+            
+            // Get or create aggregations for Money and Healthcare
+            const moneyAgg = aggregated['sagaa_money'] || {
+              vertical: 'sagaa_money',
+              totalCount: 0,
+              priorityBreakdown: { high: 0, medium: 0, low: 0 },
+              newCount: 0,
+              viewedCount: 0,
+              insights: []
+            };
+            
+            const healthcareAgg = aggregated['sagaa_healthcare'] || {
+              vertical: 'sagaa_healthcare',
+              totalCount: 0,
+              priorityBreakdown: { high: 0, medium: 0, low: 0 },
+              newCount: 0,
+              viewedCount: 0,
+              insights: []
+            };
+
+            console.log('Aggregated insights:', aggregated);
+            console.log('Money aggregation:', moneyAgg);
+            console.log('Healthcare aggregation:', healthcareAgg);
+
+            return (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: 'clamp(16px, 2vw, 24px)',
+              }}>
+                <VerticalInsightCard aggregation={moneyAgg} />
+                <VerticalInsightCard aggregation={healthcareAgg} />
               </div>
             );
-          })}
+          })()}
+
+          {/* Empty State */}
+          {!insightsLoading && !insightsError && insights.length === 0 && (
+            <div style={{
+              background: '#f9fafb',
+              borderRadius: '16px',
+              padding: '40px 24px',
+              textAlign: 'center',
+              border: '2px dashed #d1d5db'
+            }}>
+              <div style={{ fontSize: '3rem', marginBottom: '12px' }}>💡</div>
+              <h3 style={{
+                fontSize: '18px',
+                fontWeight: '600',
+                color: '#111827',
+                marginBottom: '8px'
+              }}>
+                No Insights Yet
+              </h3>
+              <p style={{
+                fontSize: '14px',
+                color: '#6b7280'
+              }}>
+                Your personalized insights will appear here once available.
+              </p>
+            </div>
+          )}
         </div>
+        
+        {/* Add CSS for spinner animation */}
+        <style>{`
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
       </div>
 
       {/* Recent Activity */}

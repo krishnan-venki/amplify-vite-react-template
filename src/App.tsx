@@ -5,9 +5,7 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import sagaa48 from './assets/sagaa_48x48.png';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import ScrollToTop from './components/homepage/ScrollToTop';
-
-// Insights count - should match the proactiveInsights array in Insights.tsx
-const INSIGHTS_COUNT = 3;
+import { useInsights } from './hooks/useInsights';
 
 function App() {
   const { user, signOut } = useAuthenticator();
@@ -22,6 +20,10 @@ function App() {
   const [isSigningOut, setIsSigningOut] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Get insights count dynamically
+  const { data: insights = [] } = useInsights();
+  const insightsCount = insights.length;
 
   const handleLearnMoreClick = () => {
     setLearnMoreOpen(!learnMoreOpen);
@@ -218,7 +220,7 @@ function App() {
                 </svg>
                 <span style={{ position: 'relative' }}>
                   <span>Insights</span>
-                  {INSIGHTS_COUNT > 0 && (
+                  {insightsCount > 0 && (
                     <sup style={{
                       background: '#ef4444',
                       color: 'white',
@@ -230,7 +232,7 @@ function App() {
                       boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
                       verticalAlign: 'super'
                     }}>
-                      {INSIGHTS_COUNT}
+                      {insightsCount}
                     </sup>
                   )}
                 </span>

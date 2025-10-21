@@ -1,58 +1,26 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { DollarSign, Heart, TrendingUp, ChevronDown } from 'lucide-react';
-
-interface ProactiveInsight {
-  id: number;
-  vertical: string;
-  icon: any;
-  gradient: string;
-  title: string;
-  description: string;
-  action: string;
-  time: string;
-}
-
-// Hardcoded insights matching Dashboard.tsx
-const proactiveInsights: ProactiveInsight[] = [
-  {
-    id: 1,
-    vertical: 'money',
-    icon: DollarSign,
-    gradient: 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)',
-    title: 'Optimize your tax deductions',
-    description: 'Based on your spending patterns, you could save $1,200 by maximizing healthcare deductions.',
-    action: 'Review Now',
-    time: '2 hours ago'
-  },
-  {
-    id: 2,
-    vertical: 'healthcare',
-    icon: Heart,
-    gradient: 'linear-gradient(135deg, #f43f5e 0%, #ec4899 100%)',
-    title: 'Annual checkup reminder',
-    description: 'Your last physical was 11 months ago. Schedule your annual checkup to stay on track.',
-    action: 'Schedule',
-    time: '1 day ago'
-  },
-  {
-    id: 3,
-    vertical: 'money',
-    icon: TrendingUp,
-    gradient: 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)',
-    title: 'Investment opportunity',
-    description: 'Your emergency fund is healthy. Consider diversifying $5,000 into index funds.',
-    action: 'Learn More',
-    time: '2 days ago'
-  }
-];
+import { ChevronDown, RefreshCw } from 'lucide-react';
+import { useInsights } from '../hooks/useInsights';
+import { getInsightConfig } from '../config/insightConfig';
+import { formatRelativeTime, sortInsightsByPriority, getPriorityColor } from '../utils/insightUtils';
+import type { Insight } from '../types/insight';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 
 export default function Insights() {
   const { user } = useAuthenticator(context => [context.user]);
   const navigate = useNavigate();
   const location = useLocation();
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
+
+  // Fetch insights using React Query
+  const { data: insights = [], isLoading, isError, refetch } = useInsights();
+
+  // Sort insights by priority
+  const sortedInsights = sortInsightsByPriority(insights);
 
   // Check if we navigated here with a specific insight to expand
   useEffect(() => {
@@ -80,36 +48,6 @@ export default function Insights() {
   const toggleCard = (insightId: string) => {
     setExpandedCard(prev => prev === insightId ? null : insightId);
   };
-
-  // Use the hardcoded insights from proactiveInsights
-  const insights = proactiveInsights.map(item => ({
-    id: item.id.toString(),
-    icon: item.icon,
-    gradient: item.gradient,
-    vertical: item.vertical,
-    title: item.title,
-    description: item.description,
-    action: item.action,
-    time: item.time,
-    // Add expanded content for full page view
-    details: item.description,
-    recommendations: [
-      item.action,
-      "Track your progress regularly",
-      "Connect with community members for support"
-    ],
-    impact: `This insight can help you take proactive action based on your ${item.vertical} data.`,
-    // Add light background based on vertical
-    lightBackground: item.vertical === 'money' 
-      ? 'linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%)'  // Light green for money
-      : item.vertical === 'healthcare' 
-      ? 'linear-gradient(135deg, #fef2f2 0%, #fdf2f8 100%)'  // Light red/pink for healthcare
-      : item.vertical === 'education'
-      ? 'linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%)'  // Light blue for education
-      : item.vertical === 'life'
-      ? 'linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%)'  // Light orange for life
-      : '#f9fafb'  // Default light gray
-  }));
 
   return (
     <>
@@ -164,39 +102,127 @@ export default function Insights() {
         paddingTop: 'clamp(20px, 3vw, 32px)'
       }}>
 
-      {/* Insights Grid - 2 Column Layout */}
-      <div style={{ 
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(min(450px, 100%), 1fr))',
-        gap: '20px'
-      }}>
-        {insights.map((insight) => (
-          <div
-            key={insight.id}
-            id={`insight-${insight.id}`}
+      {/* Loading State */}
+      {isLoading && (
+        <div style={{
+          background: 'white',
+          borderRadius: '16px',
+          padding: '64px 32px',
+          textAlign: 'center',
+          color: '#6b7280'
+        }}>
+          <div style={{
+            display: 'inline-block',
+            width: '48px',
+            height: '48px',
+            border: '5px solid #e5e7eb',
+            borderTopColor: '#0369a1',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite'
+          }} />
+          <p style={{ marginTop: '20px', fontSize: '16px', fontWeight: '500' }}>Loading insights...</p>
+        </div>
+      )}
+
+      {/* Error State */}
+      {isError && (
+        <div style={{
+          background: '#fef2f2',
+          borderRadius: '16px',
+          padding: '40px 32px',
+          border: '2px solid #fecaca',
+          textAlign: 'center'
+        }}>
+          <div style={{ fontSize: '4rem', marginBottom: '16px' }}>⚠️</div>
+          <h3 style={{
+            fontSize: '20px',
+            fontWeight: '600',
+            color: '#991b1b',
+            marginBottom: '12px'
+          }}>
+            Unable to Load Insights
+          </h3>
+          <p style={{ color: '#b91c1c', marginBottom: '20px' }}>
+            There was an error loading your insights. Please try again.
+          </p>
+          <button
+            onClick={() => refetch()}
             style={{
-              background: insight.lightBackground,
+              background: '#dc2626',
+              color: 'white',
+              border: 'none',
+              borderRadius: '10px',
+              padding: '12px 24px',
+              cursor: 'pointer',
+              fontSize: '15px',
+              fontWeight: '600',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
+          >
+            <RefreshCw size={18} /> Retry
+          </button>
+        </div>
+      )}
+
+      {/* Insights Grid - 2 Column Layout */}
+      {!isLoading && !isError && sortedInsights.length > 0 && (
+        <div style={{ 
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(450px, 100%), 1fr))',
+          gap: '20px'
+        }}>
+          {sortedInsights.map((insight: Insight) => {
+            const config = getInsightConfig(insight.vertical);
+            const Icon = config.icon;
+            const priorityColor = getPriorityColor(insight.priority);
+            
+            return (
+          <div
+            key={insight.insight_id}
+            id={`insight-${insight.insight_id}`}
+            style={{
+              background: config.bgGradient,
               borderRadius: '16px',
-              boxShadow: expandedCard === insight.id 
+              boxShadow: expandedCard === insight.insight_id 
                 ? '0 8px 32px rgba(124, 58, 237, 0.20)' 
                 : '0 4px 24px rgba(80, 80, 160, 0.10)',
               padding: '28px',
               transition: 'all 0.3s ease',
-              border: expandedCard === insight.id ? '2px solid #7c3aed' : '1px solid #e5e7eb'
+              border: expandedCard === insight.insight_id ? '2px solid #7c3aed' : '1px solid #e5e7eb',
+              position: 'relative'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-4px)';
               e.currentTarget.style.boxShadow = '0 12px 40px rgba(80, 80, 160, 0.15)';
-              e.currentTarget.style.borderColor = expandedCard === insight.id ? '#7c3aed' : '#d1d5db';
+              e.currentTarget.style.borderColor = expandedCard === insight.insight_id ? '#7c3aed' : '#d1d5db';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = expandedCard === insight.id 
+              e.currentTarget.style.boxShadow = expandedCard === insight.insight_id 
                 ? '0 8px 32px rgba(124, 58, 237, 0.20)' 
                 : '0 4px 24px rgba(80, 80, 160, 0.10)';
-              e.currentTarget.style.borderColor = expandedCard === insight.id ? '#7c3aed' : '#e5e7eb';
+              e.currentTarget.style.borderColor = expandedCard === insight.insight_id ? '#7c3aed' : '#e5e7eb';
             }}
           >
+            {/* Priority Badge */}
+            <div style={{
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              background: priorityColor,
+              color: 'white',
+              fontSize: '11px',
+              fontWeight: '700',
+              padding: '4px 10px',
+              borderRadius: '12px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>
+              {insight.priority}
+            </div>
+
             {/* Card Header - Always Visible */}
             <div style={{ 
               display: 'flex', 
@@ -206,7 +232,7 @@ export default function Insights() {
               {/* Icon */}
               <div style={{
                 fontSize: '2.6rem',
-                background: insight.gradient,
+                background: config.gradient,
                 borderRadius: '12px',
                 width: '56px',
                 height: '56px',
@@ -217,11 +243,11 @@ export default function Insights() {
                 boxShadow: '0 2px 12px rgba(124, 58, 237, 0.10)',
                 flexShrink: 0
               }}>
-                <insight.icon size={28} />
+                <Icon size={28} />
               </div>
 
               {/* Content */}
-              <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ flex: 1, minWidth: 0, paddingRight: '60px' }}>
                 {/* Context Label */}
                 <div style={{
                   fontSize: '0.9rem',
@@ -230,7 +256,7 @@ export default function Insights() {
                   marginBottom: '8px',
                   textTransform: 'capitalize'
                 }}>
-                  {insight.vertical}
+                  {config.vertical}
                 </div>
 
                 {/* Main Text */}
@@ -251,7 +277,7 @@ export default function Insights() {
                   marginBottom: '12px',
                   lineHeight: '1.5'
                 }}>
-                  {insight.description}
+                  {insight.summary}
                 </div>
 
                 {/* Time and Expand/Collapse */}
@@ -264,14 +290,14 @@ export default function Insights() {
                     fontSize: '0.85rem',
                     color: '#9ca3af'
                   }}>
-                    {insight.time}
+                    {formatRelativeTime(insight.generated_at)}
                   </div>
 
                   {/* Expand/Collapse Icon Button */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      toggleCard(insight.id);
+                      toggleCard(insight.insight_id);
                     }}
                     style={{
                       border: 'none',
@@ -296,7 +322,7 @@ export default function Insights() {
                       strokeWidth={2.5}
                       style={{
                         transition: 'transform 0.3s ease',
-                        transform: expandedCard === insight.id ? 'rotate(180deg)' : 'rotate(0deg)'
+                        transform: expandedCard === insight.insight_id ? 'rotate(180deg)' : 'rotate(0deg)'
                       }}
                     />
                   </button>
@@ -305,7 +331,7 @@ export default function Insights() {
             </div>
 
             {/* Expanded Content */}
-            {expandedCard === insight.id && (
+            {expandedCard === insight.insight_id && (
               <div 
                 style={{
                   marginTop: '24px',
@@ -314,75 +340,26 @@ export default function Insights() {
                   animation: 'fadeIn 0.3s ease-in-out'
                 }}
               >
-                {/* Details */}
-                {insight.details && (
+                {/* Full Content - Render as Markdown */}
+                {insight.full_content && (
                   <div style={{ marginBottom: '20px' }}>
-                    <h3 style={{
-                      fontSize: '1.2rem',
-                      fontWeight: '700',
-                      color: '#0f1f17',
-                      marginBottom: '12px'
-                    }}>
-                      Details
-                    </h3>
-                    <p style={{
+                    <div style={{
                       fontSize: '1rem',
                       color: '#4b5563',
                       lineHeight: '1.7'
-                    }}>
-                      {insight.details}
-                    </p>
+                    }} className="insight-markdown-content">
+                      <ReactMarkdown
+                        rehypePlugins={[rehypeRaw]}
+                        remarkPlugins={[remarkGfm]}
+                      >
+                        {insight.full_content}
+                      </ReactMarkdown>
+                    </div>
                   </div>
                 )}
 
-                {/* Recommendations */}
-                {insight.recommendations && insight.recommendations.length > 0 && (
-                  <div style={{ marginBottom: '20px' }}>
-                    <h3 style={{
-                      fontSize: '1.2rem',
-                      fontWeight: '700',
-                      color: '#0f1f17',
-                      marginBottom: '12px'
-                    }}>
-                      Recommendations
-                    </h3>
-                    <ul style={{
-                      listStyle: 'none',
-                      padding: 0,
-                      margin: 0,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '12px'
-                    }}>
-                      {insight.recommendations.map((rec, idx) => (
-                        <li key={idx} style={{
-                          display: 'flex',
-                          alignItems: 'flex-start',
-                          gap: '12px'
-                        }}>
-                          <span style={{
-                            color: '#7c3aed',
-                            fontSize: '1.2rem',
-                            fontWeight: '700',
-                            flexShrink: 0
-                          }}>
-                            •
-                          </span>
-                          <span style={{
-                            fontSize: '1rem',
-                            color: '#4b5563',
-                            lineHeight: '1.6'
-                          }}>
-                            {rec}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Impact */}
-                {insight.impact && (
+                {/* Expected Impact */}
+                {insight.raw_insight?.expected_impact && (
                   <div style={{
                     background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
                     padding: '16px',
@@ -399,7 +376,7 @@ export default function Insights() {
                       gap: '8px'
                     }}>
                       <span>💡</span>
-                      Potential Impact
+                      Expected Impact
                     </h3>
                     <p style={{
                       fontSize: '1rem',
@@ -407,18 +384,20 @@ export default function Insights() {
                       lineHeight: '1.6',
                       margin: 0
                     }}>
-                      {insight.impact}
+                      {insight.raw_insight.expected_impact}
                     </p>
                   </div>
                 )}
               </div>
             )}
           </div>
-        ))}
-      </div>
+        );
+          })}
+        </div>
+      )}
 
       {/* Empty State */}
-      {insights.length === 0 && (
+      {!isLoading && !isError && sortedInsights.length === 0 && (
         <div style={{
           textAlign: 'center',
           padding: '64px 32px',
@@ -455,6 +434,38 @@ export default function Insights() {
             opacity: 1;
             transform: translateY(0);
           }
+        }
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+        .insight-markdown-content h2 {
+          font-size: 1.2rem;
+          font-weight: 700;
+          color: #111827;
+          margin-top: 0;
+          margin-bottom: 12px;
+        }
+        .insight-markdown-content h3 {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #374151;
+          margin-top: 16px;
+          margin-bottom: 8px;
+        }
+        .insight-markdown-content p {
+          margin: 0 0 12px 0;
+        }
+        .insight-markdown-content strong {
+          font-weight: 700;
+          color: #111827;
+        }
+        .insight-markdown-content ul, .insight-markdown-content ol {
+          margin: 0 0 12px 0;
+          padding-left: 24px;
+        }
+        .insight-markdown-content li {
+          margin-bottom: 6px;
+          line-height: 1.6;
         }
       `}</style>
     </div>

@@ -17,6 +17,7 @@ import Insights from './pages/Insights';
 import SagaaHealthCarePage from './components/healthcare/SagaaHealthCarePage.tsx';
 import SagaaMoneyPage from './components/money/SagaaMoneyPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { QueryProvider } from './providers/QueryProvider';
 
 Amplify.configure(outputs);
 
@@ -60,10 +61,12 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ThemeProvider theme={sagaaTheme}>
-      <Authenticator.Provider>
-        <RouterProvider router={router} />
-      </Authenticator.Provider>
-    </ThemeProvider>
+    <QueryProvider>
+      <ThemeProvider theme={sagaaTheme}>
+        <Authenticator.Provider>
+          <RouterProvider router={router} />
+        </Authenticator.Provider>
+      </ThemeProvider>
+    </QueryProvider>
   </React.StrictMode>
 );
