@@ -23,12 +23,16 @@ export interface Insight {
   full_content: string;
   viewed_at: string | null;
   SK: string;
-  insight_type: string;
+  insight_type: string; // Can be: spending_pattern, seasonal_forecast, cash_flow_forecast, trend_projection, risk_warning, opportunity_forecast
   generated_at: string;
   viewed: boolean;
   PK: string;
   title: string;
-  vertical?: string; // New attribute: sagaa_money, sagaa_healthcare, sagaa_education, sagaa_lifeessentials
+  vertical?: string; // sagaa_money, sagaa_healthcare, sagaa_education, sagaa_lifeessentials
+  
+  // Forecast-specific fields (optional)
+  forecast_horizon?: string; // e.g., "next_30_days", "next_quarter", "next_6_months"
+  confidence_level?: 'high' | 'medium' | 'low'; // For forecasts only
 }
 
 export interface InsightsApiResponse {

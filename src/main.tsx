@@ -6,7 +6,7 @@ import '@aws-amplify/ui-react/styles.css';
 import { Authenticator, ThemeProvider, createTheme } from '@aws-amplify/ui-react';
 import { Amplify } from "aws-amplify";
 import outputs from "../amplify_outputs.json";
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Chat from './pages/Chat';
@@ -17,6 +17,7 @@ import Insights from './pages/Insights';
 import SagaaHealthCarePage from './components/healthcare/SagaaHealthCarePage.tsx';
 import SagaaMoneyPage from './components/money/SagaaMoneyPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { RootRedirect } from './components/RootRedirect';
 import { QueryProvider } from './providers/QueryProvider';
 
 Amplify.configure(outputs);
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
-      { index: true, element: <Navigate to="home" replace /> },
+      { index: true, element: <RootRedirect /> },
       { path: 'home', element: <Home /> },
       { path: 'dashboard', element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
       { path: 'chat', element: <ProtectedRoute><Chat /></ProtectedRoute> },

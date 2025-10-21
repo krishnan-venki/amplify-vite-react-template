@@ -4,23 +4,37 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { ChevronDown, RefreshCw } from 'lucide-react';
 import { useInsights } from '../hooks/useInsights';
 import { getInsightConfig } from '../config/insightConfig';
-import { formatRelativeTime, sortInsightsByPriority, getPriorityColor } from '../utils/insightUtils';
+import { formatRelativeTime, sortInsightsByPriority, getPriorityColor, isForecast } from '../utils/insightUtils';
 import type { Insight } from '../types/insight';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
+
+type FilterType = 'all' | 'insights' | 'forecasts';
 
 export default function Insights() {
   const { user } = useAuthenticator(context => [context.user]);
   const navigate = useNavigate();
   const location = useLocation();
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
+  const [filterType, setFilterType] = useState<FilterType>('all');
 
   // Fetch insights using React Query
   const { data: insights = [], isLoading, isError, refetch } = useInsights();
 
+  // Filter insights based on selected type
+  const filteredInsights = filterType === 'all' 
+    ? insights 
+    : filterType === 'forecasts'
+    ? insights.filter(insight => isForecast(insight))
+    : insights.filter(insight => !isForecast(insight));
+
   // Sort insights by priority
-  const sortedInsights = sortInsightsByPriority(insights);
+  const sortedInsights = sortInsightsByPriority(filteredInsights);
+  
+  // Count insights and forecasts
+  const insightsCount = insights.filter(i => !isForecast(i)).length;
+  const forecastsCount = insights.filter(i => isForecast(i)).length;
 
   // Check if we navigated here with a specific insight to expand
   useEffect(() => {
@@ -102,6 +116,111 @@ export default function Insights() {
         paddingTop: 'clamp(20px, 3vw, 32px)'
       }}>
 
+      {/* Filter Tabs */}
+      <div style={{
+        display: 'flex',
+        gap: '12px',
+        marginBottom: '24px',
+        borderBottom: '2px solid #e5e7eb',
+        paddingBottom: '0'
+      }}>
+        <button
+          onClick={() => setFilterType('all')}
+          style={{
+            padding: '12px 24px',
+            background: filterType === 'all' ? 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)' : 'transparent',
+            color: filterType === 'all' ? 'white' : '#6b7280',
+            border: 'none',
+            borderBottom: filterType === 'all' ? '3px solid #3b82f6' : '3px solid transparent',
+            borderRadius: '8px 8px 0 0',
+            fontSize: '15px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            position: 'relative',
+            bottom: '-2px'
+          }}
+          onMouseEnter={(e) => {
+            if (filterType !== 'all') {
+              e.currentTarget.style.background = '#f3f4f6';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (filterType !== 'all') {
+              e.currentTarget.style.background = 'transparent';
+            }
+          }}
+        >
+          All ({insights.length})
+        </button>
+
+        <button
+          onClick={() => setFilterType('insights')}
+          style={{
+            padding: '12px 24px',
+            background: filterType === 'insights' ? 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)' : 'transparent',
+            color: filterType === 'insights' ? 'white' : '#6b7280',
+            border: 'none',
+            borderBottom: filterType === 'insights' ? '3px solid #3b82f6' : '3px solid transparent',
+            borderRadius: '8px 8px 0 0',
+            fontSize: '15px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            position: 'relative',
+            bottom: '-2px'
+          }}
+          onMouseEnter={(e) => {
+            if (filterType !== 'insights') {
+              e.currentTarget.style.background = '#f3f4f6';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (filterType !== 'insights') {
+              e.currentTarget.style.background = 'transparent';
+            }
+          }}
+        >
+          💡 Insights ({insightsCount})
+        </button>
+
+        <button
+          onClick={() => setFilterType('forecasts')}
+          style={{
+            padding: '12px 24px',
+            background: filterType === 'forecasts' ? 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)' : 'transparent',
+            color: filterType === 'forecasts' ? 'white' : '#6b7280',
+            border: 'none',
+            borderBottom: filterType === 'forecasts' ? '3px solid #8b5cf6' : '3px solid transparent',
+            borderRadius: '8px 8px 0 0',
+            fontSize: '15px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            position: 'relative',
+            bottom: '-2px'
+          }}
+          onMouseEnter={(e) => {
+            if (filterType !== 'forecasts') {
+              e.currentTarget.style.background = '#f3f4f6';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (filterType !== 'forecasts') {
+              e.currentTarget.style.background = 'transparent';
+            }
+          }}
+        >
+          🔮 Forecasts ({forecastsCount})
+        </button>
+      </div>
+
       {/* Loading State */}
       {isLoading && (
         <div style={{
@@ -177,6 +296,7 @@ export default function Insights() {
             const config = getInsightConfig(insight.vertical);
             const Icon = config.icon;
             const priorityColor = getPriorityColor(insight.priority);
+            const isInsightForecast = isForecast(insight);
             
             return (
           <div
@@ -191,22 +311,79 @@ export default function Insights() {
               padding: '28px',
               transition: 'all 0.3s ease',
               border: expandedCard === insight.insight_id ? '2px solid #7c3aed' : '1px solid #e5e7eb',
-              position: 'relative'
+              position: 'relative',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-4px)';
               e.currentTarget.style.boxShadow = '0 12px 40px rgba(80, 80, 160, 0.15)';
-              e.currentTarget.style.borderColor = expandedCard === insight.insight_id ? '#7c3aed' : '#d1d5db';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
               e.currentTarget.style.boxShadow = expandedCard === insight.insight_id 
                 ? '0 8px 32px rgba(124, 58, 237, 0.20)' 
                 : '0 4px 24px rgba(80, 80, 160, 0.10)';
-              e.currentTarget.style.borderColor = expandedCard === insight.insight_id ? '#7c3aed' : '#e5e7eb';
             }}
           >
-            {/* Priority Badge */}
+            {/* Type Badge - Top Right (next to priority badge) */}
+            <div style={{
+              position: 'absolute',
+              top: '16px',
+              right: isInsightForecast && insight.confidence_level 
+                ? '160px'  // Space for confidence + priority badges (increased for MEDIUM)
+                : '90px',  // Space for just priority badge (increased for MEDIUM)
+              background: isInsightForecast 
+                ? 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)'
+                : 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)',
+              color: 'white',
+              fontSize: '14px',
+              fontWeight: '700',
+              padding: '6px 8px',
+              borderRadius: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: isInsightForecast 
+                ? '0 2px 8px rgba(139, 92, 246, 0.3)'
+                : '0 2px 8px rgba(59, 130, 246, 0.3)',
+              height: '28px',  // Match priority badge height
+              lineHeight: '1'
+            }}>
+              {isInsightForecast ? '🔮' : '💡'}
+            </div>
+            
+            {/* Confidence Badge - Top Right (between type and priority, for forecasts only) */}
+            {isInsightForecast && insight.confidence_level && (
+              <div style={{
+                position: 'absolute',
+                top: '16px',
+                right: '90px', // Position before priority badge (increased spacing)
+                background: insight.confidence_level === 'high' ? '#10b981' 
+                  : insight.confidence_level === 'medium' ? '#f59e0b' 
+                  : '#6b7280',
+                color: 'white',
+                fontSize: '11px',
+                fontWeight: '700',
+                padding: '6px 10px',
+                borderRadius: '12px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                height: '28px',  // Explicit height for consistency
+                lineHeight: '1'
+              }}>
+                <span style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: 'white'
+                }}></span>
+                {insight.confidence_level.charAt(0).toUpperCase() + insight.confidence_level.slice(1)}
+              </div>
+            )}
+            
+            {/* Priority Badge - Top Right (far right) */}
             <div style={{
               position: 'absolute',
               top: '16px',
@@ -215,10 +392,14 @@ export default function Insights() {
               color: 'white',
               fontSize: '11px',
               fontWeight: '700',
-              padding: '4px 10px',
+              padding: '6px 10px',
               borderRadius: '12px',
               textTransform: 'uppercase',
-              letterSpacing: '0.5px'
+              letterSpacing: '0.5px',
+              height: '28px',  // Explicit height
+              display: 'flex',
+              alignItems: 'center',
+              lineHeight: '1'
             }}>
               {insight.priority}
             </div>
@@ -437,6 +618,16 @@ export default function Insights() {
         }
         @keyframes spin {
           to { transform: rotate(360deg); }
+        }
+        @keyframes pulse-border {
+          0%, 100% {
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+          }
+          50% {
+            border-color: rgba(167, 139, 250, 0.8);
+            box-shadow: 0 0 30px rgba(167, 139, 250, 0.5);
+          }
         }
         .insight-markdown-content h2 {
           font-size: 1.2rem;

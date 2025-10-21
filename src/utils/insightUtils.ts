@@ -3,8 +3,62 @@
 /**
  * Format a date string to relative time (e.g., "2 hours ago", "3 days ago")
  */
-export function formatRelativeTime(dateString: string): string {
-  const date = new Date(dateString);
+import type { Insight } from '../types/insight';
+import { TrendingUp, AlertTriangle, DollarSign, Target, Zap } from 'lucide-react';
+
+/**
+ * Forecast insight types
+ */
+export const FORECAST_TYPES = [
+  'seasonal_forecast',
+  'cash_flow_forecast', 
+  'trend_projection',
+  'risk_warning',
+  'opportunity_forecast'
+];
+
+/**
+ * Check if an insight is a forecast
+ */
+export function isForecast(insight: Insight): boolean {
+  return FORECAST_TYPES.includes(insight.insight_type);
+}
+
+/**
+ * Get icon for forecast type
+ */
+export function getForecastIcon(insightType: string) {
+  const iconMap: Record<string, any> = {
+    'seasonal_forecast': TrendingUp,
+    'cash_flow_forecast': DollarSign,
+    'trend_projection': TrendingUp,
+    'risk_warning': AlertTriangle,
+    'opportunity_forecast': Target,
+  };
+  return iconMap[insightType] || Zap;
+}
+
+/**
+ * Format forecast horizon to display text
+ */
+export function formatForecastHorizon(horizon?: string): string {
+  if (!horizon) return 'Upcoming';
+  
+  const horizonMap: Record<string, string> = {
+    'next_30_days': 'Next 30 days',
+    'next_quarter': 'Next quarter',
+    'next_6_months': 'Next 6 months',
+    'next_year': 'Next year',
+  };
+  
+  return horizonMap[horizon] || horizon.replace(/_/g, ' ');
+}
+
+/**
+ * Format a timestamp to a relative time string (e.g., "2 hours ago")
+ */
+export function formatRelativeTime(timestamp: string): string {
+  const date = new Date(timestamp);
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffSeconds = Math.floor(diffMs / 1000);

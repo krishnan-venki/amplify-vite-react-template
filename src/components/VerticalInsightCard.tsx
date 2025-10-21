@@ -8,10 +8,16 @@ interface VerticalInsightCardProps {
   aggregation: VerticalAggregation;
 }
 
+// Color schemes
+const TYPE_COLORS = {
+  insight: '#3b82f6',    // blue-500
+  forecast: '#8b5cf6',   // purple-500
+};
+
 const PRIORITY_COLORS = {
-  high: '#ef4444', // red-500
-  medium: '#eab308', // yellow-500
-  low: '#a855f7', // purple-500
+  high: '#ef4444',       // red-500
+  medium: '#f59e0b',     // amber-500
+  low: '#10b981',        // green-500
 };
 
 export const VerticalInsightCard: React.FC<VerticalInsightCardProps> = ({ aggregation }) => {
@@ -22,13 +28,21 @@ export const VerticalInsightCard: React.FC<VerticalInsightCardProps> = ({ aggreg
 
   // Check if there are any insights
   const hasInsights = aggregation.totalCount > 0;
+  
+  const { typeBreakdown } = aggregation;
 
-  // Prepare data for donut chart
-  const chartData = [
+  // Prepare data for OUTER ring (Type: Insights vs Forecasts)
+  const typeData = [
+    { name: 'Insights', value: typeBreakdown.insights, color: TYPE_COLORS.insight },
+    { name: 'Forecasts', value: typeBreakdown.forecasts, color: TYPE_COLORS.forecast },
+  ].filter(item => item.value > 0);
+
+  // Prepare data for INNER ring (Priority breakdown)
+  const priorityData = [
     { name: 'High', value: aggregation.priorityBreakdown.high, color: PRIORITY_COLORS.high },
     { name: 'Medium', value: aggregation.priorityBreakdown.medium, color: PRIORITY_COLORS.medium },
     { name: 'Low', value: aggregation.priorityBreakdown.low, color: PRIORITY_COLORS.low },
-  ].filter(item => item.value > 0); // Only show segments with data
+  ].filter(item => item.value > 0);
 
   const handleCardClick = () => {
     if (hasInsights) {
@@ -71,28 +85,49 @@ export const VerticalInsightCard: React.FC<VerticalInsightCardProps> = ({ aggreg
       }}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
-        {/* Left side - Donut Chart */}
+        {/* Left side - Dual-Ring Donut Chart */}
         <div style={{ flexShrink: 0 }}>
           <div style={{ position: 'relative', width: '128px', height: '128px' }}>
-            {chartData.length > 0 ? (
+            {hasInsights ? (
               <>
                 <ResponsiveContainer width={128} height={128}>
                   <PieChart>
-                    <Pie
-                      data={chartData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={40}
-                      outerRadius={60}
-                      paddingAngle={2}
-                      dataKey="value"
-                    >
-                      {chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
+                    {/* OUTER RING - Type (Insights vs Forecasts) */}
+                    {typeData.length > 0 && (
+                      <Pie
+                        data={typeData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={50}
+                        outerRadius={64}
+                        paddingAngle={2}
+                        dataKey="value"
+                      >
+                        {typeData.map((entry, index) => (
+                          <Cell key={`type-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                    )}
+                    
+                    {/* INNER RING - Priority */}
+                    {priorityData.length > 0 && (
+                      <Pie
+                        data={priorityData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={30}
+                        outerRadius={45}
+                        paddingAngle={2}
+                        dataKey="value"
+                      >
+                        {priorityData.map((entry, index) => (
+                          <Cell key={`priority-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                    )}
                   </PieChart>
                 </ResponsiveContainer>
+                
                 {/* Center count */}
                 <div style={{
                   position: 'absolute',
@@ -109,7 +144,7 @@ export const VerticalInsightCard: React.FC<VerticalInsightCardProps> = ({ aggreg
                     <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827' }}>
                       {aggregation.totalCount}
                     </div>
-                    <div style={{ fontSize: '12px', color: '#6b7280' }}>Total</div>
+                    <div style={{ fontSize: '10px', color: '#6b7280', marginTop: '-2px' }}>Total</div>
                   </div>
                 </div>
               </>
@@ -148,97 +183,153 @@ export const VerticalInsightCard: React.FC<VerticalInsightCardProps> = ({ aggreg
               <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#111827', margin: 0 }}>
                 {verticalName}
               </h3>
-              <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
-                {aggregation.newCount} new insight{aggregation.newCount !== 1 ? 's' : ''}
+              <p style={{ fontSize: '13px', color: '#6b7280', margin: 0 }}>
+                {typeBreakdown.insights} insight{typeBreakdown.insights !== 1 ? 's' : ''} • {typeBreakdown.forecasts} forecast{typeBreakdown.forecasts !== 1 ? 's' : ''}
               </p>
             </div>
           </div>
 
-          {/* Priority Breakdown */}
-          <div style={{ marginTop: '16px' }}>
-            <h4 style={{
-              fontSize: '12px',
-              fontWeight: '600',
-              color: '#6b7280',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              marginBottom: '12px'
-            }}>
-              Priority Distribution
-            </h4>
-            
-            {aggregation.priorityBreakdown.high > 0 && (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '8px'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Type Breakdown */}
+          {hasInsights && (
+            <>
+              <div style={{ marginBottom: '12px' }}>
+                <h4 style={{
+                  fontSize: '11px',
+                  fontWeight: '600',
+                  color: '#6b7280',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  marginBottom: '8px'
+                }}>
+                  Type Distribution
+                </h4>
+                
+                {typeBreakdown.insights > 0 && (
                   <div style={{
-                    width: '12px',
-                    height: '12px',
-                    borderRadius: '50%',
-                    backgroundColor: PRIORITY_COLORS.high
-                  }}></div>
-                  <span style={{ fontSize: '14px', color: '#374151' }}>High Priority</span>
-                </div>
-                <span style={{ fontSize: '14px', fontWeight: '600', color: '#111827' }}>
-                  {aggregation.priorityBreakdown.high} ({percentages.high}%)
-                </span>
-              </div>
-            )}
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '6px'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{
+                        width: '10px',
+                        height: '10px',
+                        borderRadius: '50%',
+                        backgroundColor: TYPE_COLORS.insight
+                      }}></div>
+                      <span style={{ fontSize: '13px', color: '#374151' }}>💡 Insights</span>
+                    </div>
+                    <span style={{ fontSize: '13px', fontWeight: '600', color: '#111827' }}>
+                      {typeBreakdown.insights}
+                    </span>
+                  </div>
+                )}
 
-            {aggregation.priorityBreakdown.medium > 0 && (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '8px'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {typeBreakdown.forecasts > 0 && (
                   <div style={{
-                    width: '12px',
-                    height: '12px',
-                    borderRadius: '50%',
-                    backgroundColor: PRIORITY_COLORS.medium
-                  }}></div>
-                  <span style={{ fontSize: '14px', color: '#374151' }}>Medium Priority</span>
-                </div>
-                <span style={{ fontSize: '14px', fontWeight: '600', color: '#111827' }}>
-                  {aggregation.priorityBreakdown.medium} ({percentages.medium}%)
-                </span>
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '6px'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{
+                        width: '10px',
+                        height: '10px',
+                        borderRadius: '50%',
+                        backgroundColor: TYPE_COLORS.forecast
+                      }}></div>
+                      <span style={{ fontSize: '13px', color: '#374151' }}>🔮 Forecasts</span>
+                    </div>
+                    <span style={{ fontSize: '13px', fontWeight: '600', color: '#111827' }}>
+                      {typeBreakdown.forecasts}
+                    </span>
+                  </div>
+                )}
               </div>
-            )}
 
-            {aggregation.priorityBreakdown.low > 0 && (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '8px'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {/* Priority Breakdown */}
+              <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+                <h4 style={{
+                  fontSize: '11px',
+                  fontWeight: '600',
+                  color: '#6b7280',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  marginBottom: '8px'
+                }}>
+                  Priority Distribution
+                </h4>
+                
+                {aggregation.priorityBreakdown.high > 0 && (
                   <div style={{
-                    width: '12px',
-                    height: '12px',
-                    borderRadius: '50%',
-                    backgroundColor: PRIORITY_COLORS.low
-                  }}></div>
-                  <span style={{ fontSize: '14px', color: '#374151' }}>Low Priority</span>
-                </div>
-                <span style={{ fontSize: '14px', fontWeight: '600', color: '#111827' }}>
-                  {aggregation.priorityBreakdown.low} ({percentages.low}%)
-                </span>
-              </div>
-            )}
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '6px'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{
+                        width: '10px',
+                        height: '10px',
+                        borderRadius: '50%',
+                        backgroundColor: PRIORITY_COLORS.high
+                      }}></div>
+                      <span style={{ fontSize: '13px', color: '#374151' }}>High</span>
+                    </div>
+                    <span style={{ fontSize: '13px', fontWeight: '600', color: '#111827' }}>
+                      {aggregation.priorityBreakdown.high} ({percentages.high}%)
+                    </span>
+                  </div>
+                )}
 
-            {chartData.length === 0 && (
-              <p style={{ fontSize: '14px', color: '#6b7280', fontStyle: 'italic' }}>
-                No insights available
-              </p>
-            )}
-          </div>
+                {aggregation.priorityBreakdown.medium > 0 && (
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '6px'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{
+                        width: '10px',
+                        height: '10px',
+                        borderRadius: '50%',
+                        backgroundColor: PRIORITY_COLORS.medium
+                      }}></div>
+                      <span style={{ fontSize: '13px', color: '#374151' }}>Medium</span>
+                    </div>
+                    <span style={{ fontSize: '13px', fontWeight: '600', color: '#111827' }}>
+                      {aggregation.priorityBreakdown.medium} ({percentages.medium}%)
+                    </span>
+                  </div>
+                )}
+
+                {aggregation.priorityBreakdown.low > 0 && (
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '6px'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{
+                        width: '10px',
+                        height: '10px',
+                        borderRadius: '50%',
+                        backgroundColor: PRIORITY_COLORS.low
+                      }}></div>
+                      <span style={{ fontSize: '13px', color: '#374151' }}>Low</span>
+                    </div>
+                    <span style={{ fontSize: '13px', fontWeight: '600', color: '#111827' }}>
+                      {aggregation.priorityBreakdown.low} ({percentages.low}%)
+                    </span>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

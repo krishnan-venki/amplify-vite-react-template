@@ -601,7 +601,10 @@ export default function Dashboard() {
             const moneyAgg = aggregated['sagaa_money'] || {
               vertical: 'sagaa_money',
               totalCount: 0,
+              typeBreakdown: { insights: 0, forecasts: 0 },
               priorityBreakdown: { high: 0, medium: 0, low: 0 },
+              insightPriorityBreakdown: { high: 0, medium: 0, low: 0 },
+              forecastPriorityBreakdown: { high: 0, medium: 0, low: 0 },
               newCount: 0,
               viewedCount: 0,
               insights: []
@@ -610,7 +613,10 @@ export default function Dashboard() {
             const healthcareAgg = aggregated['sagaa_healthcare'] || {
               vertical: 'sagaa_healthcare',
               totalCount: 0,
+              typeBreakdown: { insights: 0, forecasts: 0 },
               priorityBreakdown: { high: 0, medium: 0, low: 0 },
+              insightPriorityBreakdown: { high: 0, medium: 0, low: 0 },
+              forecastPriorityBreakdown: { high: 0, medium: 0, low: 0 },
               newCount: 0,
               viewedCount: 0,
               insights: []
