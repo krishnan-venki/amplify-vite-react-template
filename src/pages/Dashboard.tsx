@@ -524,7 +524,7 @@ export default function Dashboard() {
             margin: 0,
             color: '#111827'
           }}>
-            Reminders and Insights
+            Insights and Forecasts
           </h2>
           <ChevronDown 
             size={20} 

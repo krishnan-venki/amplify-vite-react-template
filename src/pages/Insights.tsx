@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { ChevronDown, RefreshCw } from 'lucide-react';
@@ -9,6 +9,7 @@ import type { Insight } from '../types/insight';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
+import VerticalFilterSidebar from '../components/VerticalFilterSidebar';
 
 type FilterType = 'all' | 'insights' | 'forecasts';
 
@@ -18,23 +19,47 @@ export default function Insights() {
   const location = useLocation();
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
   const [filterType, setFilterType] = useState<FilterType>('all');
+  const [selectedVertical, setSelectedVertical] = useState<string>('sagaa_money');
 
   // Fetch insights using React Query
   const { data: insights = [], isLoading, isError, refetch } = useInsights();
 
-  // Filter insights based on selected type
-  const filteredInsights = filterType === 'all' 
-    ? insights 
-    : filterType === 'forecasts'
-    ? insights.filter(insight => isForecast(insight))
-    : insights.filter(insight => !isForecast(insight));
+  // Calculate which verticals have data
+  const verticals = useMemo(() => {
+    const verticalData = [
+      { id: 'sagaa_money', name: 'Money', gradient: 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)' },
+      { id: 'sagaa_healthcare', name: 'Healthcare', gradient: 'linear-gradient(135deg, #f43f5e 0%, #ec4899 100%)' },
+      { id: 'sagaa_education', name: 'Education', gradient: 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)' },
+      { id: 'sagaa_lifeessentials', name: 'Life Essentials', gradient: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)' },
+    ];
+
+    return verticalData.map(v => ({
+      ...v,
+      // Check if any insight has this vertical, or defaults to it (for sagaa_money)
+      hasData: insights.some(insight => (insight.vertical || 'sagaa_money') === v.id)
+    }));
+  }, [insights]);
+
+  // Filter insights based on selected vertical and type
+  const filteredInsights = useMemo(() => {
+    // Default to 'sagaa_money' if vertical is not specified (matches aggregateInsights logic)
+    let filtered = insights.filter(insight => (insight.vertical || 'sagaa_money') === selectedVertical);
+    
+    if (filterType === 'forecasts') {
+      filtered = filtered.filter(insight => isForecast(insight));
+    } else if (filterType === 'insights') {
+      filtered = filtered.filter(insight => !isForecast(insight));
+    }
+    
+    return filtered;
+  }, [insights, selectedVertical, filterType]);
 
   // Sort insights by priority
   const sortedInsights = sortInsightsByPriority(filteredInsights);
   
-  // Count insights and forecasts
-  const insightsCount = insights.filter(i => !isForecast(i)).length;
-  const forecastsCount = insights.filter(i => isForecast(i)).length;
+  // Count insights and forecasts for current vertical
+  const insightsCount = insights.filter(i => !isForecast(i) && (i.vertical || 'sagaa_money') === selectedVertical).length;
+  const forecastsCount = insights.filter(i => isForecast(i) && (i.vertical || 'sagaa_money') === selectedVertical).length;
 
   // Check if we navigated here with a specific insight to expand
   useEffect(() => {
@@ -109,12 +134,25 @@ export default function Insights() {
         }} />
       </div>
 
+      {/* Main content area with sidebar */}
       <div style={{ 
+        display: 'flex',
+        gap: '20px',
         maxWidth: '1200px', 
         margin: '0 auto', 
         padding: 'clamp(16px, 3vw, 32px)',
         paddingTop: 'clamp(20px, 3vw, 32px)'
       }}>
+        
+        {/* Vertical Filter Sidebar */}
+        <VerticalFilterSidebar
+          verticals={verticals}
+          selectedVertical={selectedVertical}
+          onSelectVertical={setSelectedVertical}
+        />
+
+        {/* Content Area */}
+        <div style={{ flex: 1 }}>
 
       {/* Filter Tabs */}
       <div style={{
@@ -151,7 +189,7 @@ export default function Insights() {
             }
           }}
         >
-          All ({insights.length})
+          All ({insightsCount + forecastsCount})
         </button>
 
         <button
@@ -404,121 +442,126 @@ export default function Insights() {
               {insight.priority}
             </div>
 
-            {/* Card Header - Always Visible */}
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'flex-start',
-              gap: '20px'
-            }}>
-              {/* Icon */}
-              <div style={{
-                fontSize: '2.6rem',
-                background: config.gradient,
-                borderRadius: '12px',
-                width: '56px',
-                height: '56px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                boxShadow: '0 2px 12px rgba(124, 58, 237, 0.10)',
-                flexShrink: 0
+            {/* Card Header - Visible when collapsed */}
+            {expandedCard !== insight.insight_id && (
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'flex-start',
+                gap: '20px'
               }}>
-                <Icon size={28} />
-              </div>
-
-              {/* Content */}
-              <div style={{ flex: 1, minWidth: 0, paddingRight: '60px' }}>
-                {/* Context Label */}
+                {/* Icon */}
                 <div style={{
-                  fontSize: '0.9rem',
-                  fontWeight: '600',
-                  color: '#6b7280',
-                  marginBottom: '8px',
-                  textTransform: 'capitalize'
-                }}>
-                  {config.vertical}
-                </div>
-
-                {/* Main Text */}
-                <div style={{
-                  fontSize: '1.15rem',
-                  fontWeight: '600',
-                  color: '#111827',
-                  marginBottom: '8px',
-                  lineHeight: '1.6'
-                }}>
-                  {insight.title}
-                </div>
-
-                {/* Description */}
-                <div style={{
-                  fontSize: '0.95rem',
-                  color: '#6b7280',
-                  marginBottom: '12px',
-                  lineHeight: '1.5'
-                }}>
-                  {insight.summary}
-                </div>
-
-                {/* Time and Expand/Collapse */}
-                <div style={{
+                  fontSize: '2.6rem',
+                  background: config.gradient,
+                  borderRadius: '12px',
+                  width: '56px',
+                  height: '56px',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '12px'
+                  justifyContent: 'center',
+                  color: 'white',
+                  boxShadow: '0 2px 12px rgba(124, 58, 237, 0.10)',
+                  flexShrink: 0
                 }}>
+                  <Icon size={28} />
+                </div>
+
+                {/* Content */}
+                <div style={{ flex: 1, minWidth: 0, paddingRight: '60px' }}>
+                  {/* Context Label */}
                   <div style={{
-                    fontSize: '0.85rem',
-                    color: '#9ca3af'
+                    fontSize: '0.9rem',
+                    fontWeight: '600',
+                    color: '#6b7280',
+                    marginBottom: '8px',
+                    textTransform: 'capitalize'
                   }}>
-                    {formatRelativeTime(insight.generated_at)}
+                    {config.vertical}
                   </div>
 
-                  {/* Expand/Collapse Icon Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleCard(insight.insight_id);
-                    }}
-                    style={{
-                      border: 'none',
-                      background: 'transparent',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer',
-                      padding: '4px',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.2)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1)';
-                    }}
-                  >
-                    <ChevronDown
-                      size={20}
-                      color="#6b7280"
-                      strokeWidth={2.5}
-                      style={{
-                        transition: 'transform 0.3s ease',
-                        transform: expandedCard === insight.insight_id ? 'rotate(180deg)' : 'rotate(0deg)'
+                  {/* Main Text */}
+                  <div style={{
+                    fontSize: '1.15rem',
+                    fontWeight: '600',
+                    color: '#111827',
+                    marginBottom: '8px',
+                    lineHeight: '1.6'
+                  }}>
+                    {insight.title}
+                  </div>
+
+                  {/* Description */}
+                  <div style={{
+                    fontSize: '0.95rem',
+                    color: '#6b7280',
+                    marginBottom: '12px',
+                    lineHeight: '1.5',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                  }}>
+                    {insight.summary}
+                  </div>
+
+                  {/* Time and Expand/Collapse */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px'
+                  }}>
+                    <div style={{
+                      fontSize: '0.85rem',
+                      color: '#9ca3af'
+                    }}>
+                      {formatRelativeTime(insight.generated_at)}
+                    </div>
+
+                    {/* Expand/Collapse Icon Button */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleCard(insight.insight_id);
                       }}
-                    />
-                  </button>
+                      style={{
+                        border: 'none',
+                        background: 'transparent',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        padding: '4px',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.2)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                      }}
+                    >
+                      <ChevronDown
+                        size={20}
+                        color="#6b7280"
+                        strokeWidth={2.5}
+                        style={{
+                          transition: 'transform 0.3s ease',
+                          transform: 'rotate(0deg)'
+                        }}
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* Expanded Content */}
             {expandedCard === insight.insight_id && (
               <div 
                 style={{
-                  marginTop: '24px',
-                  paddingTop: '24px',
-                  borderTop: '2px solid #e5e7eb',
-                  animation: 'fadeIn 0.3s ease-in-out'
+                  animation: 'fadeIn 0.3s ease-in-out',
+                  marginTop: '50px'  // Push down to avoid overlap with badges
                 }}
               >
                 {/* Full Content - Render as Markdown */}
@@ -545,7 +588,8 @@ export default function Insights() {
                     background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
                     padding: '16px',
                     borderRadius: '12px',
-                    border: '1px solid #bae6fd'
+                    border: '1px solid #bae6fd',
+                    marginBottom: '20px'
                   }}>
                     <h3 style={{
                       fontSize: '1.1rem',
@@ -569,6 +613,51 @@ export default function Insights() {
                     </p>
                   </div>
                 )}
+
+                {/* Collapse Button - Bottom Right */}
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  marginTop: '16px'
+                }}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleCard(insight.insight_id);
+                    }}
+                    style={{
+                      border: '1px solid #d1d5db',
+                      background: 'white',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      padding: '8px',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#f3f4f6';
+                      e.currentTarget.style.borderColor = '#9ca3af';
+                      e.currentTarget.style.transform = 'scale(1.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'white';
+                      e.currentTarget.style.borderColor = '#d1d5db';
+                      e.currentTarget.style.transform = 'scale(1)';
+                    }}
+                  >
+                    <ChevronDown
+                      size={20}
+                      color="#6b7280"
+                      strokeWidth={2.5}
+                      style={{
+                        transition: 'transform 0.3s ease',
+                        transform: 'rotate(180deg)'
+                      }}
+                    />
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -656,10 +745,11 @@ export default function Insights() {
         }
         .insight-markdown-content li {
           margin-bottom: 6px;
-          line-height: 1.6;
+          lineHeight: 1.6;
         }
       `}</style>
-    </div>
+      </div> {/* Close content area div */}
+      </div> {/* Close main wrapper with sidebar */}
     </>
   );
 }
