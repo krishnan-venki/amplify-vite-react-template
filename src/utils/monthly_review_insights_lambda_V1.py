@@ -265,6 +265,14 @@ def format_monthly_review_for_llm(context):
 
 MONTHLY_REVIEW_PROMPT_TEMPLATE = """You are Sagaa's Financial Intelligence Engine. Analyze this user's monthly spending and generate actionable insights with visual data for card display.
 
+ANALYSIS FOCUS:
+Compare target month against 12-month baseline for:
+1. Overall Spending Changes - Total spending increase/decrease vs average
+2. Category Shifts - Significant changes in spending categories (>10% and >$50)
+3. Discretionary Balance - Discretionary vs essential spending ratio shifts
+4. Behavioral Patterns - Weekend spending, subscription changes
+5. Budget Alignment - How spending compares to typical patterns
+
 USER DATA:
 {context}
 

@@ -321,6 +321,14 @@ def format_foresight_context_for_llm(context):
 
 FORESIGHTS_PROMPT = """You are Sagaa's Financial Foresights Engine. Generate forward-looking predictions with visual data for card display.
 
+ANALYSIS FOCUS:
+Analyze 24-month data to predict:
+1. Seasonal Forecasts - Holiday/summer spending surges, tax season impacts
+2. Cash Flow Predictions - Upcoming surplus/deficit, savings trajectory
+3. Trend Extrapolations - Category acceleration, lifestyle creep warnings
+4. Risk Warnings - Financial stress trajectory, declining savings rate
+5. Opportunity Forecasts - Surplus allocation, saving opportunities
+
 USER DATA:
 {context}
 
