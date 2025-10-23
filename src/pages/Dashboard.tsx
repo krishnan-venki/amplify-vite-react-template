@@ -118,10 +118,11 @@ export default function Dashboard() {
   };
 
   const handleAskSagaa = (verticalId: string, verticalName: string, gradient: string) => {
-    // Navigate to chat page with context
+    // Navigate to chat page with vertical context
     navigate('/chat', { 
       state: { 
         context: {
+          type: 'vertical',
           id: verticalId,
           name: verticalName,
           gradient: gradient

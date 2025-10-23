@@ -10,11 +10,18 @@ import { TrendingUp, AlertTriangle, DollarSign, Target, Zap } from 'lucide-react
  * Forecast insight types
  */
 export const FORECAST_TYPES = [
+  // Original frontend types
   'seasonal_forecast',
   'cash_flow_forecast', 
   'trend_projection',
   'risk_warning',
-  'opportunity_forecast'
+  'opportunity_forecast',
+  // Lambda-generated types
+  'seasonal_surge',
+  'cash_flow_warning',
+  'income_change',
+  'spending_trend',
+  'budget_risk'
 ];
 
 /**
@@ -29,11 +36,18 @@ export function isForecast(insight: Insight): boolean {
  */
 export function getForecastIcon(insightType: string) {
   const iconMap: Record<string, any> = {
+    // Original types
     'seasonal_forecast': TrendingUp,
     'cash_flow_forecast': DollarSign,
     'trend_projection': TrendingUp,
     'risk_warning': AlertTriangle,
     'opportunity_forecast': Target,
+    // Lambda-generated types
+    'seasonal_surge': TrendingUp,
+    'cash_flow_warning': AlertTriangle,
+    'income_change': DollarSign,
+    'spending_trend': TrendingUp,
+    'budget_risk': AlertTriangle,
   };
   return iconMap[insightType] || Zap;
 }
@@ -111,14 +125,15 @@ export function sortInsightsByPriority<T extends { priority: string; generated_a
  * Get priority badge color
  */
 export function getPriorityColor(priority: string): string {
-  switch (priority) {
+  const normalizedPriority = priority.toLowerCase();
+  switch (normalizedPriority) {
     case 'high':
-      return '#ef4444';
+      return '#ef4444'; // Red
     case 'medium':
-      return '#f59e0b';
+      return '#f59e0b'; // Amber
     case 'low':
-      return '#6b7280';
+      return '#10b981'; // Green
     default:
-      return '#6b7280';
+      return '#6b7280'; // Gray fallback
   }
 }

@@ -11,7 +11,7 @@ import ChartVisualization from '../components/ChartVisualization';
 import { ConversationMessage, SagaaResponse } from '../types/chat';
 import API_ENDPOINTS from '../config/api';
 
-// Context-specific quick prompts
+// Context-specific quick prompts for verticals
 const CONTEXT_PROMPTS: Record<string, string[]> = {
   money: [
     "Why is my net worth up 12.5%?",
@@ -39,6 +39,84 @@ const CONTEXT_PROMPTS: Record<string, string[]> = {
   ]
 };
 
+// Insight-type specific quick prompts
+const INSIGHT_PROMPTS: Record<string, string[]> = {
+  spending_pattern: [
+    "Why did this happen?",
+    "What should I do about it?",
+    "Show me the trend over time",
+    "How does this compare to my baseline?"
+  ],
+  budget_alert: [
+    "How can I get back on track?",
+    "Where should I cut spending?",
+    "What caused this overage?",
+    "Create a recovery plan"
+  ],
+  savings_opportunity: [
+    "How much can I save?",
+    "What's the best approach?",
+    "Show me similar successes",
+    "Create an action plan"
+  ],
+  discretionary_spending: [
+    "Where am I overspending?",
+    "How can I reduce this?",
+    "Show me alternatives",
+    "Compare to recommended levels"
+  ],
+  lifestyle_inflation: [
+    "How did this happen?",
+    "What's the long-term impact?",
+    "How can I reverse this trend?",
+    "Show me healthier spending patterns"
+  ],
+  seasonal_surge: [
+    "How can I prepare for this?",
+    "What happened last year?",
+    "Set aside funds automatically",
+    "Compare to historical patterns"
+  ],
+  cash_flow_warning: [
+    "What's my current cash runway?",
+    "Show me upcoming expenses",
+    "How can I avoid this?",
+    "What-if scenarios"
+  ],
+  seasonal_forecast: [
+    "How confident is this prediction?",
+    "What happened in past years?",
+    "How can I prepare?",
+    "Show me budget adjustments"
+  ],
+  trend_projection: [
+    "Is this trend sustainable?",
+    "What factors influence this?",
+    "Show me different scenarios",
+    "How can I optimize this?"
+  ],
+  risk_warning: [
+    "How serious is this risk?",
+    "What should I do immediately?",
+    "Show me the worst-case scenario",
+    "Create a prevention plan"
+  ],
+  opportunity_forecast: [
+    "How can I take advantage?",
+    "What's the best timing?",
+    "Show me similar opportunities",
+    "Create an action plan"
+  ]
+};
+
+// Default prompts for unknown insight types
+const DEFAULT_INSIGHT_PROMPTS = [
+  "Explain this in more detail",
+  "What should I do about it?",
+  "Show me related patterns",
+  "How can I prevent this?"
+];
+
 export default function Chat() {
   const { user } = useAuthenticator(context => [context.user]);
   const navigate = useNavigate();
@@ -54,8 +132,27 @@ export default function Chat() {
   // Track selected tab for each message: { messageIndex: 'answer' | 'insights' | 'dashboard' | 'images' | 'sources' }
   const [selectedTabs, setSelectedTabs] = useState<Record<number, 'answer' | 'insights' | 'dashboard' | 'images' | 'sources'>>({});
 
+  // Define context types
+  type VerticalContext = { type: 'vertical'; id: string; name: string; gradient: string };
+  type InsightContext = { 
+    type: 'insight' | 'forecast'; 
+    vertical: string;
+    insight_id: string;
+    title: string;
+    summary: string;
+    priority: string;
+    gradient: string;
+    insight_type?: string;
+    visualization?: any;
+    key_metric?: any;
+    actions?: string[];
+    what_happening?: string;
+    why_matters?: string;
+  };
+  type ChatContext = VerticalContext | InsightContext;
+
   // Get context from navigation state
-  const chatContext = location.state?.context as { id: string; name: string; gradient: string } | undefined;
+  const chatContext = location.state?.context as ChatContext | undefined;
 
   // Redirect if unauthenticated and fetch a friendly display name once.
   useEffect(() => {
@@ -78,9 +175,18 @@ export default function Chat() {
   // Initialize conversation with context if provided
   useEffect(() => {
     if (chatContext && conversation.length === 0) {
+      let greeting = '';
+      if (chatContext.type === 'vertical') {
+        greeting = `Hi! I'm here to help you with your ${chatContext.name} questions. What would you like to know?`;
+      } else {
+        // Insight or forecast context
+        const emoji = chatContext.type === 'forecast' ? '🔮' : '💡';
+        greeting = `${emoji} I can help you understand this ${chatContext.type === 'forecast' ? 'forecast' : 'insight'}. What would you like to know?`;
+      }
+      
       setConversation([{
         role: 'sagaa',
-        text: `Hi! I'm here to help you with your ${chatContext.name} questions. What would you like to know?`
+        text: greeting
       }]);
     }
   }, [chatContext]); // Only run when chatContext is available
@@ -152,7 +258,7 @@ export default function Chat() {
         },
         body: JSON.stringify({ 
           message,
-          ...(chatContext && { 
+          ...(chatContext && chatContext.type === 'vertical' && { 
             context: chatContext.id,
             verticalName: chatContext.name 
           })
@@ -268,7 +374,11 @@ export default function Chat() {
     }
   };
 
-  const quickPrompts = chatContext ? CONTEXT_PROMPTS[chatContext.id] || [] : [];
+  const quickPrompts = chatContext 
+    ? chatContext.type === 'vertical' 
+      ? CONTEXT_PROMPTS[chatContext.id] || []
+      : INSIGHT_PROMPTS[chatContext.insight_type || ''] || DEFAULT_INSIGHT_PROMPTS
+    : [];
 
   return (
     <>
@@ -520,7 +630,7 @@ export default function Chat() {
                         }}>
                           <div style={{ fontSize: '14px', fontWeight: '600', color: '#374151', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <span>💡</span>
-                            <span>Quick questions about {chatContext.name}:</span>
+                            <span>Quick questions{chatContext.type === 'vertical' ? ` about ${chatContext.name}` : ''}:</span>
                           </div>
                           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                             {quickPrompts.map((prompt, idx) => (
@@ -1056,7 +1166,11 @@ export default function Chat() {
                   className="prompt-input"
                   id="Prompt"
                   name="Prompt"
-                  placeholder={chatContext ? `Ask about your ${chatContext.name}...` : "Continue your conversation with Sagaa"}
+                  placeholder={chatContext 
+                    ? chatContext.type === 'vertical' 
+                      ? `Ask about your ${chatContext.name}...` 
+                      : "Ask me anything about this..." 
+                    : "Continue your conversation with Sagaa"}
                   autoComplete="on"
                   rows={1}
                   onInput={handleTextareaInput}

@@ -92,19 +92,19 @@ export const aggregateInsightsByVertical = (insights: Insight[]): AggregatedInsi
     }
 
     // Update priority breakdown (overall)
-    const priority = insight.priority || 'medium';
+    const priority = (insight.priority || 'MEDIUM').toLowerCase() as 'high' | 'medium' | 'low';
     if (priority in aggregated[vertical].priorityBreakdown) {
-      aggregated[vertical].priorityBreakdown[priority as keyof typeof aggregated[typeof vertical]['priorityBreakdown']] += 1;
+      aggregated[vertical].priorityBreakdown[priority] += 1;
     }
     
     // Update separate priority breakdowns for insights vs forecasts
     if (isInsightForecast) {
       if (priority in aggregated[vertical].forecastPriorityBreakdown) {
-        aggregated[vertical].forecastPriorityBreakdown[priority as keyof typeof aggregated[typeof vertical]['forecastPriorityBreakdown']] += 1;
+        aggregated[vertical].forecastPriorityBreakdown[priority] += 1;
       }
     } else {
       if (priority in aggregated[vertical].insightPriorityBreakdown) {
-        aggregated[vertical].insightPriorityBreakdown[priority as keyof typeof aggregated[typeof vertical]['insightPriorityBreakdown']] += 1;
+        aggregated[vertical].insightPriorityBreakdown[priority] += 1;
       }
     }
 
