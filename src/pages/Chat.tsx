@@ -106,6 +106,43 @@ const INSIGHT_PROMPTS: Record<string, string[]> = {
     "What's the best timing?",
     "Show me similar opportunities",
     "Create an action plan"
+  ],
+  // Goal-specific insight prompts
+  goal_accelerator: [
+    "How can I speed up my goal?",
+    "What's the maximum acceleration possible?",
+    "Show me the impact timeline",
+    "Create an accelerated plan"
+  ],
+  goal_blocker: [
+    "What's blocking my progress?",
+    "How can I overcome this?",
+    "Show alternative approaches",
+    "What if I adjust my goal?"
+  ],
+  goal_at_risk: [
+    "How do I get back on track?",
+    "What went wrong?",
+    "Show me recovery options",
+    "Can I still meet my deadline?"
+  ],
+  goal_milestone: [
+    "What's next for this goal?",
+    "How should I celebrate?",
+    "Show my overall progress",
+    "What goals should I set next?"
+  ],
+  goal_reallocation: [
+    "Tell me more about this reallocation",
+    "How will this affect my lifestyle?",
+    "Show alternative allocation options",
+    "Is this the optimal approach?"
+  ],
+  goal_suggestion: [
+    "Should I adjust my goal?",
+    "Is this realistic for me?",
+    "Show similar successful goals",
+    "Help me refine my target"
   ]
 };
 

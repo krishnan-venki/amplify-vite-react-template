@@ -238,6 +238,16 @@ function App() {
                 </span>
               </NavLink>
 
+              {/* Goals */}
+              <NavLink to="/goals">
+                <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true" style={{ color: '#10b981' }}>
+                  <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
+                  <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                  <path fill="currentColor" d="M12 8l2 2-2 2-2-2z" />
+                </svg>
+                <span>Goals</span>
+              </NavLink>
+
               {/* Divider */}
               <div style={{ height: '1px', background: '#e5e7eb', margin: '12px 0' }} />
 

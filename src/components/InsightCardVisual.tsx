@@ -172,6 +172,41 @@ const InsightCardVisual: React.FC<InsightCardVisualProps> = ({
         }}>
           {config.vertical}
         </div>
+
+        {/* Goal Badge - if insight is linked to a goal */}
+        {insight.goal_context && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+            color: 'white',
+            fontSize: '12px',
+            fontWeight: '600',
+            padding: '6px 12px',
+            borderRadius: '20px',
+            boxShadow: '0 2px 8px rgba(16, 185, 129, 0.25)',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/goals/${insight.goal_context?.goal_id}`);
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.05)';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.35)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.boxShadow = '0 2px 8px rgba(16, 185, 129, 0.25)';
+          }}
+          title={`View goal: ${insight.goal_context.goal_name}`}
+          >
+            <span>🎯</span>
+            <span>{insight.goal_context.goal_name}</span>
+          </div>
+        )}
       </div>
 
       {/* Title - Full Width with NEW badge */}
@@ -214,8 +249,8 @@ const InsightCardVisual: React.FC<InsightCardVisualProps> = ({
         {insight.summary}
       </div>
 
-      {/* Chart (Always visible when data exists) */}
-      {hasVisualization && insight.visualization && (
+      {/* Chart (Only show if no reallocation plan exists) */}
+      {hasVisualization && insight.visualization && !(insight as any).reallocation_plan && (
         <div style={{
           background: 'white',
           borderRadius: '12px',
@@ -228,6 +263,57 @@ const InsightCardVisual: React.FC<InsightCardVisualProps> = ({
             gradient={config.gradient}
             compact={true}
           />
+        </div>
+      )}
+
+      {/* Reallocation Flow Chart (if reallocation_plan exists) */}
+      {(insight as any).reallocation_plan && (
+        <div style={{
+          background: 'white',
+          borderRadius: '12px',
+          padding: '20px',
+          border: '1px solid #e5e7eb',
+          marginBottom: '20px'
+        }}>
+          <InsightChartRenderer 
+            visualization={{
+              chart_type: 'reallocation_flow',
+              data: [
+                // Map from_categories as sources (negative values)
+                ...((insight as any).reallocation_plan.from_categories || []).map((cat: any) => ({
+                  label: cat.category,
+                  value: -cat.reduction,
+                  type: 'source'
+                })),
+                // Map to_goal as target (positive value)
+                {
+                  label: (insight as any).reallocation_plan.to_goal || 'Goal',
+                  value: (insight as any).reallocation_plan.total_monthly_impact || 0,
+                  type: 'target'
+                }
+              ]
+            }}
+            gradient="#ffffff"
+            compact={true}
+          />
+          {/* Timeline acceleration info */}
+          {(insight as any).reallocation_plan.timeline_acceleration && (
+            <div style={{
+              marginTop: '12px',
+              padding: '12px',
+              background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '0.875rem',
+              fontWeight: '600',
+              color: '#1e40af'
+            }}>
+              <span>⚡</span>
+              <span>{(insight as any).reallocation_plan.timeline_acceleration}</span>
+            </div>
+          )}
         </div>
       )}
 
@@ -436,7 +522,11 @@ const InsightCardVisual: React.FC<InsightCardVisualProps> = ({
                       : undefined,
                     why_matters: typeof insight.full_content === 'object'
                       ? insight.full_content?.why_matters
-                      : undefined
+                      : undefined,
+                    // Include goal context if present
+                    goal_context: insight.goal_context,
+                    // Include reallocation plan if present
+                    reallocation_plan: (insight as any).reallocation_plan
                   }
                 }
               });
@@ -467,6 +557,44 @@ const InsightCardVisual: React.FC<InsightCardVisualProps> = ({
             <MessageCircle size={16} strokeWidth={2.5} />
             Ask Sagaa
           </button>
+
+          {/* View Goal Button - only show if linked to a goal */}
+          {insight.goal_context && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/goals/${insight.goal_context?.goal_id}`);
+              }}
+              style={{
+                border: '1px solid #10b981',
+                background: 'white',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                cursor: 'pointer',
+                padding: '8px 16px',
+                transition: 'all 0.2s ease',
+                fontSize: '0.85rem',
+                fontWeight: '600',
+                color: '#10b981'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#d1fae5';
+                e.currentTarget.style.borderColor = '#059669';
+                e.currentTarget.style.color = '#059669';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'white';
+                e.currentTarget.style.borderColor = '#10b981';
+                e.currentTarget.style.color = '#10b981';
+              }}
+              title={`View goal: ${insight.goal_context.goal_name}`}
+            >
+              <span style={{ fontSize: '14px' }}>🎯</span>
+              View Goal
+            </button>
+          )}
 
           {/* Show Details Button */}
           <button

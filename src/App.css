@@ -1259,7 +1259,7 @@
 .input-dock {
   position: fixed;
   left: 220px; /* Increased to account for sidebar max-content width + padding */
-  right: 0;
+  right: 340px; /* Leave space for the side panel (340px) */
   bottom: 0;
   z-index: 200;
   background: linear-gradient(

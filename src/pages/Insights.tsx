@@ -8,7 +8,7 @@ import type { Insight } from '../types/insight';
 import VerticalFilterSidebar from '../components/VerticalFilterSidebar';
 import InsightCardVisual from '../components/InsightCardVisual';
 
-type FilterType = 'all' | 'insights' | 'forecasts';
+type FilterType = 'all' | 'insights' | 'forecasts' | 'goals';
 
 export default function Insights() {
   const { user } = useAuthenticator(context => [context.user]);
@@ -42,11 +42,19 @@ export default function Insights() {
     // Default to 'sagaa_money' if vertical is not specified (matches aggregateInsights logic)
     let filtered = insights.filter(insight => (insight.vertical || 'sagaa_money') === selectedVertical);
     
+    // Helper to check if insight is goal-related
+    const isGoalInsight = (insight: Insight) => {
+      return !!(insight.goal_context || (insight as any).goal_id || (insight as any).reallocation_plan);
+    };
+    
     if (filterType === 'forecasts') {
-      filtered = filtered.filter(insight => isForecast(insight));
+      filtered = filtered.filter(insight => isForecast(insight) && !isGoalInsight(insight));
     } else if (filterType === 'insights') {
-      filtered = filtered.filter(insight => !isForecast(insight));
+      filtered = filtered.filter(insight => !isForecast(insight) && !isGoalInsight(insight));
+    } else if (filterType === 'goals') {
+      filtered = filtered.filter(insight => isGoalInsight(insight));
     }
+    // 'all' shows everything - no additional filtering needed
     
     return filtered;
   }, [insights, selectedVertical, filterType]);
@@ -54,9 +62,14 @@ export default function Insights() {
   // Sort insights by priority
   const sortedInsights = sortInsightsByPriority(filteredInsights);
   
-  // Count insights and forecasts for current vertical
-  const insightsCount = insights.filter(i => !isForecast(i) && (i.vertical || 'sagaa_money') === selectedVertical).length;
-  const forecastsCount = insights.filter(i => isForecast(i) && (i.vertical || 'sagaa_money') === selectedVertical).length;
+  // Count insights, forecasts, and goals for current vertical
+  const isGoalInsight = (insight: Insight) => {
+    return !!(insight.goal_context || (insight as any).goal_id || (insight as any).reallocation_plan);
+  };
+  
+  const insightsCount = insights.filter(i => !isForecast(i) && !isGoalInsight(i) && (i.vertical || 'sagaa_money') === selectedVertical).length;
+  const forecastsCount = insights.filter(i => isForecast(i) && !isGoalInsight(i) && (i.vertical || 'sagaa_money') === selectedVertical).length;
+  const goalsCount = insights.filter(i => isGoalInsight(i) && (i.vertical || 'sagaa_money') === selectedVertical).length;
 
   // Check if we navigated here with a specific insight to expand
   useEffect(() => {
@@ -161,24 +174,24 @@ export default function Insights() {
       }}>
         <button
           onClick={() => setFilterType('all')}
-          disabled={insightsCount + forecastsCount === 0}
+          disabled={insightsCount + forecastsCount + goalsCount === 0}
           style={{
             padding: '12px 24px',
             background: filterType === 'all' ? 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)' : 'transparent',
-            color: filterType === 'all' ? 'white' : (insightsCount + forecastsCount === 0 ? '#d1d5db' : '#6b7280'),
+            color: filterType === 'all' ? 'white' : (insightsCount + forecastsCount + goalsCount === 0 ? '#d1d5db' : '#6b7280'),
             border: 'none',
             borderBottom: filterType === 'all' ? '3px solid #3b82f6' : '3px solid transparent',
             borderRadius: '8px 8px 0 0',
             fontSize: '15px',
             fontWeight: '600',
-            cursor: insightsCount + forecastsCount === 0 ? 'not-allowed' : 'pointer',
+            cursor: insightsCount + forecastsCount + goalsCount === 0 ? 'not-allowed' : 'pointer',
             transition: 'all 0.3s ease',
             position: 'relative',
             bottom: '-2px',
-            opacity: insightsCount + forecastsCount === 0 ? 0.5 : 1
+            opacity: insightsCount + forecastsCount + goalsCount === 0 ? 0.5 : 1
           }}
           onMouseEnter={(e) => {
-            if (filterType !== 'all' && insightsCount + forecastsCount > 0) {
+            if (filterType !== 'all' && insightsCount + forecastsCount + goalsCount > 0) {
               e.currentTarget.style.background = '#f3f4f6';
             }
           }}
@@ -188,7 +201,7 @@ export default function Insights() {
             }
           }}
         >
-          All ({insightsCount + forecastsCount})
+          All ({insightsCount + forecastsCount + goalsCount})
         </button>
 
         <button
@@ -259,6 +272,41 @@ export default function Insights() {
           }}
         >
           🔮 Forecasts ({forecastsCount})
+        </button>
+
+        <button
+          onClick={() => setFilterType('goals')}
+          disabled={goalsCount === 0}
+          style={{
+            padding: '12px 24px',
+            background: filterType === 'goals' ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : 'transparent',
+            color: filterType === 'goals' ? 'white' : (goalsCount === 0 ? '#d1d5db' : '#6b7280'),
+            border: 'none',
+            borderBottom: filterType === 'goals' ? '3px solid #10b981' : '3px solid transparent',
+            borderRadius: '8px 8px 0 0',
+            fontSize: '15px',
+            fontWeight: '600',
+            cursor: goalsCount === 0 ? 'not-allowed' : 'pointer',
+            transition: 'all 0.3s ease',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            position: 'relative',
+            bottom: '-2px',
+            opacity: goalsCount === 0 ? 0.5 : 1
+          }}
+          onMouseEnter={(e) => {
+            if (filterType !== 'goals' && goalsCount > 0) {
+              e.currentTarget.style.background = '#f3f4f6';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (filterType !== 'goals') {
+              e.currentTarget.style.background = 'transparent';
+            }
+          }}
+        >
+          🎯 Goal Evaluations ({goalsCount})
         </button>
       </div>
 

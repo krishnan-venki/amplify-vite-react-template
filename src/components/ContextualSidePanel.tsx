@@ -143,8 +143,11 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
           style={{
             padding: '20px',
             paddingTop: '60px',
+            paddingBottom: '100px',
             overflowY: 'auto',
-            height: '100%'
+            overflowX: 'hidden',
+            flex: 1,
+            minHeight: 0
           }}
         >
           {/* VERTICAL CONTEXT (Ecosystem) */}
@@ -366,14 +369,46 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
                   }}>
                     {(context as InsightContext).priority}
                   </span>
+                  {/* Goal Badge if linked to a goal */}
+                  {(context as InsightContext & { goal_context?: any }).goal_context && (
+                    <span 
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.25)',
+                        padding: '4px 10px',
+                        borderRadius: '6px',
+                        fontSize: '10px',
+                        fontWeight: '600',
+                        color: 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onClick={() => {
+                        const goalId = (context as InsightContext & { goal_context?: any }).goal_context?.goal_id;
+                        if (goalId) navigate(`/goals/${goalId}`);
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.35)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.25)';
+                      }}
+                      title={`View goal: ${(context as InsightContext & { goal_context?: any }).goal_context?.goal_name}`}
+                    >
+                      <span>🎯</span>
+                      <span>GOAL</span>
+                    </span>
+                  )}
                 </div>
               </div>
 
-              {/* Chart Preview */}
-              {(context as InsightContext).visualization?.data && (context as InsightContext).visualization!.data.length > 0 && (
+              {/* Chart Preview - Show reallocation chart for goal insights, regular chart otherwise */}
+              {(context as any).reallocation_plan ? (
                 <div style={{ marginBottom: '16px' }}>
                   <div style={{ fontSize: '12px', fontWeight: '700', color: '#111827', marginBottom: '8px' }}>
-                    Visual Data
+                    Reallocation Plan
                   </div>
                   <div style={{
                     background: 'white',
@@ -382,12 +417,46 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
                     border: '1px solid #e5e7eb'
                   }}>
                     <InsightChartRenderer
-                      visualization={(context as InsightContext).visualization!}
-                      gradient={context.gradient}
+                      visualization={{
+                        chart_type: 'reallocation_flow',
+                        data: [
+                          ...((context as any).reallocation_plan.from_categories || []).map((cat: any) => ({
+                            label: cat.category,
+                            value: -cat.reduction,
+                            type: 'source'
+                          })),
+                          {
+                            label: (context as any).reallocation_plan.to_goal || 'Goal',
+                            value: (context as any).reallocation_plan.total_monthly_impact || 0,
+                            type: 'target'
+                          }
+                        ]
+                      }}
+                      gradient="#ffffff"
                       compact={true}
                     />
                   </div>
                 </div>
+              ) : (
+                (context as InsightContext).visualization?.data && (context as InsightContext).visualization!.data.length > 0 && (
+                  <div style={{ marginBottom: '16px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: '700', color: '#111827', marginBottom: '8px' }}>
+                      Visual Data
+                    </div>
+                    <div style={{
+                      background: 'white',
+                      borderRadius: '8px',
+                      padding: '12px',
+                      border: '1px solid #e5e7eb'
+                    }}>
+                      <InsightChartRenderer
+                        visualization={(context as InsightContext).visualization!}
+                        gradient={context.gradient}
+                        compact={true}
+                      />
+                    </div>
+                  </div>
+                )
               )}
 
               {/* What's Happening */}

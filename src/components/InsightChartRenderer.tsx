@@ -3,6 +3,9 @@ import { Visualization } from '../types/insight';
 import InsightBarChart from './charts/InsightBarChart';
 import InsightLineChart from './charts/InsightLineChart';
 import InsightDonutChart from './charts/InsightDonutChart';
+import GoalVelocityGauge from './charts/GoalVelocityGauge';
+import GoalProgressTimelineChart from './charts/GoalProgressTimelineChart';
+import ReallocationFlowChart from './charts/ReallocationFlowChart';
 
 interface InsightChartRendererProps {
   visualization: Visualization;
@@ -71,6 +74,15 @@ const InsightChartRenderer: React.FC<InsightChartRendererProps> = ({
             )}
           </>
         );
+      
+      case 'goal_velocity':
+        return <GoalVelocityGauge data={data} gradient={gradient} compact={compact} />;
+      
+      case 'goal_progress_timeline':
+        return <GoalProgressTimelineChart data={data} gradient={gradient} compact={compact} />;
+      
+      case 'reallocation_flow':
+        return <ReallocationFlowChart data={data} gradient={gradient} compact={compact} />;
       
       default:
         return (
