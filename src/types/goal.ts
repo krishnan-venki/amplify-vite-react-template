@@ -74,6 +74,7 @@ export interface Goal {
   // ========== IDENTIFICATION ==========
   user_id: string;             // Partition key
   goal_id: string;             // Sort key, UUID
+  vertical?: string;           // Sagaa vertical (sagaa_money, sagaa_healthcare, etc.)
   
   // ========== GOAL DEFINITION ==========
   goal_name: string;           // "Emergency Fund" | "Reduce Dining Spending" (matches backend)

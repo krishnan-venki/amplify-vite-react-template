@@ -542,10 +542,155 @@
 
 /* --- Panel 1: Header --- */
 /* Switch to a left side panel layout */
-.layout { display: grid; grid-template-columns: minmax(180px, max-content) 1fr; gap: 0; align-items: start; }
-.side-panel { position: sticky; top: 0; height: 100vh; border-right: 1px solid var(--border-sage); background: linear-gradient(180deg, var(--header-1), var(--header-2)); z-index: 1000; }
+.layout { display: grid; grid-template-columns: minmax(180px, max-content) 1fr; gap: 0; align-items: start; transition: grid-template-columns 0.3s ease; }
+.layout[data-nav-collapsed="true"] { grid-template-columns: 60px 1fr; }
+.side-panel { position: sticky; top: 0; height: 100vh; border-right: 1px solid var(--border-sage); background: linear-gradient(180deg, var(--header-1), var(--header-2)); z-index: 1000; transition: all 0.3s ease; overflow-x: hidden; }
+.side-panel.collapsed { width: 60px; min-width: 60px; }
 .side-inner { display: flex; flex-direction: column; gap: 8px; padding: 12px; height: 100%; }
 .main-column { min-width: 0; }
+
+/* Navigation Toggle Button - Orange Arrow Style (matches Chat side panel) */
+.nav-toggle-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: var(--amazon-orange);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111;
+  transition: all 0.2s ease;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(255, 153, 0, 0.3);
+  flex-shrink: 0;
+}
+.nav-toggle-btn:hover {
+  background: var(--amazon-orange-hover);
+  box-shadow: 0 4px 12px rgba(255, 153, 0, 0.4);
+  transform: scale(1.05);
+}
+.nav-toggle-btn:active {
+  transform: scale(0.95);
+}
+.nav-toggle-btn svg {
+  width: 14px;
+  height: 14px;
+}
+.side-panel.collapsed .nav-toggle-btn {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Brand styling for collapsed state */
+.brand { transition: all 0.3s ease; }
+.brand .brand-text,
+.brand .subtitle {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.15s ease 0.3s, visibility 0s linear 0.3s;
+}
+.side-panel.collapsed .brand .title { justify-content: center; }
+.side-panel.collapsed .brand .brand-text { 
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.1s ease, visibility 0s linear 0.1s;
+}
+.side-panel.collapsed .brand .subtitle { 
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.1s ease, visibility 0s linear 0.1s;
+}
+
+/* Navigation items in collapsed state */
+.side-panel.collapsed .side-nav a,
+.side-panel.collapsed .side-nav-btn {
+  justify-content: center;
+  padding: 10px;
+  position: relative;
+}
+.side-nav a span:not(.nav-badge):not(.dot),
+.side-nav-btn span:not(.nav-badge):not(.dot) {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.15s ease 0.3s, visibility 0s linear 0.3s;
+}
+.side-panel.collapsed .side-nav a span:not(.nav-badge):not(.dot),
+.side-panel.collapsed .side-nav-btn span:not(.nav-badge):not(.dot) {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.1s ease, visibility 0s linear 0.1s;
+}
+
+/* Badge for collapsed state (e.g., insights count) */
+.nav-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #ef4444;
+  color: white;
+  border-radius: 10px;
+  padding: 2px 5px;
+  font-size: 9px;
+  font-weight: 700;
+  min-width: 16px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* User menu in collapsed state */
+.user-menu-btn .caret {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.15s ease 0.3s, visibility 0s linear 0.3s, width 0.15s ease, height 0.15s ease, margin-top 0.15s ease;
+}
+.side-panel.collapsed .user-menu-btn {
+  justify-content: center !important;
+  padding: 4px 6px !important;
+  min-width: auto;
+  width: auto;
+  min-height: 44px;
+  gap: 4px !important;
+  flex-direction: column;
+}
+.side-panel.collapsed .user-menu-btn .caret {
+  width: 12px;
+  height: 12px;
+  margin-top: -2px;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.1s ease, visibility 0s linear 0.1s, width 0.15s ease, height 0.15s ease, margin-top 0.15s ease;
+}
+.side-panel.collapsed .user-initials-avatar {
+  width: 28px;
+  height: 28px;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin: 0 !important;
+}
+.side-panel.collapsed .side-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.side-panel.collapsed .user-menu {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Keep nav icons consistent size in collapsed mode */
+.side-panel.collapsed .side-nav .nav-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.side-panel.collapsed .side-nav .chat-icon {
+  width: 22px;
+  height: 22px;
+}
 
 .side-nav { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--border-sage); }
 .side-nav a, .side-nav-btn {
@@ -698,11 +843,14 @@
   justify-content: center;
   width: 32px;
   height: 32px;
+  min-width: 32px;
+  min-height: 32px;
   border-radius: 50%;
   background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
   color: white;
   font-size: 0.9rem;
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 /* Username placed at the top-right of the main area */

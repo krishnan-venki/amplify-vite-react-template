@@ -120,7 +120,7 @@ export default function Insights() {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text'
           }}>
-          Your <span style={{ fontWeight: '600' }}>Insights And Foresights</span>
+          <span style={{ fontWeight: '600' }}>Insights for you</span>
           </h1>
           <p style={{
             fontSize: 'clamp(14px, 2vw, 18px)',

@@ -48,23 +48,28 @@ export function useGoals(): UseGoalsResult {
       
       // Process goals to extract latest_evaluation from evaluation_history
       const goalsData = (data.goals || []).map((goal: Goal) => {
+        let processedGoal = { ...goal };
+        
+        // Default to sagaa_money vertical if not provided by backend
+        if (!processedGoal.vertical) {
+          processedGoal.vertical = 'sagaa_money';
+        }
+        
         // If evaluation_history exists and has items, extract the latest one
         if (goal.evaluation_history && goal.evaluation_history.length > 0) {
           const latestEval = goal.evaluation_history[goal.evaluation_history.length - 1];
-          return {
-            ...goal,
-            latest_evaluation: {
-              evaluated_at: latestEval.date || latestEval.evaluated_at,
-              status: latestEval.status,
-              pace: latestEval.pace || 'adequate', // Default if not present
-              insights: latestEval.insights || [],
-              recommendations: latestEval.recommendations || [],
-              projected_completion: latestEval.projected_completion,
-              monthly_required: latestEval.monthly_required
-            }
+          processedGoal.latest_evaluation = {
+            evaluated_at: latestEval.date || latestEval.evaluated_at,
+            status: latestEval.status,
+            pace: latestEval.pace || 'adequate', // Default if not present
+            insights: latestEval.insights || [],
+            recommendations: latestEval.recommendations || [],
+            projected_completion: latestEval.projected_completion,
+            monthly_required: latestEval.monthly_required
           };
         }
-        return goal;
+        
+        return processedGoal;
       });
       
       console.log('🎯 Processed goals with evaluations:', goalsData);

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useGoals } from '../hooks/useGoals';
 import GoalsSidebar from '../components/goals/GoalsSidebar';
 import GoalDetailView from '../components/goals/GoalDetailView';
+import GoalVerticalFilter from '../components/goals/GoalVerticalFilter';
 import type { Goal } from '../types/goal';
 
 export default function Goals() {
@@ -10,6 +11,7 @@ export default function Goals() {
   const navigate = useNavigate();
   const { goals, activeGoals, completedGoals, archivedGoals, loading, error } = useGoals();
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
+  const [selectedVertical, setSelectedVertical] = useState<string>('all');
 
   // Select first active goal by default if no goalId in URL
   useEffect(() => {
@@ -37,6 +39,90 @@ export default function Goals() {
     setSelectedGoal(goal);
     navigate(`/goals/${goal.goal_id}`);
   };
+
+  // Handle vertical filter change
+  const handleVerticalSelect = (verticalId: string) => {
+    setSelectedVertical(verticalId);
+    
+    // Auto-select first goal in the filtered list
+    const filtered = filterGoalsByVertical(activeGoals);
+    if (filtered.length > 0) {
+      const firstGoal = filtered[0];
+      setSelectedGoal(firstGoal);
+      navigate(`/goals/${firstGoal.goal_id}`);
+    } else {
+      // Check completed and archived if no active goals
+      const completedFiltered = filterGoalsByVertical(completedGoals);
+      if (completedFiltered.length > 0) {
+        const firstGoal = completedFiltered[0];
+        setSelectedGoal(firstGoal);
+        navigate(`/goals/${firstGoal.goal_id}`);
+      } else {
+        const archivedFiltered = filterGoalsByVertical(archivedGoals);
+        if (archivedFiltered.length > 0) {
+          const firstGoal = archivedFiltered[0];
+          setSelectedGoal(firstGoal);
+          navigate(`/goals/${firstGoal.goal_id}`);
+        }
+      }
+    }
+    
+    // Helper function for filtering (defined inline to use new verticalId)
+    function filterGoalsByVertical(goalsList: Goal[]) {
+      if (verticalId === 'all') return goalsList;
+      return goalsList.filter(goal => goal.vertical === verticalId);
+    }
+  };
+
+  // Filter goals by vertical
+  const filterGoalsByVertical = (goalsList: Goal[]) => {
+    if (selectedVertical === 'all') return goalsList;
+    return goalsList.filter(goal => goal.vertical === selectedVertical);
+  };
+
+  const filteredActiveGoals = filterGoalsByVertical(activeGoals);
+  const filteredCompletedGoals = filterGoalsByVertical(completedGoals);
+  const filteredArchivedGoals = filterGoalsByVertical(archivedGoals);
+
+  // Calculate vertical counts
+  const verticalCounts = goals.reduce((acc, goal) => {
+    const vertical = goal.vertical || 'sagaa_money'; // default to money if not set
+    acc[vertical] = (acc[vertical] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const verticals = [
+    {
+      id: 'all',
+      name: 'All Goals',
+      count: goals.length,
+      gradient: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+    },
+    {
+      id: 'sagaa_money',
+      name: 'Money',
+      count: verticalCounts['sagaa_money'] || 0,
+      gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+    },
+    {
+      id: 'sagaa_healthcare',
+      name: 'Healthcare',
+      count: verticalCounts['sagaa_healthcare'] || 0,
+      gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+    },
+    {
+      id: 'sagaa_education',
+      name: 'Education',
+      count: verticalCounts['sagaa_education'] || 0,
+      gradient: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+    },
+    {
+      id: 'sagaa_lifeessentials',
+      name: 'Life Essentials',
+      count: verticalCounts['sagaa_lifeessentials'] || 0,
+      gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+    },
+  ];
 
   if (loading) {
     return (
@@ -186,29 +272,28 @@ export default function Goals() {
         overflow: 'hidden',
         flexShrink: 0
       }}>
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1600px', margin: '0 auto' }}>
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto' }}>
           <h1 style={{
-            fontSize: '2.5rem',
-            fontWeight: '800',
-            marginBottom: '8px',
+            fontSize: 'clamp(48px, 5vw, 72px)',
+            fontWeight: '100',
+            marginBottom: '22px',
+            lineHeight: '1.4',
             background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            letterSpacing: '-0.02em'
+            backgroundClip: 'text'
           }}>
-            Goals
+          Your <span style={{ fontWeight: '600' }}>Goals</span>
           </h1>
           <p style={{
-            fontSize: '1rem',
-            color: '#e0f2fe',
-            fontWeight: '400',
-            margin: 0
+            fontSize: 'clamp(14px, 2vw, 18px)',
+            color: '#d1d5db',
+            marginBottom: 'clamp(16px, 3vw, 24px)'
           }}>
-            Track your progress and achieve your dreams
+            Stay updated with the progress made on your goals, with auto-evaluations and insights to help you make better decisions.
           </p>
         </div>
-      </div>
+        </div>
 
       {/* Main Content Area */}
       <div style={{ 
@@ -217,11 +302,18 @@ export default function Goals() {
         minHeight: 0,
         overflow: 'hidden'
       }}>
+        {/* Vertical Filter */}
+        <GoalVerticalFilter
+          verticals={verticals}
+          selectedVertical={selectedVertical}
+          onSelectVertical={handleVerticalSelect}
+        />
+        
         {/* Sidebar */}
         <GoalsSidebar
-          activeGoals={activeGoals}
-          completedGoals={completedGoals}
-          archivedGoals={archivedGoals}
+          activeGoals={filteredActiveGoals}
+          completedGoals={filteredCompletedGoals}
+          archivedGoals={filteredArchivedGoals}
           selectedGoalId={selectedGoal?.goal_id}
           onGoalSelect={handleGoalSelect}
         />

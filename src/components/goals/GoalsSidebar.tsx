@@ -341,8 +341,8 @@ export default function GoalsSidebar({
         <button style={{
           width: '100%',
           padding: '10px 16px',
-          backgroundColor: '#2563eb',
-          color: 'white',
+          backgroundColor: '#ff9900',
+          color: '#111',
           borderRadius: '8px',
           fontWeight: '500',
           border: 'none',
@@ -351,13 +351,14 @@ export default function GoalsSidebar({
           alignItems: 'center',
           justifyContent: 'center',
           gap: '8px',
-          transition: 'background-color 0.2s'
+          transition: 'background-color 0.2s',
+          boxShadow: '0 6px 16px rgba(255, 153, 0, 0.25)'
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = '#1d4ed8';
+          e.currentTarget.style.backgroundColor = '#e68a00';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = '#2563eb';
+          e.currentTarget.style.backgroundColor = '#ff9900';
         }}>
           <span style={{ fontSize: '1.125rem' }}>+</span>
           <span>Create New Goal</span>

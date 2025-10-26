@@ -307,9 +307,13 @@ function VerticalCard({ vertical, Icon }: VerticalCardProps) {
           {vertical.description}
         </p>
         {/* Learn More Link */}
-        {(vertical.name === 'Sagaa Healthcare' || vertical.name === 'Sagaa Money') ? (
+        {(vertical.name === 'Sagaa Healthcare' || vertical.name === 'Sagaa Money' || vertical.name === 'Sagaa Life Essentials') ? (
           <Link
-            to={vertical.name === 'Sagaa Healthcare' ? '/sagaa-healthcare' : '/money'}
+            to={
+              vertical.name === 'Sagaa Healthcare' ? '/sagaa-healthcare' : 
+              vertical.name === 'Sagaa Money' ? '/money' : 
+              '/sagaa-life-essentials'
+            }
             style={{
               display: 'inline-flex',
               alignItems: 'center',

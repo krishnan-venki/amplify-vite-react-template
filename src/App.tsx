@@ -21,12 +21,24 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   
+  // Navigation collapse state with localStorage persistence
+  const [navCollapsed, setNavCollapsed] = useState(() => {
+    const saved = localStorage.getItem('navCollapsed');
+    return saved === 'true';
+  });
+  
   // Get insights count dynamically
   const { data: insights = [] } = useInsights();
   const insightsCount = insights.length;
 
   const handleLearnMoreClick = () => {
     setLearnMoreOpen(!learnMoreOpen);
+  };
+
+  const toggleNavCollapse = () => {
+    const newState = !navCollapsed;
+    setNavCollapsed(newState);
+    localStorage.setItem('navCollapsed', String(newState));
   };
 
   const onLogout = async () => {
@@ -141,111 +153,137 @@ function App() {
   return (
     <div className="app-shell">
       <ScrollToTop />
-      <div className="layout">
+      <div className="layout" data-nav-collapsed={navCollapsed}>
         {!isSigningOut && (
-          <aside className="side-panel">
+          <aside className={`side-panel ${navCollapsed ? 'collapsed' : ''}`}>
             <div className="side-inner">
+              {/* Toggle Button - Orange Arrow */}
+              <button
+                className="nav-toggle-btn orange-arrow"
+                onClick={toggleNavCollapse}
+                title={navCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+                aria-label={navCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  {navCollapsed ? (
+                    // Right arrow when collapsed (expand)
+                    <path fill="currentColor" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+                  ) : (
+                    // Left arrow when expanded (collapse)
+                    <path fill="currentColor" d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" />
+                  )}
+                </svg>
+              </button>
+
               <div className="brand">
-                <h1 className="title"><img src={sagaa48} alt="" aria-hidden="true" className="brand-icon" />Sagaa</h1>
-                <p className="subtitle">Your AI Ecosystem</p>
+                <h1 className="title">
+                  <img src={sagaa48} alt="" aria-hidden="true" className="brand-icon" />
+                  {!navCollapsed && <span className="brand-text">Sagaa</span>}
+                </h1>
+                {!navCollapsed && <p className="subtitle">Your AI Ecosystem</p>}
               </div>
             <nav className="side-nav" aria-label="Main">
               {/* Dashboard */}
-              <NavLink to="/dashboard" end>
+              <NavLink to="/dashboard" end title={navCollapsed ? 'Dashboard' : ''}>
                 <svg className="nav-icon dashboard-icon" viewBox="0 0 24 24" aria-hidden="true">
                   <path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
                 </svg>
-                <span>Dashboard</span>
+                {!navCollapsed && <span>Dashboard</span>}
               </NavLink>
 
               {/* Divider */}
               <div style={{ height: '1px', background: '#e5e7eb', margin: '12px 0' }} />
 
               {/* Money Vertical */}
-              <NavLink to="/money/dashboard">
+              <NavLink to="/money/dashboard" title={navCollapsed ? 'Money' : ''}>
                 <svg className="nav-icon money-icon" viewBox="0 0 24 24" aria-hidden="true">
                   <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
                   <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="M12 6v12M9 9c0-1.1.9-2 2-2h2a2 2 0 110 4h-2a2 2 0 100 4h2c1.1 0 2-.9 2-2" />
                 </svg>
-                <span>Money</span>
+                {!navCollapsed && <span>Money</span>}
               </NavLink>
 
               {/* Healthcare Vertical */}
-              <NavLink to="/healthcare/dashboard">
+              <NavLink to="/healthcare/dashboard" title={navCollapsed ? 'Healthcare' : ''}>
                 <svg className="nav-icon healthcare-icon" viewBox="0 0 24 24" aria-hidden="true">
                   <path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
-                <span>Healthcare</span>
+                {!navCollapsed && <span>Healthcare</span>}
               </NavLink>
 
               {/* Education Vertical */}
-              <NavLink to="/education/dashboard" style={{ opacity: 0.5, pointerEvents: 'none' }}>
+              <NavLink to="/education/dashboard" title={navCollapsed ? 'Education' : ''} style={{ opacity: 0.5, pointerEvents: 'none' }}>
                 <svg className="nav-icon education-icon" viewBox="0 0 24 24" aria-hidden="true">
                   <path fill="currentColor" d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z" />
                 </svg>
-                <span>Education</span>
+                {!navCollapsed && <span>Education</span>}
               </NavLink>
 
               {/* Life Essentials Vertical */}
-              <NavLink to="/life/dashboard" style={{ opacity: 0.5, pointerEvents: 'none' }}>
+              <NavLink to="/life/dashboard" title={navCollapsed ? 'Life Essentials' : ''} style={{ opacity: 0.5, pointerEvents: 'none' }}>
                 <svg className="nav-icon life-icon" viewBox="0 0 24 24" aria-hidden="true">
                   <path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                 </svg>
-                <span>Life Essentials</span>
+                {!navCollapsed && <span>Life Essentials</span>}
               </NavLink>
 
               {/* Divider */}
               <div style={{ height: '1px', background: '#e5e7eb', margin: '12px 0' }} />
 
               {/* Chat */}
-              <button type="button" className="side-nav-btn" onClick={onNewChat}>
+              <button type="button" className="side-nav-btn" onClick={onNewChat} title={navCollapsed ? 'Chat with Sagaa' : ''}>
                 <svg className="nav-icon chat-icon" viewBox="0 0 24 24" aria-hidden="true">
                   <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
                 </svg>
-                <span>Chat with Sagaa</span>
+                {!navCollapsed && <span>Chat with Sagaa</span>}
               </button>
 
               {/* Community */}
-              <NavLink to="/community">
+              <NavLink to="/community" title={navCollapsed ? 'Community' : ''}>
                 <svg className="nav-icon community-icon" viewBox="0 0 24 24" aria-hidden="true">
                   <path fill="currentColor" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
                 </svg>
-                <span>Community</span>
+                {!navCollapsed && <span>Community</span>}
               </NavLink>
 
               {/* Insights */}
-              <NavLink to="/insights">
+              <NavLink to="/insights" title={navCollapsed ? 'Insights' : ''}>
                 <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true" style={{ color: '#f59e0b' }}>
                   <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
                 </svg>
-                <span style={{ position: 'relative' }}>
-                  <span>Insights</span>
-                  {insightsCount > 0 && (
-                    <sup style={{
-                      background: '#ef4444',
-                      color: 'white',
-                      borderRadius: '10px',
-                      padding: '2px 6px',
-                      fontSize: '10px',
-                      fontWeight: '600',
-                      marginLeft: '4px',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                      verticalAlign: 'super'
-                    }}>
-                      {insightsCount}
-                    </sup>
-                  )}
-                </span>
+                {!navCollapsed && (
+                  <span style={{ position: 'relative' }}>
+                    <span>Insights</span>
+                    {insightsCount > 0 && (
+                      <sup style={{
+                        background: '#ef4444',
+                        color: 'white',
+                        borderRadius: '10px',
+                        padding: '2px 6px',
+                        fontSize: '10px',
+                        fontWeight: '600',
+                        marginLeft: '4px',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                        verticalAlign: 'super'
+                      }}>
+                        {insightsCount}
+                      </sup>
+                    )}
+                  </span>
+                )}
+                {navCollapsed && insightsCount > 0 && (
+                  <span className="nav-badge">{insightsCount}</span>
+                )}
               </NavLink>
 
               {/* Goals */}
-              <NavLink to="/goals">
+              <NavLink to="/goals" title={navCollapsed ? 'Goals' : ''}>
                 <svg className="nav-icon" viewBox="0 0 24 24" aria-hidden="true" style={{ color: '#10b981' }}>
                   <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
                   <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="1.5" />
                   <path fill="currentColor" d="M12 8l2 2-2 2-2-2z" />
                 </svg>
-                <span>Goals</span>
+                {!navCollapsed && <span>Goals</span>}
               </NavLink>
 
               {/* Divider */}
@@ -255,7 +293,7 @@ function App() {
               <button
                 type="button"
                 className={`side-nav-btn ${hasNotifs ? 'has-notifs' : ''}`}
-                title="Notifications"
+                title={navCollapsed ? 'Notifications' : 'Notifications'}
               >
                 <span className="icon-wrap">
                   <svg className="nav-icon notification-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -263,18 +301,18 @@ function App() {
                   </svg>
                   {hasNotifs && <span className="dot" aria-hidden="true" />}
                 </span>
-                <span>Notifications</span>
+                {!navCollapsed && <span>Notifications</span>}
               </button>
             </nav>
             {!user && (
               <div className="side-bottom">
-                <button type="button" className="side-nav-btn login-btn" onClick={() => navigate('/signin')}>
+                <button type="button" className="side-nav-btn login-btn" onClick={() => navigate('/signin')} title={navCollapsed ? 'Sign In' : ''}>
                   <svg className="nav-icon login-icon" viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="10" cy="8" r="3" fill="currentColor" />
                     <path fill="currentColor" d="M2 19a8 8 0 0116 0v1H2v-1z" />
                     <path d="M17 8v4M15 10h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                   </svg>
-                  <span>Sign In</span>
+                  {!navCollapsed && <span>Sign In</span>}
                 </button>
               </div>
             )}
