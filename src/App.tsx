@@ -220,7 +220,7 @@ function App() {
               </NavLink>
 
               {/* Life Essentials Vertical */}
-              <NavLink to="/life/dashboard" title={navCollapsed ? 'Life Essentials' : ''} style={{ opacity: 0.5, pointerEvents: 'none' }}>
+              <NavLink to="/life/dashboard" title={navCollapsed ? 'Life Essentials' : ''}>
                 <svg className="nav-icon life-icon" viewBox="0 0 24 24" aria-hidden="true">
                   <path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                 </svg>
