@@ -181,10 +181,10 @@ export const AskSagaaLifeSection = () => {
                 </div>
                 <div>
                   <div style={{ fontSize: '1rem', fontWeight: 600, color: '#1e293b' }}>
-                    Sagaa Life
+                    Sagaa Life Essentials
                   </div>
                   <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                    Your intelligent life companion
+                    Your intelligent life essentials companion
                   </div>
                 </div>
               </div>
@@ -229,7 +229,7 @@ export const AskSagaaLifeSection = () => {
                   </div>
                   <div style={{ flex: 1, maxWidth: '100%' }}>
                     <div style={{
-                      background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+                      background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
                       padding: '16px 20px',
                       borderRadius: '4px 20px 20px 20px',
                       fontSize: '0.9rem',

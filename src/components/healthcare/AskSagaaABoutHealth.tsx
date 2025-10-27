@@ -405,7 +405,7 @@ export const AskSagaaHealthSection = () => {
                   justifyContent: 'flex-end'
                 }}>
                   <div style={{
-                    background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
+                    background: 'linear-gradient(135deg, #fca5a5 0%, #f87171 100%)',
                     color: 'white',
                     padding: '14px 20px',
                     borderRadius: '20px 20px 4px 20px',
@@ -432,7 +432,7 @@ export const AskSagaaHealthSection = () => {
                   </div>
                   <div style={{ flex: 1, maxWidth: '100%' }}>
                     <div style={{
-                      background: 'linear-gradient(135deg, #fca5a5 0%, #f87171 100%)',
+                      background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
                       padding: '16px 20px',
                       borderRadius: '4px 20px 20px 20px',
                       fontSize: '0.9rem',

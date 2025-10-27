@@ -471,7 +471,7 @@ export const AskSagaaSection = () => {
                   justifyContent: 'flex-end'
                 }}>
                   <div style={{
-                     background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
+                     background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
                     color: 'white',
                     padding: '14px 20px',
                     borderRadius: '20px 20px 4px 20px',
@@ -495,7 +495,7 @@ export const AskSagaaSection = () => {
                   </div>
                   <div style={{ flex: 1, maxWidth: '100%' }}>
                     <div style={{
-                      background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+                      background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
                       padding: '16px 20px',
                       borderRadius: '4px 20px 20px 20px',
                       fontSize: '0.9rem',

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchAuthSession } from 'aws-amplify/auth';
 import API_ENDPOINTS from '../config/api';
 import type { Insight } from '../types/insight';
@@ -31,7 +31,33 @@ async function fetchInsights(): Promise<Insight[]> {
 
     const data = await response.json();
     
-    console.log('API Response:', data); // Debug log
+    // Enhanced debug logging
+    console.group('🔍 Insights API Debug');
+    console.log('Raw Response:', data);
+    console.log('Response Type:', typeof data);
+    console.log('Is Array?', Array.isArray(data));
+    console.log('Has body?', !!data.body);
+    console.log('Has body.insights?', !!(data.body && data.body.insights));
+    console.log('Has insights?', !!data.insights);
+    
+    // Log first insight to see the actual structure
+    if (data.body?.insights?.[0]) {
+      console.log('First Insight (from body.insights):', data.body.insights[0]);
+      console.log('  - title:', data.body.insights[0].title);
+      console.log('  - summary:', data.body.insights[0].summary);
+      console.log('  - generated_at:', data.body.insights[0].generated_at);
+    } else if (data.insights?.[0]) {
+      console.log('First Insight (from insights):', data.insights[0]);
+      console.log('  - title:', data.insights[0].title);
+      console.log('  - summary:', data.insights[0].summary);
+      console.log('  - generated_at:', data.insights[0].generated_at);
+    } else if (Array.isArray(data) && data[0]) {
+      console.log('First Insight (from array):', data[0]);
+      console.log('  - title:', data[0].title);
+      console.log('  - summary:', data[0].summary);
+      console.log('  - generated_at:', data[0].generated_at);
+    }
+    console.groupEnd();
     
     // Handle different response structures
     // Option 1: Direct response with body.insights
@@ -64,7 +90,9 @@ async function fetchInsights(): Promise<Insight[]> {
  * - Can be manually refetched
  */
 export function useInsights() {
-  return useQuery({
+  const queryClient = useQueryClient();
+  
+  const query = useQuery({
     queryKey: ['insights'],
     queryFn: fetchInsights,
     staleTime: Infinity,
@@ -73,4 +101,16 @@ export function useInsights() {
     refetchOnMount: false,
     refetchOnReconnect: false,
   });
+  
+  // Add a helper to clear the cache
+  const clearCache = () => {
+    queryClient.invalidateQueries({ queryKey: ['insights'] });
+    queryClient.removeQueries({ queryKey: ['insights'] });
+    console.log('✅ React Query cache cleared for insights');
+  };
+  
+  return {
+    ...query,
+    clearCache
+  };
 }
