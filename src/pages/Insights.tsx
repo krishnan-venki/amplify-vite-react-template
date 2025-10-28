@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { RefreshCw } from 'lucide-react';
 import { useInsights } from '../hooks/useInsights';
-import { sortInsightsByPriority, isForecast } from '../utils/insightUtils';
+import { sortInsightsByPriority, isForecast, insightBelongsToVertical } from '../utils/insightUtils';
 import type { Insight } from '../types/insight';
 import VerticalFilterSidebar from '../components/VerticalFilterSidebar';
 import InsightCardVisual from '../components/InsightCardVisual';
@@ -32,15 +32,15 @@ export default function Insights() {
 
     return verticalData.map(v => ({
       ...v,
-      // Check if any insight has this vertical, or defaults to it (for sagaa_money)
-      hasData: insights.some(insight => (insight.vertical || 'sagaa_money') === v.id)
+      // Check if any insight belongs to this vertical (includes cross-vertical insights)
+      hasData: insights.some(insight => insightBelongsToVertical(insight, v.id))
     }));
   }, [insights]);
 
   // Filter insights based on selected vertical and type
   const filteredInsights = useMemo(() => {
-    // Default to 'sagaa_money' if vertical is not specified (matches aggregateInsights logic)
-    let filtered = insights.filter(insight => (insight.vertical || 'sagaa_money') === selectedVertical);
+    // Filter by vertical (handles both single-vertical and cross-vertical insights)
+    let filtered = insights.filter(insight => insightBelongsToVertical(insight, selectedVertical));
     
     // Helper to check if insight is goal-related
     const isGoalInsight = (insight: Insight) => {
@@ -67,9 +67,15 @@ export default function Insights() {
     return !!(insight.goal_context || (insight as any).goal_id || (insight as any).reallocation_plan);
   };
   
-  const insightsCount = insights.filter(i => !isForecast(i) && !isGoalInsight(i) && (i.vertical || 'sagaa_money') === selectedVertical).length;
-  const forecastsCount = insights.filter(i => isForecast(i) && !isGoalInsight(i) && (i.vertical || 'sagaa_money') === selectedVertical).length;
-  const goalsCount = insights.filter(i => isGoalInsight(i) && (i.vertical || 'sagaa_money') === selectedVertical).length;
+  const insightsCount = insights.filter(i => 
+    !isForecast(i) && !isGoalInsight(i) && insightBelongsToVertical(i, selectedVertical)
+  ).length;
+  const forecastsCount = insights.filter(i => 
+    isForecast(i) && !isGoalInsight(i) && insightBelongsToVertical(i, selectedVertical)
+  ).length;
+  const goalsCount = insights.filter(i => 
+    isGoalInsight(i) && insightBelongsToVertical(i, selectedVertical)
+  ).length;
 
   // Check if we navigated here with a specific insight to expand
   useEffect(() => {

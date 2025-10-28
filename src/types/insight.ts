@@ -32,7 +32,9 @@ export interface Visualization {
     // New goal-centric chart types
     | "goal_progress_timeline"   // Timeline bars showing current vs accelerated completion
     | "reallocation_flow"        // Money flow from categories to goals
-    | "goal_velocity";           // Pace gauge showing current vs required pace
+    | "goal_velocity"            // Pace gauge showing current vs required pace
+    // Life essentials chart types
+    | "asset_lifespan";          // Asset age vs expected lifespan vs with maintenance
   data: VisualizationData[];
   annotation?: string;       // Optional, brief chart note (max 50 chars)
   trend_line?: number[];     // Optional, for bar_with_trend type
@@ -118,6 +120,10 @@ export interface Insight {
   confidence_level?: "high" | "medium" | "low";  // For forecasts only
   vertical?: string;             // sagaa_money, sagaa_healthcare, sagaa_education, sagaa_lifeessentials
   
+  // === CROSS-VERTICAL SUPPORT ===
+  vertical_scope?: string;       // "cross_vertical" | "finance" | "health" | "education" | "life_essentials"
+  verticals_involved?: string[]; // ['finance', 'health', 'education', 'life_essentials'] - for cross-vertical insights
+  
   // === FULL CONTENT (Expandable) (NEW) ===
   full_content: string | FullContent;
   
@@ -165,7 +171,7 @@ export interface InsightsApiResponse {
 
 // Config for mapping insight types to UI elements
 export interface InsightTypeConfig {
-  vertical: 'money' | 'healthcare' | 'education' | 'life';
+  vertical: 'money' | 'healthcare' | 'education' | 'essentials';
   icon: any;
   gradient: string;
   bgGradient: string;

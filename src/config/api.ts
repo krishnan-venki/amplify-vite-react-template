@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
   USER_PROFILE: `${API_BASE_URL}/user/profile`,
   INSIGHTS: `${API_BASE_URL}/insights`,
   GOALS: `${API_BASE_URL}/goals`,
+  ASSETS: `${API_BASE_URL}/assets`,
   // Add more endpoints as needed
 } as const;
 

@@ -28,7 +28,7 @@ export const VERTICAL_CONFIG: Record<string, InsightTypeConfig> = {
     bgGradient: 'linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%)'  // Light blue
   },
   'sagaa_lifeessentials': {
-    vertical: 'life',
+    vertical: 'essentials',
     icon: HomeIcon,
     gradient: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)',  // Life essentials orange
     bgGradient: 'linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%)'  // Light orange

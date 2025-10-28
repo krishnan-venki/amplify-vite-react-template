@@ -137,3 +137,35 @@ export function getPriorityColor(priority: string): string {
       return '#6b7280'; // Gray fallback
   }
 }
+
+/**
+ * Map backend vertical names to frontend vertical IDs
+ */
+export function mapBackendVerticalToFrontend(backendVertical: string): string {
+  const verticalMap: Record<string, string> = {
+    'finance': 'sagaa_money',
+    'health': 'sagaa_healthcare',
+    'education': 'sagaa_education',
+    'life_essentials': 'sagaa_lifeessentials',
+  };
+  
+  return verticalMap[backendVertical] || backendVertical;
+}
+
+/**
+ * Check if an insight belongs to a specific vertical
+ * Handles both single-vertical and cross-vertical insights
+ */
+export function insightBelongsToVertical(insight: Insight, selectedVertical: string): boolean {
+  // Handle cross-vertical insights
+  if (insight.vertical_scope === 'cross_vertical' && insight.verticals_involved) {
+    // Check if the selected vertical is in the verticals_involved array
+    return insight.verticals_involved.some(
+      backendVertical => mapBackendVerticalToFrontend(backendVertical) === selectedVertical
+    );
+  }
+  
+  // Handle single-vertical insights (both old and new format)
+  // Default to 'sagaa_money' if vertical is not specified (backward compatibility)
+  return (insight.vertical || 'sagaa_money') === selectedVertical;
+}

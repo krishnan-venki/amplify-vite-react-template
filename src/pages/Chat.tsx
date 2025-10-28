@@ -39,6 +39,36 @@ const CONTEXT_PROMPTS: Record<string, string[]> = {
   ]
 };
 
+// Asset-specific quick prompts (generated dynamically based on asset state)
+const getAssetQuickPrompts = (assetName: string, riskScore: number, _condition: string, recommendReplacement: boolean): string[] => {
+  const basePrompts = [
+    `What's the current condition of my ${assetName}?`,
+    `How can I extend the lifespan of this asset?`
+  ];
+
+  if (riskScore >= 75 || recommendReplacement) {
+    return [
+      `When should I replace my ${assetName}?`,
+      `What are the risks of delaying replacement?`,
+      `How much will a replacement cost?`,
+      `What's the best replacement option?`
+    ];
+  } else if (riskScore >= 50) {
+    return [
+      `What maintenance is needed for my ${assetName}?`,
+      `How can I prevent future issues?`,
+      `When should I schedule the next service?`,
+      `What are early warning signs of failure?`
+    ];
+  } else {
+    return [
+      ...basePrompts,
+      `What's the optimal maintenance schedule?`,
+      `How does this compare to similar assets?`
+    ];
+  }
+};
+
 // Insight-type specific quick prompts
 const INSIGHT_PROMPTS: Record<string, string[]> = {
   spending_pattern: [
@@ -186,7 +216,21 @@ export default function Chat() {
     what_happening?: string;
     why_matters?: string;
   };
-  type ChatContext = VerticalContext | InsightContext;
+  type AssetContext = {
+    type: 'asset';
+    asset_id: string;
+    assetName: string;
+    assetType: string;
+    location?: string;
+    risk_score: number;
+    condition: string;
+    age_years: number;
+    lifespan_years: number;
+    replacement_cost: number;
+    maintenance_status: string;
+    gradient: string;
+  };
+  type ChatContext = VerticalContext | InsightContext | AssetContext;
 
   // Get context from navigation state
   const chatContext = location.state?.context as ChatContext | undefined;
@@ -215,6 +259,8 @@ export default function Chat() {
       let greeting = '';
       if (chatContext.type === 'vertical') {
         greeting = `Hi! I'm here to help you with your ${chatContext.name} questions. What would you like to know?`;
+      } else if (chatContext.type === 'asset') {
+        greeting = `🏠 I can help you with your ${chatContext.assetName}. I have information about its condition, maintenance history, and replacement planning. What would you like to know?`;
       } else {
         // Insight or forecast context
         const emoji = chatContext.type === 'forecast' ? '🔮' : '💡';
@@ -414,7 +460,14 @@ export default function Chat() {
   const quickPrompts = chatContext 
     ? chatContext.type === 'vertical' 
       ? CONTEXT_PROMPTS[chatContext.id] || []
-      : INSIGHT_PROMPTS[chatContext.insight_type || ''] || DEFAULT_INSIGHT_PROMPTS
+      : chatContext.type === 'asset'
+        ? getAssetQuickPrompts(
+            chatContext.assetName, 
+            chatContext.risk_score, 
+            chatContext.condition,
+            chatContext.maintenance_status.includes('Replacement')
+          )
+        : INSIGHT_PROMPTS[chatContext.insight_type || ''] || DEFAULT_INSIGHT_PROMPTS
     : [];
 
   return (

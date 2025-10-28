@@ -2,8 +2,8 @@ import React from 'react';
 import { ChevronDown, MessageCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Insight, FullContent } from '../types/insight';
-import { getInsightConfig } from '../config/insightConfig';
-import { getPriorityColor, formatRelativeTime, isForecast } from '../utils/insightUtils';
+import { getInsightConfig, VERTICAL_CONFIG } from '../config/insightConfig';
+import { getPriorityColor, formatRelativeTime, isForecast, mapBackendVerticalToFrontend } from '../utils/insightUtils';
 import InsightChartRenderer from './InsightChartRenderer';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
@@ -25,9 +25,21 @@ const InsightCardVisual: React.FC<InsightCardVisualProps> = ({
 }) => {
   const navigate = useNavigate();
   const config = getInsightConfig(insight.vertical);
-  const Icon = config.icon;
   const priorityColor = getPriorityColor(insight.priority);
   const isInsightForecast = isForecast(insight);
+
+  // Check if this is a cross-vertical insight
+  const isCrossVertical = insight.vertical_scope === 'cross_vertical' && 
+                          insight.verticals_involved && 
+                          insight.verticals_involved.length > 1;
+  
+  // Get all vertical configs for cross-vertical insights
+  const verticalConfigs = isCrossVertical && insight.verticals_involved
+    ? insight.verticals_involved.map(backendVertical => {
+        const frontendVertical = mapBackendVerticalToFrontend(backendVertical);
+        return VERTICAL_CONFIG[frontendVertical] || VERTICAL_CONFIG['sagaa_money'];
+      })
+    : [config];
 
   // Check if we have visualization data
   const hasVisualization = insight.visualization && 
@@ -59,39 +71,12 @@ const InsightCardVisual: React.FC<InsightCardVisualProps> = ({
           : '0 4px 24px rgba(80, 80, 160, 0.10)';
       }}
     >
-      {/* Type Badge */}
-      <div style={{
-        position: 'absolute',
-        top: '20px',
-        right: isInsightForecast && insight.confidence_level 
-          ? '160px' 
-          : '90px',
-        background: isInsightForecast 
-          ? 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)'
-          : 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)',
-        color: 'white',
-        fontSize: '13px',
-        fontWeight: '700',
-        padding: '5px 8px',
-        borderRadius: '10px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: isInsightForecast 
-          ? '0 2px 8px rgba(139, 92, 246, 0.3)'
-          : '0 2px 8px rgba(59, 130, 246, 0.3)',
-        height: '32px',
-        lineHeight: '1'
-      }}>
-        {isInsightForecast ? '🔮' : '💡'}
-      </div>
-
-      {/* Confidence Badge */}
+      {/* Confidence Badge - Top Right (only for forecasts) */}
       {isInsightForecast && insight.confidence_level && (
         <div style={{
           position: 'absolute',
           top: '20px',
-          right: '90px',
+          right: '20px',
           background: insight.confidence_level === 'high' ? '#10b981' 
             : insight.confidence_level === 'medium' ? '#f59e0b' 
             : '#6b7280',
@@ -118,59 +103,55 @@ const InsightCardVisual: React.FC<InsightCardVisualProps> = ({
         </div>
       )}
 
-      {/* Priority Badge */}
-      <div style={{
-        position: 'absolute',
-        top: '20px',
-        right: '20px',
-        background: priorityColor,
-        color: 'white',
-        fontSize: '11px',
-        fontWeight: '700',
-        padding: '6px 12px',
-        borderRadius: '10px',
-        textTransform: 'uppercase',
-        letterSpacing: '0.5px',
-        height: '32px',
-        display: 'flex',
-        alignItems: 'center',
-        lineHeight: '1'
-      }}>
-        {insight.priority}
-      </div>
-
-      {/* Icon and Vertical Label - Top Row aligned with badges */}
+      {/* Icon(s) and Vertical Label Row */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
         marginBottom: '16px'
       }}>
-        {/* Icon */}
+        {/* Icons - Multiple for cross-vertical, single otherwise */}
         <div style={{
-          fontSize: '2.2rem',
-          background: config.gradient,
-          borderRadius: '12px',
-          width: '56px',
-          height: '56px',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          boxShadow: '0 2px 12px rgba(124, 58, 237, 0.10)',
-          flexShrink: 0
+          gap: '8px',
+          alignItems: 'center'
         }}>
-          <Icon size={28} />
+          {verticalConfigs.map((vertConfig, index) => {
+            const VerticalIcon = vertConfig.icon;
+            return (
+              <div
+                key={index}
+                style={{
+                  fontSize: '2.2rem',
+                  background: vertConfig.gradient,
+                  borderRadius: '12px',
+                  width: '56px',
+                  height: '56px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  boxShadow: '0 2px 12px rgba(124, 58, 237, 0.10)',
+                  flexShrink: 0
+                }}
+              >
+                <VerticalIcon size={28} />
+              </div>
+            );
+          })}
         </div>
 
-        {/* Vertical Label */}
+        {/* Vertical Label(s) */}
         <div style={{
           fontSize: '0.95rem',
           fontWeight: '600',
-          color: '#6b7280',
-          textTransform: 'capitalize'
+          color: '#6b7280'
         }}>
-          {config.vertical}
+          {isCrossVertical && insight.verticals_involved
+            ? `Cross-Vertical: ${verticalConfigs.map(vc => 
+                vc.vertical.charAt(0).toUpperCase() + vc.vertical.slice(1)
+              ).join(' · ')}`
+            : <span style={{ textTransform: 'capitalize' }}>{config.vertical}</span>}
         </div>
 
         {/* Goal Badge - if insight is linked to a goal */}
@@ -209,7 +190,7 @@ const InsightCardVisual: React.FC<InsightCardVisualProps> = ({
         )}
       </div>
 
-      {/* Title - Full Width with NEW badge */}
+      {/* Title - Full Width with badges */}
       <div style={{
         fontSize: '1.2rem',
         fontWeight: '600',
@@ -218,6 +199,25 @@ const InsightCardVisual: React.FC<InsightCardVisualProps> = ({
         lineHeight: '1.4'
       }}>
         {insight.title}
+        {/* Priority Badge as superscript */}
+        <sup style={{
+          background: priorityColor,
+          color: 'white',
+          fontSize: '0.55rem',
+          fontWeight: '700',
+          padding: '3px 6px',
+          borderRadius: '4px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+          marginLeft: '8px',
+          verticalAlign: 'super',
+          display: 'inline-block',
+          lineHeight: '1'
+        }}>
+          {insight.priority}
+        </sup>
+        {/* NEW Badge */}
         {!insight.viewed && (
           <sup style={{
             background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',

@@ -6,6 +6,7 @@ import InsightDonutChart from './charts/InsightDonutChart';
 import GoalVelocityGauge from './charts/GoalVelocityGauge';
 import GoalProgressTimelineChart from './charts/GoalProgressTimelineChart';
 import ReallocationFlowChart from './charts/ReallocationFlowChart';
+import AssetLifespanChart from './charts/AssetLifespanChart';
 
 interface InsightChartRendererProps {
   visualization: Visualization;
@@ -83,6 +84,9 @@ const InsightChartRenderer: React.FC<InsightChartRendererProps> = ({
       
       case 'reallocation_flow':
         return <ReallocationFlowChart data={data} gradient={gradient} compact={compact} />;
+      
+      case 'asset_lifespan':
+        return <AssetLifespanChart data={data} gradient={gradient} compact={compact} />;
       
       default:
         return (

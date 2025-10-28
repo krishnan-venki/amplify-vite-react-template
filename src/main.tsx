@@ -18,6 +18,7 @@ import Goals from './pages/Goals';
 import SagaaHealthCarePage from './components/healthcare/SagaaHealthCarePage.tsx';
 import SagaaMoneyPage from './components/money/SagaaMoneyPage';
 import SagaaLifeEssentialsPage from './components/lifeessentials/SagaaLifeEssentialsPage';
+import { LifeEssentialsDashboard } from './components/lifeessentials/LifeEssentialsDashboard';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { RootRedirect } from './components/RootRedirect';
 import { QueryProvider } from './providers/QueryProvider';
@@ -62,7 +63,7 @@ const router = createBrowserRouter([
       { path: 'money/dashboard', element: <SagaaMoneyPage /> },
       { path: 'life-essentials', element: <SagaaLifeEssentialsPage /> },
       { path: 'sagaa-life-essentials', element: <SagaaLifeEssentialsPage /> },
-      { path: 'life/dashboard', element: <SagaaLifeEssentialsPage /> },
+      { path: 'life/dashboard', element: <ProtectedRoute><LifeEssentialsDashboard /></ProtectedRoute> },
     ],
   },
 ]);
