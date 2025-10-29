@@ -22,6 +22,11 @@ import { LifeEssentialsDashboard } from './components/lifeessentials/LifeEssenti
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { RootRedirect } from './components/RootRedirect';
 import { QueryProvider } from './providers/QueryProvider';
+import { FinanceSankeyExample } from './components/money/functional/FinanceSankeyExample';
+import { FinanceDashboardExample } from './components/money/functional/FinanceDashboardExample';
+import { BudgetStatusExample } from './components/money/functional/BudgetStatusExample';
+import { TransactionsExample } from './components/money/functional/TransactionsExample';
+import { FinanceDashboard } from './pages/FinanceDashboard';
 
 Amplify.configure(outputs);
 
@@ -60,7 +65,11 @@ const router = createBrowserRouter([
       { path: 'sagaa-healthcare', element: <SagaaHealthCarePage /> },
       { path: 'healthcare/dashboard', element: <SagaaHealthCarePage /> },
       { path: 'money', element: <SagaaMoneyPage /> },
-      { path: 'money/dashboard', element: <SagaaMoneyPage /> },
+      { path: 'money/dashboard', element: <ProtectedRoute><FinanceDashboard /></ProtectedRoute> },
+      { path: 'money/sankey-test', element: <ProtectedRoute><FinanceSankeyExample /></ProtectedRoute> },
+      { path: 'money/dashboard-test', element: <ProtectedRoute><FinanceDashboardExample /></ProtectedRoute> },
+      { path: 'money/budget-test', element: <ProtectedRoute><BudgetStatusExample /></ProtectedRoute> },
+      { path: 'money/transactions-test', element: <ProtectedRoute><TransactionsExample /></ProtectedRoute> },
       { path: 'life-essentials', element: <SagaaLifeEssentialsPage /> },
       { path: 'sagaa-life-essentials', element: <SagaaLifeEssentialsPage /> },
       { path: 'life/dashboard', element: <ProtectedRoute><LifeEssentialsDashboard /></ProtectedRoute> },

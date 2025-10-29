@@ -11,6 +11,11 @@ export const API_ENDPOINTS = {
   INSIGHTS: `${API_BASE_URL}/insights`,
   GOALS: `${API_BASE_URL}/goals`,
   ASSETS: `${API_BASE_URL}/assets`,
+  // Finance endpoints
+  FINANCE_DASHBOARD: `${API_BASE_URL}/finance/dashboard`,
+  FINANCE_SANKEY: `${API_BASE_URL}/finance/sankey`,
+  FINANCE_TRANSACTIONS: `${API_BASE_URL}/finance/transactions`,
+  FINANCE_BUDGET_STATUS: `${API_BASE_URL}/finance/budget-status`,
   // Add more endpoints as needed
 } as const;
 
