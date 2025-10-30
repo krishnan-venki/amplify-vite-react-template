@@ -52,6 +52,18 @@ export const FinanceDashboard: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Prevent browser's automatic scroll restoration
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    return () => {
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'auto';
+      }
+    };
+  }, []);
+
   // Update URL when month changes
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
@@ -71,12 +83,30 @@ export const FinanceDashboard: React.FC = () => {
   // Handlers
   const handleMonthChange = (month: string | null) => {
     if (month) {
+      // Save current scroll position before state changes
+      const currentScrollY = window.scrollY;
+      
       setSelectedMonth(month);
       setTransactionLastKey(undefined); // Reset pagination
       setSearchTerm(''); // Clear search
       
-      // Scroll to top when month changes
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Restore scroll position multiple times to handle async updates
+      // Using both requestAnimationFrame and setTimeout for better reliability
+      requestAnimationFrame(() => {
+        window.scrollTo(0, currentScrollY);
+      });
+      
+      setTimeout(() => {
+        window.scrollTo(0, currentScrollY);
+      }, 0);
+      
+      setTimeout(() => {
+        window.scrollTo(0, currentScrollY);
+      }, 50);
+      
+      setTimeout(() => {
+        window.scrollTo(0, currentScrollY);
+      }, 100);
     }
   };
 
@@ -350,6 +380,8 @@ export const FinanceDashboard: React.FC = () => {
                   <FinanceSankeyDiagram
                     data={sankeyQuery.data}
                     onCategoryClick={handleSankeyFlowClick}
+                    selectedMonth={selectedMonth}
+                    onMonthChange={handleMonthChange}
                   />
                 </div>
               </div>

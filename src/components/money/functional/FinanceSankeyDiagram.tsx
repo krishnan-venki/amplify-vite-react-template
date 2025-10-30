@@ -2,11 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { sankey, sankeyLinkHorizontal, SankeyGraph, SankeyNode as D3SankeyNode, SankeyLink as D3SankeyLink } from 'd3-sankey';
 import type { SankeyDataResponse } from '../../../types/finance';
 import { formatCurrency } from '../../../types/finance';
+import { MonthNavigator } from './FinanceHeader';
 
 interface FinanceSankeyDiagramProps {
   data: SankeyDataResponse;
   onCategoryClick?: (categoryId: string, categoryName: string) => void;
   compact?: boolean;
+  selectedMonth?: string;
+  onMonthChange?: (month: string) => void;
 }
 
 interface FlowNode {
@@ -31,7 +34,9 @@ interface FlowLink {
 export const FinanceSankeyDiagram: React.FC<FinanceSankeyDiagramProps> = ({ 
   data, 
   onCategoryClick,
-  compact = false 
+  compact = false,
+  selectedMonth,
+  onMonthChange
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
@@ -324,11 +329,28 @@ export const FinanceSankeyDiagram: React.FC<FinanceSankeyDiagramProps> = ({
       overflow: 'auto',
       position: 'relative',
     }}>
+      {/* Month Navigator - top left corner */}
+      {selectedMonth && onMonthChange && (
+        <div style={{
+          position: 'absolute',
+          top: '16px',
+          left: '16px',
+          zIndex: 10,
+        }}>
+          <MonthNavigator
+            selectedMonth={selectedMonth}
+            onMonthChange={onMonthChange}
+            isMobile={isMobile}
+            variant="sankey"
+          />
+        </div>
+      )}
+
       {/* Instruction text - top right corner */}
       <div style={{
         position: 'absolute',
-        top: '0',
-        right: '0',
+        top: '16px',
+        right: '16px',
         fontSize: isMobile ? '11px' : '12px',
         color: '#d1d5db',
         fontStyle: 'italic',
@@ -337,7 +359,7 @@ export const FinanceSankeyDiagram: React.FC<FinanceSankeyDiagramProps> = ({
         lineHeight: '1.4',
         zIndex: 10,
       }}>
-        Click any flow or category to filter transactions
+        Click any flow to see transactions
       </div>
 
       {/* Sankey diagram */}

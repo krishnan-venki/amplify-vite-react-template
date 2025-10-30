@@ -175,7 +175,7 @@ function App() {
                 </svg>
               </button>
 
-              <div className="brand">
+              <div className="brand" onClick={() => navigate('/home')} style={{ cursor: 'pointer' }} title="Go to Sagaa Home">
                 <h1 className="title">
                   <img src={sagaa48} alt="" aria-hidden="true" className="brand-icon" />
                   {!navCollapsed && <span className="brand-text">Sagaa</span>}
@@ -186,7 +186,21 @@ function App() {
               {/* Dashboard */}
               <NavLink to="/dashboard" end title={navCollapsed ? 'Dashboard' : ''}>
                 <svg className="nav-icon dashboard-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                  <defs>
+                    <linearGradient id="sagaa-gradient-dashboard" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#007AFF" />
+                      <stop offset="50%" stopColor="#00D2FF" />
+                      <stop offset="100%" stopColor="#34C759" />
+                    </linearGradient>
+                  </defs>
+                  {/* Top-left square - blue */}
+                  <path fill="#007AFF" d="M3 13h8V3H3v10z" />
+                  {/* Bottom-left square - cyan */}
+                  <path fill="#00D2FF" d="M3 21h8v-6H3v6z" />
+                  {/* Bottom-right square - green */}
+                  <path fill="#34C759" d="M13 21h8V11h-8v10z" />
+                  {/* Top-right square - cyan/blue blend */}
+                  <path fill="#00D2FF" d="M13 9h8V3h-8v6z" />
                 </svg>
                 {!navCollapsed && <span>Dashboard</span>}
               </NavLink>
@@ -362,7 +376,7 @@ function App() {
                         </button>
                         {learnMoreOpen && (
                           <div className="user-submenu-popup">
-                            <button className="user-menu-item user-submenu-item" role="menuitem" onClick={() => setMenuOpen(false)}>
+                            <button className="user-menu-item user-submenu-item" role="menuitem" onClick={() => { setMenuOpen(false); navigate('/home'); }}>
                               <span>About Sagaa</span>
                             </button>
                              <div className="user-menu-separator"></div>

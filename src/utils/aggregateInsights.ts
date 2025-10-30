@@ -42,81 +42,106 @@ export interface AggregatedInsights {
 /**
  * Aggregates insights by vertical and calculates statistics
  * Now includes type breakdown (insights vs forecasts)
+ * Supports cross-vertical insights - an insight can belong to multiple verticals
  */
 export const aggregateInsightsByVertical = (insights: Insight[]): AggregatedInsights => {
   const aggregated: AggregatedInsights = {};
 
   insights.forEach((insight) => {
-    const vertical = insight.vertical || 'sagaa_money'; // Default to money if not specified
-
-    if (!aggregated[vertical]) {
-      aggregated[vertical] = {
-        vertical,
-        totalCount: 0,
-        typeBreakdown: {
-          insights: 0,
-          forecasts: 0,
-        },
-        priorityBreakdown: {
-          high: 0,
-          medium: 0,
-          low: 0,
-        },
-        insightPriorityBreakdown: {
-          high: 0,
-          medium: 0,
-          low: 0,
-        },
-        forecastPriorityBreakdown: {
-          high: 0,
-          medium: 0,
-          low: 0,
-        },
-        newCount: 0,
-        viewedCount: 0,
-        insights: [],
-      };
-    }
-
-    // Increment total count
-    aggregated[vertical].totalCount += 1;
-
-    // Determine if this is a forecast or insight
-    const isInsightForecast = isForecast(insight);
+    // Get all verticals this insight belongs to
+    const verticalsForInsight: string[] = [];
     
-    // Update type breakdown
-    if (isInsightForecast) {
-      aggregated[vertical].typeBreakdown.forecasts += 1;
+    // Handle cross-vertical insights
+    if (insight.vertical_scope === 'cross_vertical' && insight.verticals_involved) {
+      // Map backend verticals to frontend vertical IDs
+      insight.verticals_involved.forEach(backendVertical => {
+        const verticalMap: Record<string, string> = {
+          'finance': 'sagaa_money',
+          'health': 'sagaa_healthcare',
+          'education': 'sagaa_education',
+          'life_essentials': 'sagaa_lifeessentials',
+        };
+        const frontendVertical = verticalMap[backendVertical] || backendVertical;
+        verticalsForInsight.push(frontendVertical);
+      });
     } else {
-      aggregated[vertical].typeBreakdown.insights += 1;
+      // Single-vertical insight (default to money if not specified)
+      verticalsForInsight.push(insight.vertical || 'sagaa_money');
     }
 
-    // Update priority breakdown (overall)
-    const priority = (insight.priority || 'MEDIUM').toLowerCase() as 'high' | 'medium' | 'low';
-    if (priority in aggregated[vertical].priorityBreakdown) {
-      aggregated[vertical].priorityBreakdown[priority] += 1;
-    }
-    
-    // Update separate priority breakdowns for insights vs forecasts
-    if (isInsightForecast) {
-      if (priority in aggregated[vertical].forecastPriorityBreakdown) {
-        aggregated[vertical].forecastPriorityBreakdown[priority] += 1;
+    // Add this insight to all relevant verticals
+    verticalsForInsight.forEach((vertical) => {
+      if (!aggregated[vertical]) {
+        aggregated[vertical] = {
+          vertical,
+          totalCount: 0,
+          typeBreakdown: {
+            insights: 0,
+            forecasts: 0,
+          },
+          priorityBreakdown: {
+            high: 0,
+            medium: 0,
+            low: 0,
+          },
+          insightPriorityBreakdown: {
+            high: 0,
+            medium: 0,
+            low: 0,
+          },
+          forecastPriorityBreakdown: {
+            high: 0,
+            medium: 0,
+            low: 0,
+          },
+          newCount: 0,
+          viewedCount: 0,
+          insights: [],
+        };
       }
-    } else {
-      if (priority in aggregated[vertical].insightPriorityBreakdown) {
-        aggregated[vertical].insightPriorityBreakdown[priority] += 1;
+
+      // Increment total count
+      aggregated[vertical].totalCount += 1;
+
+      // Determine if this is a forecast or insight
+      const isInsightForecast = isForecast(insight);
+      
+      // Update type breakdown
+      if (isInsightForecast) {
+        aggregated[vertical].typeBreakdown.forecasts += 1;
+      } else {
+        aggregated[vertical].typeBreakdown.insights += 1;
       }
-    }
 
-    // Update new/viewed count
-    if (!insight.viewed) {
-      aggregated[vertical].newCount += 1;
-    } else {
-      aggregated[vertical].viewedCount += 1;
-    }
+      // Update priority breakdown (overall)
+      const priority = (insight.priority || 'MEDIUM').toLowerCase() as 'high' | 'medium' | 'low';
+      if (priority in aggregated[vertical].priorityBreakdown) {
+        aggregated[vertical].priorityBreakdown[priority] += 1;
+      }
+      
+      // Update separate priority breakdowns for insights vs forecasts
+      if (isInsightForecast) {
+        if (priority in aggregated[vertical].forecastPriorityBreakdown) {
+          aggregated[vertical].forecastPriorityBreakdown[priority] += 1;
+        }
+      } else {
+        if (priority in aggregated[vertical].insightPriorityBreakdown) {
+          aggregated[vertical].insightPriorityBreakdown[priority] += 1;
+        }
+      }
 
-    // Add insight to the list
-    aggregated[vertical].insights.push(insight);
+      // Update new/viewed count
+      if (!insight.viewed) {
+        aggregated[vertical].newCount += 1;
+      } else {
+        aggregated[vertical].viewedCount += 1;
+      }
+
+      // Add insight to the list (avoid duplicates by checking if already exists)
+      if (!aggregated[vertical].insights.find(i => i.insight_id === insight.insight_id)) {
+        aggregated[vertical].insights.push(insight);
+      }
+    });
   });
 
   return aggregated;

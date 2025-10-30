@@ -7,6 +7,7 @@ import { sortInsightsByPriority, isForecast, insightBelongsToVertical } from '..
 import type { Insight } from '../types/insight';
 import VerticalFilterSidebar from '../components/VerticalFilterSidebar';
 import InsightCardVisual from '../components/InsightCardVisual';
+import heroImage from '../assets/Insights_Hero_Image.png';
 
 type FilterType = 'all' | 'insights' | 'forecasts' | 'goals';
 
@@ -109,44 +110,89 @@ export default function Insights() {
       {/* Hero Section - Full Width */}
       <div style={{
         background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
-        padding: 'clamp(6px, 1.25vw, 12px) clamp(20px, 4vw, 40px)',
+        padding: '32px 48px',
         marginBottom: 0,
         color: 'white',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'visible'
       }}>
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto' }}>
-          <h1 style={{
-            fontSize: 'clamp(48px, 5vw, 72px)',
-            fontWeight: '100',
-            marginBottom: '22px',
-            lineHeight: '1.4',
-            background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
-          }}>
-          <span style={{ fontWeight: '600' }}>Insights for you</span>
-          </h1>
-          <p style={{
-            fontSize: 'clamp(14px, 2vw, 18px)',
-            color: '#d1d5db',
-            marginBottom: 'clamp(16px, 3vw, 24px)'
-          }}>
-            Stay informed with personalized insights and Foresights to help you make better decisions across your life verticals.
-          </p>
+        <div style={{ 
+          position: 'relative', 
+          zIndex: 1, 
+          maxWidth: '1400px', 
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '32px'
+        }}>
+          {/* Hero Image - Left side */}
+          <div style={{ flexShrink: 0 }}>
+            <img 
+              src={heroImage} 
+              alt="Sagaa Insights" 
+              style={{ 
+                width: '240px',
+                height: 'auto',
+                objectFit: 'contain',
+                display: 'block'
+              }} 
+            />
+          </div>
+
+          {/* Title Section */}
+          <div style={{ flex: 1 }}>
+            <h1 style={{
+              fontSize: '36px',
+              fontWeight: '100',
+              marginBottom: '8px',
+              lineHeight: '1.4',
+              color: 'white'
+            }}>
+              <span style={{
+                background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                color: 'transparent',
+                display: 'inline-block',
+                paddingBottom: '0.18em'
+              }}>
+                Insights for you
+              </span>
+            </h1>
+            <p style={{
+              fontSize: '16px',
+              color: '#d1d5db',
+              marginBottom: '0'
+            }}>
+              Stay informed with personalized insights and Foresights to help you make better decisions across your life verticals.
+            </p>
+          </div>
         </div>
-        {/* Decorative background pattern - hide on mobile */}
+        
+        {/* Decorative Background Elements */}
         <div style={{
           position: 'absolute',
-          top: '-50%',
-          right: '-10%',
-          width: '600px',
-          height: '600px',
+          top: '-50px',
+          right: '-50px',
+          width: '200px',
+          height: '200px',
           background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
           borderRadius: '50%',
           pointerEvents: 'none',
-          display: window.innerWidth < 768 ? 'none' : 'block'
+          zIndex: 0
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '-30px',
+          left: '-30px',
+          width: '150px',
+          height: '150px',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)',
+          borderRadius: '50%',
+          pointerEvents: 'none',
+          zIndex: 0
         }} />
       </div>
 

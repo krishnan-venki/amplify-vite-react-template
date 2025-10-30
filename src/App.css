@@ -707,7 +707,7 @@
 .side-nav .nav-icon { width: 18px; height: 18px; color: #23362d; flex: 0 0 auto; }
 
 /* specific icon colors for each vertical */
-.side-nav .dashboard-icon { color: #6b7280; }
+/* Dashboard icon uses SVG gradient, no color override needed */
 .side-nav .money-icon { color: #10b981; }
 .side-nav .healthcare-icon { color: #f43f5e; }
 .side-nav .education-icon { color: #3b82f6; }
@@ -717,8 +717,7 @@
 .side-nav .notification-icon { color: #f59e0b; }
 
 /* hover and active states */
-.side-nav a:hover .dashboard-icon,
-.side-nav a[aria-current="page"] .dashboard-icon { color: #4b5563; }
+/* Dashboard icon gradient is always visible, no hover/active state change needed */
 .side-nav a:hover .money-icon,
 .side-nav a[aria-current="page"] .money-icon { color: #059669; }
 .side-nav a:hover .healthcare-icon,

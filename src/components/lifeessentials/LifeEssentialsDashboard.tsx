@@ -8,6 +8,7 @@ import { AssetDetailPanel } from './AssetDetailPanel';
 import { AddAssetModal } from './AddAssetModal';
 import { ComingSoonTab } from './ComingSoonTab';
 import type { Asset, AssetFormData } from '../../types/asset';
+import heroImage from '../../assets/LifeEssentials_Hero_Image.png';
 
 type CapabilityTab = 'property' | 'household' | 'family' | 'documents';
 
@@ -85,24 +86,57 @@ export const LifeEssentialsDashboard: React.FC = () => {
           position: 'relative', 
           zIndex: 1, 
           maxWidth: '1400px', 
-          margin: '0 auto' 
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '32px'
         }}>
-          <h1 style={{
-            fontSize: isMobile ? '28px' : '36px',
-            fontWeight: '600',
-            marginBottom: '8px',
-            lineHeight: '1.4',
-            color: 'white'
-          }}>
-            🏠 Life Essentials
-          </h1>
-          <p style={{
-            fontSize: isMobile ? 'clamp(13px, 3vw, 14px)' : 'clamp(14px, 2vw, 18px)',
-            color: '#d1d5db',
-            marginBottom: '0'
-          }}>
-            Everything maintained, nothing forgotten
-          </p>
+          {/* Hero Image - Hidden on mobile, appears first (left side) */}
+          {!isMobile && (
+            <div style={{ flexShrink: 0 }}>
+              <img 
+                src={heroImage} 
+                alt="Sagaa Life Essentials" 
+                style={{ 
+                  width: '240px',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  display: 'block'
+                }} 
+              />
+            </div>
+          )}
+
+          {/* Title Section */}
+          <div style={{ flex: 1 }}>
+            <h1 style={{
+              fontSize: isMobile ? '28px' : '36px',
+              fontWeight: '100',
+              marginBottom: '8px',
+              lineHeight: '1.4',
+              color: 'white'
+            }}>
+              <span style={{
+                background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                color: 'transparent',
+                display: 'inline-block',
+                paddingBottom: '0.18em'
+              }}>
+                Sagaa Life Essentials
+              </span>
+            </h1>
+            <p style={{
+              fontSize: isMobile ? 'clamp(13px, 3vw, 14px)' : 'clamp(14px, 2vw, 18px)',
+              color: '#d1d5db',
+              marginBottom: '0'
+            }}>
+              Your Essentials, intelligently managed
+            </p>
+          </div>
         </div>
       </div>
 

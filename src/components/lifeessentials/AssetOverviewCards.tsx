@@ -50,7 +50,7 @@ export const AssetOverviewCards: React.FC<AssetOverviewCardsProps> = ({ summary,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <span style={{ fontSize: '24px' }}>⚠️</span>
-            <span style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500' }}>High Risk</span>
+            <span style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500' }}>Asset Health - High Risk</span>
           </div>
           <div style={{ fontSize: '32px', fontWeight: '600', color: summary.high_risk_count > 0 ? '#ef4444' : '#1f2937' }}>
             {summary.high_risk_count}
@@ -66,7 +66,7 @@ export const AssetOverviewCards: React.FC<AssetOverviewCardsProps> = ({ summary,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <span style={{ fontSize: '24px' }}>🔧</span>
-            <span style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500' }}>Due Soon</span>
+            <span style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500' }}>Maintenance - Due Soon</span>
           </div>
           <div style={{ fontSize: '32px', fontWeight: '600', color: summary.due_for_maintenance > 0 ? '#f59e0b' : '#1f2937' }}>
             {summary.due_for_maintenance}
@@ -82,7 +82,7 @@ export const AssetOverviewCards: React.FC<AssetOverviewCardsProps> = ({ summary,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <span style={{ fontSize: '24px' }}>💰</span>
-            <span style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500' }}>Est. Replacement</span>
+            <span style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500' }}>Maintenance Cost Estimate</span>
           </div>
           <div style={{ fontSize: '28px', fontWeight: '600', color: '#1f2937' }}>
             {formatCurrency(summary.total_replacement_cost_estimate)}

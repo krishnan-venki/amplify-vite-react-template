@@ -104,6 +104,7 @@ export function useSankeyData(
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
     retry: 2,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    placeholderData: (previousData) => previousData, // Keep previous data while fetching to prevent scroll jumps
   });
 
   return {

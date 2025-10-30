@@ -209,7 +209,7 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
         overflow: 'hidden'
       }}
     >
-      {/* Toggle Button - Only show when expanded */}
+      {/* Toggle Button - Orange Arrow (shown when expanded) */}
       {isExpanded && (
         <button
           onClick={() => setIsExpanded(false)}
@@ -217,9 +217,9 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
             position: 'absolute',
             top: '16px',
             left: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
+            width: '24px',
+            height: '24px',
+            borderRadius: '6px',
             background: '#ff9900',
             border: 'none',
             display: 'flex',
@@ -227,9 +227,10 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
             justifyContent: 'center',
             cursor: 'pointer',
             zIndex: 10,
-            transition: 'all 0.2s',
+            transition: 'all 0.2s ease',
             boxShadow: '0 2px 8px rgba(255, 153, 0, 0.3)',
-            padding: '0'
+            padding: '0',
+            color: '#111'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.background = '#e68a00';
@@ -244,8 +245,8 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
           title="Collapse panel"
         >
           {/* Right arrow for collapse */}
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 18l6-6-6-6"/>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
           </svg>
         </button>
       )}
@@ -1071,7 +1072,7 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
         </div>
       )}
 
-      {/* Collapsed State - Clickable Dashboard Icon */}
+      {/* Collapsed State - Orange Arrow Button */}
       {!isExpanded && (
         <div
           style={{
@@ -1083,7 +1084,7 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
             paddingTop: '16px'
           }}
         >
-          {/* Clickable Dashboard Icon */}
+          {/* Orange Arrow Button - matches left navigation style */}
           <button
             onClick={() => setIsExpanded(true)}
             title={isInsightContext 
@@ -1091,42 +1092,40 @@ export default function ContextualSidePanel({ context, onNavigateToDashboard }: 
               : `Expand ${(context as VerticalContext).name} panel`
             }
             style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '10px',
-              background: '#7c3aed',
+              width: '24px',
+              height: '24px',
+              borderRadius: '6px',
+              background: '#ff9900',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
               border: 'none',
-              transition: 'all 0.2s',
-              boxShadow: '0 2px 8px rgba(124, 58, 237, 0.3)',
-              padding: '0'
+              transition: 'all 0.2s ease',
+              boxShadow: '0 2px 8px rgba(255, 153, 0, 0.3)',
+              padding: '0',
+              color: '#111'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.1)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(124, 58, 237, 0.4)';
-              e.currentTarget.style.background = '#6d28d9';
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 153, 0, 0.4)';
+              e.currentTarget.style.background = '#e68a00';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(124, 58, 237, 0.3)';
-              e.currentTarget.style.background = '#7c3aed';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 153, 0, 0.3)';
+              e.currentTarget.style.background = '#ff9900';
             }}
           >
-            {/* Dashboard Grid Icon - 4 squares */}
+            {/* Left arrow for expand */}
             <svg 
-              width="20" 
-              height="20" 
+              width="14" 
+              height="14" 
               viewBox="0 0 24 24" 
-              fill="white"
+              fill="currentColor"
               style={{ pointerEvents: 'none' }}
             >
-              <rect x="3" y="3" width="8" height="8" />
-              <rect x="13" y="3" width="8" height="8" />
-              <rect x="3" y="13" width="8" height="8" />
-              <rect x="13" y="13" width="8" height="8" />
+              <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" />
             </svg>
           </button>
         </div>

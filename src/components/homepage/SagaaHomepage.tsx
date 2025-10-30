@@ -12,6 +12,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from '../SagaaHomepage.module.css';
 import { useNavigate } from 'react-router-dom';
 import sagaaLogo from '../../assets/sagaa_48x48.png';
+import { useAuthenticator } from '@aws-amplify/ui-react';
+import { fetchUserAttributes } from 'aws-amplify/auth';
 import morningInteraction from '../../assets/Morning_Interaction.jpg';
 import driveInteraction from '../../assets/Drive_Interaction.jpg';
 import eveningInteraction from '../../assets/Evening_Interactions.jpg';
@@ -26,6 +28,16 @@ const SagaaHomepage: React.FC = () => {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [learnMoreOpen, setLearnMoreOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [displayName, setDisplayName] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [initials, setInitials] = useState<string>('');
+  const [nameLoaded, setNameLoaded] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [initialAuthCheck, setInitialAuthCheck] = useState(false);
   
   useEffect(() => {
     const handleResize = () => {
@@ -67,6 +79,119 @@ const SagaaHomepage: React.FC = () => {
 
     return () => observer.disconnect();
   }, []);
+
+  // Initial auth check to prevent flash on page load/refresh
+  useEffect(() => {
+    // Small delay to let authenticator initialize
+    const timer = setTimeout(() => {
+      setInitialAuthCheck(true);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Load user information for authenticated users
+  useEffect(() => {
+    let active = true;
+    async function loadName() {
+      try {
+        if (!user) { 
+          if (active) { 
+            setDisplayName(null); 
+            setEmail(null); 
+            setInitials(''); 
+            setNameLoaded(false);
+            setAuthChecked(true); // Auth check complete, no user
+          } 
+          return; 
+        }
+        const attrs = await fetchUserAttributes();
+        const full = [attrs.given_name, attrs.family_name].filter(Boolean).join(' ') || attrs.name || '';
+        const userEmail = attrs.email || '';
+        
+        // Calculate initials
+        let userInitials = '';
+        if (attrs.given_name || attrs.family_name) {
+          const first = attrs.given_name || '';
+          const last = attrs.family_name || '';
+          userInitials = (first.charAt(0) + last.charAt(0)).toUpperCase();
+        } else if (full) {
+          const names = full.trim().split(' ');
+          if (names.length >= 2) {
+            userInitials = (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
+          } else {
+            userInitials = names[0].charAt(0).toUpperCase();
+          }
+        } else if (user.username) {
+          userInitials = user.username.substring(0, 2).toUpperCase();
+        }
+        
+        if (active) { 
+          setDisplayName(full || null); 
+          setEmail(userEmail); 
+          setInitials(userInitials); 
+          setNameLoaded(true);
+          setAuthChecked(true); // Auth check complete, user loaded
+        }
+      } catch {
+        if (active) { 
+          setDisplayName(null); 
+          setEmail(null); 
+          setInitials(''); 
+          setNameLoaded(true);
+          setAuthChecked(true); // Auth check complete, error occurred
+        }
+      }
+    }
+    loadName();
+    return () => { active = false; };
+  }, [user]);
+
+  // Close menu on click outside
+  useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (!menuRef.current) return;
+      if (menuOpen && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        if (learnMoreOpen) {
+          setLearnMoreOpen(false);
+        } else {
+          setMenuOpen(false);
+        }
+      }
+    }
+    document.addEventListener('click', onDocClick);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('click', onDocClick);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [menuOpen, learnMoreOpen]);
+
+  // Close submenu when main menu closes
+  useEffect(() => {
+    if (!menuOpen) {
+      setLearnMoreOpen(false);
+    }
+  }, [menuOpen]);
+
+  const handleLearnMoreClick = () => {
+    setLearnMoreOpen(!learnMoreOpen);
+  };
+
+  const onLogout = async () => {
+    setMenuOpen(false);
+    try {
+      await signOut();
+      navigate('/home', { replace: true });
+    } catch {
+      // ignore
+    }
+  };
 
   const addToRefs = (el: HTMLDivElement | null) => {
     if (el && !fadeInElementsRef.current.includes(el)) {
@@ -237,106 +362,565 @@ const SagaaHomepage: React.FC = () => {
                 fontFamily: 'system-ui, -apple-system, sans-serif'
               }}>Sagaa</div>
             </div>
+            
+            {/* Navigation container with separate sections */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '32px',
-              flex: 1,
-              justifyContent: 'flex-end'
+              gap: '48px',
+              flex: 1
             }}>
-              <button onClick={() => scrollToSection('ambient')} style={{
-                color: 'black',
-                fontSize: '14px',
-                fontWeight: '500',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'color 0.3s ease'
-              }} onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#6b7280';
-              }} onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'black';
-              }}>Ambient</button>
-              <button onClick={() => scrollToSection('ecosystem')} style={{
-                color: 'black',
-                fontSize: '14px',
-                fontWeight: '500',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'color 0.3s ease'
-              }} onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#6b7280';
-              }} onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'black';
-              }}>Ecosystem</button>
-              <button onClick={() => scrollToSection('growth')} style={{
-                color: 'black',
-                fontSize: '14px',
-                fontWeight: '500',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'color 0.3s ease'
-              }} onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#6b7280';
-              }} onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'black';
-              }}>Growth</button>
-              <button onClick={() => scrollToSection('community')} style={{
-                color: 'black',
-                fontSize: '14px',
-                fontWeight: '500',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'color 0.3s ease'
-              }} onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#6b7280';
-              }} onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'black';
-              }}>Community</button>
-              <button onClick={() => scrollToSection('connected')} style={{
-                color: 'black',
-                fontSize: '14px',
-                fontWeight: '500',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'color 0.3s ease'
-              }} onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#6b7280';
-              }} onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'black';
-              }}>Connected</button>
-              <button onClick={() => navigate('/signin')} style={{
-                color: 'black',
-                fontSize: '14px',
-                fontWeight: '500',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'color 0.3s ease'
-              }} onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#6b7280';
-              }} onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'black';
-              }}>Sign In</button>
-              <button onClick={() => navigate('/signup')} style={{
-                background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
-                color: 'white',
-                padding: '8px 24px',
-                borderRadius: '50px',
-                fontSize: '14px',
-                fontWeight: '500',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }} onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, #0a3a54 0%, #025a7f 50%, #0269a1 100%)';
-              }} onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)';
-              }}>Sign Up</button>
+              {/* Navigation menu items - centered */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '32px',
+                flex: 1,
+                justifyContent: 'center'
+              }}>
+                <button onClick={() => scrollToSection('ambient')} style={{
+                  color: 'black',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'color 0.3s ease'
+                }} onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#6b7280';
+                }} onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'black';
+                }}>Ambient</button>
+                <button onClick={() => scrollToSection('ecosystem')} style={{
+                  color: 'black',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'color 0.3s ease'
+                }} onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#6b7280';
+                }} onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'black';
+                }}>Ecosystem</button>
+                <button onClick={() => scrollToSection('growth')} style={{
+                  color: 'black',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'color 0.3s ease'
+                }} onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#6b7280';
+                }} onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'black';
+                }}>Growth</button>
+                <button onClick={() => scrollToSection('community')} style={{
+                  color: 'black',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'color 0.3s ease'
+                }} onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#6b7280';
+                }} onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'black';
+                }}>Community</button>
+                <button onClick={() => scrollToSection('connected')} style={{
+                  color: 'black',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'color 0.3s ease'
+                }} onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#6b7280';
+                }} onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'black';
+                }}>Connected</button>
+              </div>
+              
+              {/* User menu / Auth buttons section - positioned at far right */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px',
+                marginLeft: 'auto',
+                minWidth: '120px', // Reserve space to prevent layout shift
+                justifyContent: 'flex-end'
+              }}>
+                {/* Conditional rendering: Show user menu if logged in, otherwise show Sign In/Sign Up */}
+                {!initialAuthCheck || !authChecked ? (
+                  // Loading state - show nothing during initial auth check
+                  <div style={{ width: '56px', height: '40px' }} />
+                ) : user && nameLoaded && initials ? (
+                <div ref={menuRef} style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMenuOpen(o => !o);
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: 0,
+                      background: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.opacity = '0.85';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.opacity = '1';
+                    }}
+                    title={displayName || 'User menu'}
+                  >
+                    {/* Circular avatar with initials - same style as sidebar */}
+                    <div style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%)',
+                      color: 'white',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      {initials}
+                    </div>
+                    
+                    {/* Dropdown chevron indicator - separate from circle */}
+                    <svg 
+                      width="20" 
+                      height="20" 
+                      viewBox="0 0 20 20" 
+                      fill="currentColor"
+                      style={{
+                        transition: 'transform 0.2s ease',
+                        transform: menuOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                        color: '#374151'
+                      }}
+                    >
+                      <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.08 1.04l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                  
+                  {menuOpen && (
+                    <div style={{
+                      position: 'absolute',
+                      top: 'calc(100% + 8px)',
+                      right: 0,
+                      backgroundColor: 'white',
+                      borderRadius: '12px',
+                      boxShadow: '0 8px 24px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.1)',
+                      minWidth: '240px',
+                      zIndex: 1000,
+                      overflow: 'visible',
+                      border: '1px solid #e5e7eb'
+                    }}>
+                      {/* User info header */}
+                      <div style={{
+                        padding: '16px',
+                        borderBottom: '1px solid #e5e7eb',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px'
+                      }}>
+                        <div style={{
+                          width: '48px',
+                          height: '48px',
+                          borderRadius: '50%',
+                          background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%)',
+                          color: 'white',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '18px',
+                          fontWeight: '600'
+                        }}>
+                          {initials}
+                        </div>
+                        <div style={{ flex: 1, overflow: 'hidden' }}>
+                          {displayName && (
+                            <div style={{
+                              fontSize: '14px',
+                              fontWeight: '600',
+                              color: '#111827',
+                              marginBottom: '2px',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }}>
+                              {displayName}
+                            </div>
+                          )}
+                          {email && (
+                            <div style={{
+                              fontSize: '12px',
+                              color: '#6b7280',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }}>
+                              {email}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {/* Menu items */}
+                      <div style={{ padding: '8px 0' }}>
+                        <button
+                          onClick={() => {
+                            setMenuOpen(false);
+                            navigate('/dashboard');
+                          }}
+                          style={{
+                            width: '100%',
+                            padding: '10px 16px',
+                            textAlign: 'left',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            fontSize: '14px',
+                            color: '#374151',
+                            transition: 'background-color 0.2s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#f3f4f6';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                          }}
+                        >
+                          Go to Dashboard
+                        </button>
+                      </div>
+                      
+                      {/* Separator after Go to Dashboard */}
+                      <div style={{ height: '1px', background: '#e5e7eb', margin: '0' }} />
+                      
+                      {/* Other menu items */}
+                      <div style={{ padding: '8px 0' }}>
+                        
+                        <button
+                          onClick={() => {
+                            setMenuOpen(false);
+                          }}
+                          style={{
+                            width: '100%',
+                            padding: '10px 16px',
+                            textAlign: 'left',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            fontSize: '14px',
+                            color: '#374151',
+                            transition: 'background-color 0.2s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#f3f4f6';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                          }}
+                        >
+                          Settings
+                        </button>
+                        
+                        <button
+                          onClick={() => {
+                            setMenuOpen(false);
+                          }}
+                          style={{
+                            width: '100%',
+                            padding: '10px 16px',
+                            textAlign: 'left',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            fontSize: '14px',
+                            color: '#374151',
+                            transition: 'background-color 0.2s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#f3f4f6';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                          }}
+                        >
+                          Get Help
+                        </button>
+                        
+                        {/* Learn more submenu */}
+                        <div style={{ position: 'relative' }}>
+                          <button
+                            onClick={handleLearnMoreClick}
+                            style={{
+                              width: '100%',
+                              padding: '10px 16px',
+                              textAlign: 'left',
+                              background: 'none',
+                              border: 'none',
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              color: '#374151',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              transition: 'background-color 0.2s ease'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = '#f3f4f6';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = 'transparent';
+                            }}
+                          >
+                            <span>Learn more</span>
+                            <svg 
+                              width="16" 
+                              height="16" 
+                              viewBox="0 0 20 20" 
+                              fill="currentColor"
+                              style={{
+                                transform: learnMoreOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+                                transition: 'transform 0.2s ease'
+                              }}
+                            >
+                              <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L10.94 10 7.23 6.29a.75.75 0 111.04-1.08l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                            </svg>
+                          </button>
+                          
+                          {learnMoreOpen && (
+                            <div style={{
+                              position: 'absolute',
+                              top: 0,
+                              left: '100%',
+                              marginLeft: '8px',
+                              backgroundColor: 'white',
+                              borderRadius: '12px',
+                              boxShadow: '0 8px 24px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.1)',
+                              minWidth: '200px',
+                              border: '1px solid #e5e7eb',
+                              padding: '8px 0',
+                              zIndex: 1001
+                            }}>
+                              <button
+                                onClick={() => {
+                                  setMenuOpen(false);
+                                  // Already on home page, just scroll to top
+                                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
+                                style={{
+                                  width: '100%',
+                                  padding: '10px 16px',
+                                  textAlign: 'left',
+                                  background: 'none',
+                                  border: 'none',
+                                  cursor: 'pointer',
+                                  fontSize: '14px',
+                                  color: '#374151',
+                                  transition: 'background-color 0.2s ease'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent';
+                                }}
+                              >
+                                About Sagaa
+                              </button>
+                              
+                              <div style={{ height: '1px', background: '#e5e7eb', margin: '8px 0' }} />
+                              
+                              <button
+                                onClick={() => {
+                                  setMenuOpen(false);
+                                }}
+                                style={{
+                                  width: '100%',
+                                  padding: '10px 16px',
+                                  textAlign: 'left',
+                                  background: 'none',
+                                  border: 'none',
+                                  cursor: 'pointer',
+                                  fontSize: '14px',
+                                  color: '#374151',
+                                  transition: 'background-color 0.2s ease'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent';
+                                }}
+                              >
+                                Usage policy
+                              </button>
+                              
+                              <div style={{ height: '1px', background: '#e5e7eb', margin: '8px 0' }} />
+                              
+                              <button
+                                onClick={() => {
+                                  setMenuOpen(false);
+                                }}
+                                style={{
+                                  width: '100%',
+                                  padding: '10px 16px',
+                                  textAlign: 'left',
+                                  background: 'none',
+                                  border: 'none',
+                                  cursor: 'pointer',
+                                  fontSize: '14px',
+                                  color: '#374151',
+                                  transition: 'background-color 0.2s ease'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent';
+                                }}
+                              >
+                                Privacy policy
+                              </button>
+                              
+                              <button
+                                onClick={() => {
+                                  setMenuOpen(false);
+                                }}
+                                style={{
+                                  width: '100%',
+                                  padding: '10px 16px',
+                                  textAlign: 'left',
+                                  background: 'none',
+                                  border: 'none',
+                                  cursor: 'pointer',
+                                  fontSize: '14px',
+                                  color: '#374151',
+                                  transition: 'background-color 0.2s ease'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent';
+                                }}
+                              >
+                                Privacy Choices
+                              </button>
+                              
+                              <div style={{ height: '1px', background: '#e5e7eb', margin: '8px 0' }} />
+                              
+                              <button
+                                onClick={() => {
+                                  setMenuOpen(false);
+                                }}
+                                style={{
+                                  width: '100%',
+                                  padding: '10px 16px',
+                                  textAlign: 'left',
+                                  background: 'none',
+                                  border: 'none',
+                                  cursor: 'pointer',
+                                  fontSize: '14px',
+                                  color: '#374151',
+                                  transition: 'background-color 0.2s ease'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent';
+                                }}
+                              >
+                                Compliances
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {/* Sign out */}
+                      <div style={{
+                        borderTop: '1px solid #e5e7eb',
+                        padding: '8px 0'
+                      }}>
+                        <button
+                          onClick={onLogout}
+                          style={{
+                            width: '100%',
+                            padding: '10px 16px',
+                            textAlign: 'left',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            fontSize: '14px',
+                            color: '#374151',
+                            fontWeight: '500',
+                            transition: 'background-color 0.2s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#f3f4f6';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                          }}
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <button onClick={() => navigate('/signin')} style={{
+                    color: 'black',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'color 0.3s ease'
+                  }} onMouseEnter={(e) => {
+                    e.currentTarget.style.color = '#6b7280';
+                  }} onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'black';
+                  }}>Sign In</button>
+                  <button onClick={() => navigate('/signup')} style={{
+                    background: 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)',
+                    color: 'white',
+                    padding: '8px 24px',
+                    borderRadius: '50px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }} onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #0a3a54 0%, #025a7f 50%, #0269a1 100%)';
+                  }} onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%)';
+                  }}>Sign Up</button>
+                </>
+              )}
+              </div>
             </div>
           </div>
         </div>

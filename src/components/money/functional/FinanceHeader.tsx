@@ -1,12 +1,13 @@
 import React from 'react';
 import { Calendar, MessageCircle } from 'lucide-react';
 import { getCurrentMonth, formatMonth } from '../../../types/finance';
+import heroImage from '../../../assets/Money_Hero_Image.png';
 
 interface MonthNavigatorProps {
   selectedMonth: string;
   onMonthChange: (month: string) => void;
   isMobile?: boolean;
-  variant?: 'hero' | 'filterBar'; // New prop for styling variant
+  variant?: 'hero' | 'filterBar' | 'sankey'; // New prop for styling variant
 }
 
 /**
@@ -60,11 +61,21 @@ export const MonthNavigator: React.FC<MonthNavigatorProps> = ({
 
   // Styling based on variant
   const isHero = variant === 'hero';
-  const buttonBorder = isHero ? 'rgba(255, 255, 255, 0.5)' : '#d1d5db';
-  const buttonBg = isHero ? 'rgba(255, 255, 255, 0.2)' : '#ffffff';
-  const buttonHoverBg = isHero ? 'rgba(255, 255, 255, 0.3)' : '#f3f4f6';
-  const iconColor = isHero ? '#ffffff' : '#6b7280';
-  const textColor = isHero ? '#ffffff' : '#1f2937';
+  const isSankey = variant === 'sankey';
+  
+  // Color scheme for different variants
+  const buttonBorder = isSankey ? 'rgba(255, 255, 255, 0.2)' : (isHero ? 'rgba(255, 255, 255, 0.5)' : '#d1d5db');
+  const buttonBg = isSankey ? 'rgba(255, 255, 255, 0.1)' : (isHero ? 'rgba(255, 255, 255, 0.2)' : '#ffffff');
+  const buttonHoverBg = isSankey ? 'rgba(255, 255, 255, 0.2)' : (isHero ? 'rgba(255, 255, 255, 0.3)' : '#f3f4f6');
+  const iconColor = (isSankey || isHero) ? '#ffffff' : '#6b7280';
+  const textColor = (isSankey || isHero) ? '#ffffff' : '#1f2937';
+  const dropdownBg = isSankey ? 'rgba(26, 26, 26, 0.95)' : '#ffffff';
+  const dropdownBorder = isSankey ? 'rgba(255, 255, 255, 0.2)' : '#e5e7eb';
+  const dropdownItemBg = isSankey ? 'rgba(255, 255, 255, 0.05)' : '#ffffff';
+  const dropdownItemHoverBg = isSankey ? 'rgba(255, 255, 255, 0.1)' : '#f9fafb';
+  const dropdownItemSelectedBg = isSankey ? 'rgba(255, 255, 255, 0.15)' : '#eff6ff';
+  const dropdownItemSelectedColor = isSankey ? '#60a5fa' : '#0369a1';
+  const dropdownItemColor = isSankey ? '#d1d5db' : '#1f2937';
 
   return (
     <div
@@ -177,13 +188,16 @@ export const MonthNavigator: React.FC<MonthNavigatorProps> = ({
                 top: '48px',
                 left: 0,
                 minWidth: '200px',
-                backgroundColor: '#ffffff',
-                border: '1px solid #e5e7eb',
+                backgroundColor: dropdownBg,
+                border: `1px solid ${dropdownBorder}`,
                 borderRadius: '8px',
-                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
+                boxShadow: isSankey 
+                  ? '0 10px 25px rgba(0, 0, 0, 0.5)' 
+                  : '0 10px 25px rgba(0, 0, 0, 0.1)',
                 maxHeight: '300px',
                 overflowY: 'auto',
-                zIndex: 1000
+                zIndex: 1000,
+                backdropFilter: isSankey ? 'blur(10px)' : 'none',
               }}
             >
               {monthOptions.map((month) => (
@@ -198,8 +212,8 @@ export const MonthNavigator: React.FC<MonthNavigatorProps> = ({
                     padding: '12px 16px',
                     textAlign: 'left',
                     border: 'none',
-                    backgroundColor: month === selectedMonth ? '#eff6ff' : '#ffffff',
-                    color: month === selectedMonth ? '#0369a1' : '#1f2937',
+                    backgroundColor: month === selectedMonth ? dropdownItemSelectedBg : dropdownItemBg,
+                    color: month === selectedMonth ? dropdownItemSelectedColor : dropdownItemColor,
                     fontWeight: month === selectedMonth ? '600' : '400',
                     fontSize: '14px',
                     cursor: 'pointer',
@@ -207,12 +221,12 @@ export const MonthNavigator: React.FC<MonthNavigatorProps> = ({
                   }}
                   onMouseEnter={(e) => {
                     if (month !== selectedMonth) {
-                      e.currentTarget.style.backgroundColor = '#f9fafb';
+                      e.currentTarget.style.backgroundColor = dropdownItemHoverBg;
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (month !== selectedMonth) {
-                      e.currentTarget.style.backgroundColor = '#ffffff';
+                      e.currentTarget.style.backgroundColor = dropdownItemBg;
                     }
                   }}
                 >
@@ -284,21 +298,51 @@ export const FinanceHeader: React.FC<{ isMobile?: boolean }> = ({ isMobile = fal
           position: 'relative',
           zIndex: 1,
           maxWidth: '1400px',
-          margin: '0 auto'
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '32px'
         }}
       >
+        {/* Hero Image - Hidden on mobile, appears first (left side) */}
+        {!isMobile && (
+          <div style={{ flexShrink: 0 }}>
+            <img 
+              src={heroImage} 
+              alt="Sagaa Money" 
+              style={{ 
+                width: '240px',
+                height: 'auto',
+                objectFit: 'contain',
+                display: 'block'
+              }} 
+            />
+          </div>
+        )}
+
         {/* Title Section */}
-        <div>
+        <div style={{ flex: 1 }}>
           <h1
             style={{
               fontSize: isMobile ? '28px' : '36px',
-              fontWeight: '600',
+              fontWeight: '100',
               marginBottom: '8px',
               lineHeight: '1.4',
               color: 'white'
             }}
           >
-            💰 Sagaa Money
+            <span style={{
+              background: 'linear-gradient(135deg, #007AFF 0%, #00D2FF 50%, #34C759 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              color: 'transparent',
+              display: 'inline-block',
+              paddingBottom: '0.18em'
+            }}>
+              Sagaa Money
+            </span>
           </h1>
           <p
             style={{
