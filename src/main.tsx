@@ -26,7 +26,7 @@ import { FinanceSankeyExample } from './components/money/functional/FinanceSanke
 import { FinanceDashboardExample } from './components/money/functional/FinanceDashboardExample';
 import { BudgetStatusExample } from './components/money/functional/BudgetStatusExample';
 import { TransactionsExample } from './components/money/functional/TransactionsExample';
-import { FinanceDashboard } from './pages/FinanceDashboard';
+import { FinanceDashboard } from './components/money/functional/FinanceDashboard.tsx';
 
 Amplify.configure(outputs);
 

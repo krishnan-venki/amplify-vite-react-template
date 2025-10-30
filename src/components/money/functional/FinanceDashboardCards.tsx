@@ -1,7 +1,7 @@
 import React from 'react';
 import { TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
-import type { FinanceDashboardResponse } from '../../types/finance';
-import { formatCurrency } from '../../types/finance';
+import type { FinanceDashboardResponse } from '../../../types/finance';
+import { formatCurrency } from '../../../types/finance';
 
 interface FinanceDashboardCardsProps {
   data: FinanceDashboardResponse;

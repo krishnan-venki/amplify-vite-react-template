@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Search, X, ChevronDown, Repeat } from 'lucide-react';
-import type { Transaction } from '../../types/finance';
-import { formatCurrency, formatTransactionDate, CATEGORY_CONFIG } from '../../types/finance';
+import type { Transaction } from '../../../types/finance';
+import { formatCurrency, formatTransactionDate, CATEGORY_CONFIG } from '../../../types/finance';
 
 interface TransactionSectionProps {
   transactions: Transaction[];

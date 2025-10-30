@@ -13,6 +13,7 @@ interface FlowNode {
   id: string;
   name: string;
   color: string;
+  layer?: number; // Backend-provided layer position
 }
 
 interface FlowLink {
@@ -47,6 +48,12 @@ export const FinanceSankeyDiagram: React.FC<FinanceSankeyDiagramProps> = ({
 
   useEffect(() => {
     if (!svgRef.current || !data.nodes.length || !data.links.length) return;
+
+    // DEBUG: Log incoming data structure
+    console.log('🔍 SANKEY DATA RECEIVED:', {
+      nodes: data.nodes.map(n => ({ id: n.id, name: n.name, layer: n.layer })),
+      totalNodes: data.nodes.length
+    });
 
     // Calculate dynamic height based on number of nodes
     // More categories = taller diagram to prevent cramping
@@ -93,6 +100,7 @@ export const FinanceSankeyDiagram: React.FC<FinanceSankeyDiagramProps> = ({
       id: node.id,
       name: node.name,
       color: node.color,
+      layer: node.layer, // Pass through backend layer
     }));
 
     // Prepare links for D3 (convert IDs to indices)
@@ -117,13 +125,38 @@ export const FinanceSankeyDiagram: React.FC<FinanceSankeyDiagramProps> = ({
     // Create sankey generator with dynamic node sizing
     const nodeWidth = isMobile ? 18 : (compact ? 20 : 25); // Slightly thicker nodes
     const nodePadding = Math.max(12, Math.min(40, (height - margin.top - margin.bottom) / categoryCount - 8)); // More padding
-    
+
+    console.log(`📊 Node padding: ${nodePadding}px for ${categoryCount} categories`);
+
+    // Create sankey generator with dynamic node sizing
     const sankeyGenerator = sankey<FlowNode, FlowLink>()
       .nodeWidth(nodeWidth)
       .nodePadding(nodePadding)
+      .nodeSort((a, b) => {
+            // Get source for each node by checking links
+            const getSource = (nodeId: string) => {
+            const link = links.find(l => {
+                const targetNode = nodes[l.target];
+                return targetNode?.id === nodeId;
+            });
+            return link ? nodes[link.source]?.id : '';
+            };
+            
+            const aSource = getSource(a.id);
+            const bSource = getSource(b.id);
+            
+            // Layer 2 nodes (expenses/savings) - keep original order
+            if (a.id === 'expenses' || a.id === 'savings') return 0;
+            if (b.id === 'expenses' || b.id === 'savings') return 0;
+            
+            // Layer 3: Expenses categories before Savings goals
+            if (aSource === 'expenses' && bSource === 'savings') return -1;
+            if (aSource === 'savings' && bSource === 'expenses') return 1;
+            
+            // Same source - alphabetical
+            return 0;
+      })
       .extent([[margin.left, margin.top], [width - margin.right, height - margin.bottom]]);
-
-    console.log(`📊 Node padding: ${nodePadding}px for ${categoryCount} categories`);
 
     // Generate the sankey layout
     const graph: SankeyGraph<FlowNode, FlowLink> = sankeyGenerator({

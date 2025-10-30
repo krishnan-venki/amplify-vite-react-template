@@ -1,6 +1,6 @@
 import React from 'react';
 import { Calendar, MessageCircle } from 'lucide-react';
-import { getCurrentMonth, formatMonth } from '../../types/finance';
+import { getCurrentMonth, formatMonth } from '../../../types/finance';
 
 interface MonthNavigatorProps {
   selectedMonth: string;

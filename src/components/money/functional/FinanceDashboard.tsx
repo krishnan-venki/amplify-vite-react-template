@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { FinanceHeader, FilterBar } from '../components/money/FinanceHeader';
-import { FinanceDashboardCards, TopSpendingCategories } from '../components/money/FinanceDashboardCards';
-import { TransactionSection } from '../components/money/TransactionSection';
-import { FinanceSankeyDiagram } from '../components/money/functional/FinanceSankeyDiagram';
-import { ComingSoonTab } from '../components/money/ComingSoonTab';
-import { useFinanceDashboard } from '../hooks/useFinanceDashboard';
-import { useSankeyData } from '../hooks/useSankeyData';
-import { useTransactions } from '../hooks/useTransactions';
-import { getCurrentMonth } from '../types/finance';
+import { FinanceHeader, FilterBar } from './FinanceHeader';
+import { FinanceDashboardCards, TopSpendingCategories } from './FinanceDashboardCards';
+import { TransactionSection } from './TransactionSection';
+import { FinanceSankeyDiagram } from './FinanceSankeyDiagram';
+import { ComingSoonTab } from '../ComingSoonTab';
+import { useFinanceDashboard } from '../../../hooks/useFinanceDashboard';
+import { useSankeyData } from '../../../hooks/useSankeyData';
+import { useTransactions } from '../../../hooks/useTransactions';
+import { getCurrentMonth } from '../../../types/finance';
 
 type FinanceTab = 'dashboard' | 'tax' | 'bills' | 'budget' | 'savings';
 

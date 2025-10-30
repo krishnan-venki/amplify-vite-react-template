@@ -50,6 +50,7 @@ export interface SankeyNode {
   id: string;
   name: string;
   color: string;
+  layer?: number; // Layer position: 0 = Income, 1 = Savings/Expenses, 2 = Categories
 }
 
 export interface SankeyLink {
