@@ -1097,24 +1097,24 @@ export default function Dashboard() {
           {/* Empty State */}
           {!insightsLoading && !insightsError && insights.length === 0 && (
             <div style={{
-              background: '#f9fafb',
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
               borderRadius: '16px',
               padding: '40px 24px',
               textAlign: 'center',
-              border: '2px dashed #d1d5db'
+              border: '2px dashed rgba(255,255,255,0.1)'
             }}>
               <div style={{ fontSize: '3rem', marginBottom: '12px' }}>💡</div>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: '600',
-                color: '#111827',
+                color: '#f9fafb',
                 marginBottom: '8px'
               }}>
                 No Insights Yet
               </h3>
               <p style={{
                 fontSize: '14px',
-                color: '#6b7280'
+                color: '#9ca3af'
               }}>
                 Your personalized insights will appear here once available.
               </p>
