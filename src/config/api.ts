@@ -16,6 +16,11 @@ export const API_ENDPOINTS = {
   FINANCE_SANKEY: `${API_BASE_URL}/finance/sankey`,
   FINANCE_TRANSACTIONS: `${API_BASE_URL}/finance/transactions`,
   FINANCE_BUDGET_STATUS: `${API_BASE_URL}/finance/budget-status`,
+  // Epic Healthcare endpoints
+  EPIC_CALLBACK: `${API_BASE_URL}/epic/callback`,
+  EPIC_PATIENT: `${API_BASE_URL}/epic/patient`,
+  EPIC_CONNECTION_STATUS: `${API_BASE_URL}/epic/status`,
+  EPIC_REFRESH_TOKEN: `${API_BASE_URL}/epic/refresh-token`,
   // Add more endpoints as needed
 } as const;
 

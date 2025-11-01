@@ -1,0 +1,25 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DynamoDBAccessForFHIRResources",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:us-west-2:891572012971:table/health_observations",
+        "arn:aws:dynamodb:us-west-2:891572012971:table/health_conditions",
+        "arn:aws:dynamodb:us-west-2:891572012971:table/health_medications",
+        "arn:aws:dynamodb:us-west-2:891572012971:table/health_allergies",
+        "arn:aws:dynamodb:us-west-2:891572012971:table/health_immunizations",
+        "arn:aws:dynamodb:us-west-2:891572012971:table/health_appointments"
+      ]
+    }
+  ]
+}

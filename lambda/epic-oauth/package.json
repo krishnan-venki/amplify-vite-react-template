@@ -1,0 +1,26 @@
+{
+  "name": "epic-oauth-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for Epic FHIR OAuth 2.0 callback handling",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'No build step needed for Node.js'",
+    "test": "node --test",
+    "package": "zip -r epic-oauth.zip index.js node_modules package.json"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.470.0",
+    "@aws-sdk/lib-dynamodb": "^3.470.0",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.131",
+    "@types/node": "^20.10.6"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Sagaa",
+  "license": "MIT"
+}

@@ -27,6 +27,8 @@ import { FinanceDashboardExample } from './components/money/functional/FinanceDa
 import { BudgetStatusExample } from './components/money/functional/BudgetStatusExample';
 import { TransactionsExample } from './components/money/functional/TransactionsExample';
 import { FinanceDashboard } from './components/money/functional/FinanceDashboard.tsx';
+import HealthDashboard from './components/healthcare/functional/HealthDashboard.tsx';
+import { EpicOAuthCallback } from './components/healthcare';
 
 Amplify.configure(outputs);
 
@@ -63,7 +65,8 @@ const router = createBrowserRouter([
       { path: 'signup', element: <SignUp /> },
       { path: 'healthcare', element: <SagaaHealthCarePage /> },
       { path: 'sagaa-healthcare', element: <SagaaHealthCarePage /> },
-      { path: 'healthcare/dashboard', element: <SagaaHealthCarePage /> },
+      { path: 'healthcare/dashboard', element: <ProtectedRoute><HealthDashboard /></ProtectedRoute> },
+      { path: 'auth/epic/callback', element: <EpicOAuthCallback /> },
       { path: 'money', element: <SagaaMoneyPage /> },
       { path: 'money/dashboard', element: <ProtectedRoute><FinanceDashboard /></ProtectedRoute> },
       { path: 'money/sankey-test', element: <ProtectedRoute><FinanceSankeyExample /></ProtectedRoute> },
